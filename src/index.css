@@ -1,13 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap");
+
+:root {
+  /* Accent ramp — #4B70D3 */
+  --accent: #4b70d3;
+  --accent-100: #eff2fc;
+  --accent-200: #dce3f8;
+  --accent-300: #bfccf2;
+  --accent-400: #93a9e6;
+  --accent-500: #6c8add;
+  --accent-600: #3a5cbd;
+  --accent-700: #2b4798;
+  --accent-800: #1e3270;
+  --accent-900: #172548;
+
+  /* Neutrals (cool-tinted) */
+  --bg: #f4f5f7;
+  --surface: #e9ebef;
+  --text: #1c1e24;
+  --n-100: #f6f7f9;
+  --n-200: #e8eaee;
+  --n-300: #d4d7de;
+  --n-400: #b6bac4;
+  --n-500: #979ca8;
+  --n-600: #797e8b;
+  --n-700: #5c616d;
+  --n-800: #414550;
+  --n-900: #2a2d35;
+  --rule: #b3b3b3;
+
+  --font: "Archivo", system-ui, -apple-system, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+
+  --header-h: 68px;
+  --sidebar-w: 240px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 56px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 모바일 드로어가 열려 있는 동안 배경 스크롤 잠금 */
+body.navOpen {
+  overflow: hidden;
+}
+
+a {
+  color: var(--accent-700);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
