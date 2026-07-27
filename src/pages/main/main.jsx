@@ -1,79 +1,87 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./main.module.css";
+import { getMenuCategories } from "../../api/api";
 
-const CATEGORIES = [
-  { name: "리빙 · 생활", count: 412 },
-  { name: "가전 · 디지털", count: 268 },
-  { name: "의류 · 패션", count: 331 },
-  { name: "식품 · 그로서리", count: 154 },
-  { name: "뷰티 · 케어", count: 96 },
-  { name: "문구 · 취미", count: 73 },
-  { name: "반려 · 가든", count: 41 },
+import {
+  BiCaretDown,
+  BiCaretRight,
+  BiCart,
+  BiMenu,
+  BiSearch,
+  BiX,
+} from "react-icons/bi";
+
+const PROMOS = [
+  "이번 주도 안 살 것들",
+  "방금 들어온 척",
+  "안삼이 괜히 골라봄",
 ];
 
-const PROMOS = ["이주의 특가", "신상품", "안삼 셀렉트"];
-
-const SORTS = ["추천순", "신상품순", "낮은 가격순", "리뷰 많은순"];
+const SORTS = [
+  "왠지 끌리는 순",
+  "방금 나온 척순",
+  "통장에 덜 미안한 순",
+  "남들이 많이 본 척순",
+];
 
 const PRODUCTS = [
   { id: 1, brand: "MUJIN", name: "리넨 커버 3종 세트", price: "89,000원", tag: "안삼 셀렉트" },
   { id: 2, brand: "HAAT", name: "무광 스테인리스 주전자 1.2L", price: "54,000원", tag: "" },
-  { id: 3, brand: "ONDO", name: "접이식 원목 사이드 테이블", price: "128,000원", tag: "" },
-  { id: 4, brand: "BAEK", name: "오버사이즈 코튼 셔츠", price: "69,000원", tag: "NEW" },
+  { id: 3, brand: "ONDO", name: "접이식 원목 사이드 테이블", price: "128,000원", tag: "왠지 인기 많음" },
+  { id: 4, brand: "BAEK", name: "오버사이즈 코튼 셔츠", price: "69,000원", tag: "MD도 놀란 특가" },
   { id: 5, brand: "SORI", name: "무선 이어폰 2세대", price: "179,000원", tag: "" },
-  { id: 6, brand: "GEUL", name: "데스크 조명 · 웜화이트", price: "96,000원", tag: "" },
-  { id: 7, brand: "PYEON", name: "드립 커피 원두 500g", price: "19,800원", tag: "재입고" },
+  { id: 6, brand: "GEUL", name: "데스크 조명 · 웜화이트", price: "96,000원", tag: "구경만 해도 됨" },
+  { id: 7, brand: "PYEON", name: "드립 커피 원두 500g", price: "19,800원", tag: "일단 품절 임박" },
   { id: 8, brand: "DAM", name: "수납 바스켓 라지", price: "32,000원", tag: "" },
-  { id: 9, brand: "NAL", name: "스테인리스 식기 4인 세트", price: "74,000원", tag: "" },
+  { id: 9, brand: "NAL", name: "스테인리스 식기 4인 세트", price: "74,000원", tag: "오늘출발(예정)" },
   { id: 10, brand: "MUJIN", name: "워시드 코튼 이불커버", price: "112,000원", tag: "" },
-  { id: 11, brand: "HAAT", name: "주철 프라이팬 26cm", price: "88,000원", tag: "" },
+  { id: 11, brand: "HAAT", name: "주철 프라이팬 26cm", price: "88,000원", tag: "무료배송" },
   { id: 12, brand: "ONDO", name: "월넛 벽선반 60cm", price: "58,000원", tag: "" },
 ];
 
 const MOBILE_QUERY = "(max-width:900px)";
 
-function SearchIcon({ size = 16 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" />
-    </svg>
-  );
-}
-
-function CartIcon({ size = 20 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-      <path d="M3 6h18" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
-    </svg>
-  );
-}
-
 export default function Main() {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].name);
+  const [categories, setCategories] = useState([]);
+  const [categoryStatus, setCategoryStatus] = useState("loading");
+  const [expandedCode, setExpandedCode] = useState(null);
+  const [activeCode, setActiveCode] = useState(null);
   const [activePromo, setActivePromo] = useState(PROMOS[2]);
   const [activeSort, setActiveSort] = useState(SORTS[0]);
 
   const closeNav = useCallback(() => setIsNavOpen(false), []);
+
+  const loadCategories = useCallback(async (signal) => {
+    try {
+      setCategoryStatus("loading");
+
+      const data = await getMenuCategories(signal);
+      if (signal?.aborted) return;
+
+      setCategories(data);
+      setCategoryStatus("ready");
+
+      /* 첫 대분류를 기본으로 펼쳐 둔다. */
+      if (data.length > 0) {
+        setExpandedCode(data[0].code);
+        setActiveCode(data[0].code);
+      }
+    } catch (error) {
+      if (signal?.aborted) return;
+
+      console.error(error);
+      setCategoryStatus("error");
+    }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    loadCategories(controller.signal);
+
+    return () => controller.abort();
+  }, [loadCategories]);
 
   /* 드로어가 열려 있는 동안 배경 스크롤을 잠근다. */
   useEffect(() => {
@@ -99,6 +107,25 @@ export default function Main() {
     if (window.matchMedia(MOBILE_QUERY).matches) closeNav();
   }
 
+  /* 대분류: 하위가 있으면 펼치기만, 없으면 바로 선택한다. */
+  function handleCategoryClick(category) {
+    setActiveCode(category.code);
+
+    if (category.children.length === 0) {
+      closeNavOnMobile();
+      return;
+    }
+
+    setExpandedCode((current) =>
+      current === category.code ? null : category.code
+    );
+  }
+
+  function handleSubCategoryClick(child) {
+    setActiveCode(child.code);
+    closeNavOnMobile();
+  }
+
   return (
     <>
       <header className={styles.header}>
@@ -111,9 +138,7 @@ export default function Main() {
             aria-controls="sidebar"
             onClick={() => setIsNavOpen((open) => !open)}
           >
-            <i />
-            <i />
-            <i />
+            <BiMenu size={24} aria-hidden="true" />
           </button>
 
           <div className={styles.brand}>
@@ -125,26 +150,26 @@ export default function Main() {
             role="search"
             onSubmit={(event) => event.preventDefault()}
           >
-            <SearchIcon />
+            <BiSearch size={16} aria-hidden="true" />
             <input
               type="search"
-              placeholder="브랜드, 상품명으로 검색"
+              placeholder="검색이나 해보기"
               aria-label="상품 검색"
             />
           </form>
         </div>
 
         <button type="button" className={styles.iconBtn} aria-label="검색">
-          <SearchIcon size={20} />
+          <BiSearch size={20} aria-hidden="true" />
         </button>
 
         <button type="button" className={styles.iconBtn} aria-label="장바구니 3개">
-          <CartIcon />
+          <BiCart size={20} aria-hidden="true" />
         </button>
 
         <nav className={styles.utils} aria-label="사용자 메뉴">
-          <a href="#login">로그인</a>
-          <a href="#orders">주문내역</a>
+          <a href="#login">로그인만 해두기</a>
+          <a href="#orders">안 산 내역</a>
           <a href="#cart" className={styles.cart}>
             장바구니 <span className={styles.badge}>3</span>
           </a>
@@ -170,27 +195,77 @@ export default function Main() {
               aria-label="닫기"
               onClick={closeNav}
             >
-              ✕
+              <BiX size={24} aria-hidden="true" />
             </button>
           </div>
 
           <nav className={styles.catList} aria-label="카테고리">
             <div className={`${styles.eyebrow} ${styles.catHead}`}>카테고리</div>
 
-            {CATEGORIES.map((category) => (
-              <a
-                key={category.name}
-                className={styles.cat}
-                href={`#category-${category.name}`}
-                aria-current={activeCategory === category.name || undefined}
-                onClick={() => {
-                  setActiveCategory(category.name);
-                  closeNavOnMobile();
-                }}
-              >
-                {category.name} <em>{category.count}</em>
-              </a>
-            ))}
+            {categoryStatus === "loading" && (
+              <p className={styles.catMsg}>상품 없는 선반 정리 중…</p>
+            )}
+
+            {categoryStatus === "error" && (
+              <p className={styles.catMsg}>
+                카테고리가 출근을 거부했습니다.
+                <br />
+                <button
+                  type="button"
+                  className={styles.catRetry}
+                  onClick={() => loadCategories()}
+                >
+                  억지로 출근시키기
+                </button>
+              </p>
+            )}
+
+            {categoryStatus === "ready" &&
+              categories.map((category) => {
+                const hasChildren = category.children.length > 0;
+                const isExpanded = expandedCode === category.code;
+
+                return (
+                  <div key={category.code}>
+                    <button
+                      type="button"
+                      className={`${styles.cat} ${styles.catToggle}`}
+                      aria-current={activeCode === category.code || undefined}
+                      aria-expanded={hasChildren ? isExpanded : undefined}
+                      onClick={() => handleCategoryClick(category)}
+                    >
+                      {category.name}
+                      {hasChildren && (
+                        <em>
+                          {isExpanded ? (
+                            <BiCaretDown aria-hidden="true" />
+                          ) : (
+                            <BiCaretRight aria-hidden="true" />
+                          )}
+                        </em>
+                      )}
+                    </button>
+
+                    {hasChildren && isExpanded && (
+                      <div className={styles.subList}>
+                        {category.children.map((child) => (
+                          <a
+                            key={child.code}
+                            className={styles.subCat}
+                            href={`#category-${child.code}`}
+                            aria-current={
+                              activeCode === child.code || undefined
+                            }
+                            onClick={() => handleSubCategoryClick(child)}
+                          >
+                            {child.name}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
           </nav>
 
           <nav className={styles.promo} aria-label="기획">
@@ -213,42 +288,41 @@ export default function Main() {
 
           <div className={styles.drawerFoot}>
             <a className={styles.btn} href="#login" onClick={closeNavOnMobile}>
-              로그인 / 회원가입
+              회원인 척 시작하기
             </a>
           </div>
         </aside>
 
         <main className={styles.main}>
           <section className={styles.hero}>
-            <span className={styles.heroKicker}>2026 여름 정기 세일</span>
+            <span className={styles.heroKicker}>여긴 안 사는 쇼핑몰입니다</span>
 
             <h1>
-              필요한 것만
+              마음껏 담고
               <br />
-              남긴 여름
+              끝까지 구경하세요
             </h1>
 
             <p>
-              생활, 가전, 의류 여섯 카테고리를 한 장바구니에서. 오늘까지 최대 40%
-              할인.
+              하지만 실제 결제도, 실제 배송도 없습니다.
             </p>
 
             <div className={styles.heroCta}>
               <a className={styles.btn} href="#exhibition">
-                기획전 보기
+                일단 담으러 가기
               </a>
               <a
                 className={`${styles.btn} ${styles.btnGhost}`}
                 href="#coupon"
               >
-                쿠폰 받기
+                쿠폰 있는 것처럼 굴기
               </a>
             </div>
           </section>
 
           <div className={styles.toolbar}>
             <h2>
-              전체 상품 <small>1,248개</small>
+              다들 괜히 보고 있음 <small>{PRODUCTS.length}개가 유혹 중</small>
             </h2>
 
             <nav className={styles.sorts} aria-label="정렬">
@@ -264,7 +338,9 @@ export default function Main() {
               ))}
             </nav>
 
-            <span className={styles.sortSelect}>{activeSort} ▾</span>
+            <span className={styles.sortSelect}>
+              {activeSort} <BiCaretDown aria-hidden="true" />
+            </span>
           </div>
 
           <section className={styles.grid} aria-label="상품 목록">
@@ -296,23 +372,23 @@ export default function Main() {
           <footer className={styles.footer}>
             <div>
               <strong>안삼 STORE</strong>
-              생활에 필요한 것만 고릅니다.
+              사고 싶은 마음만 정성껏 모았습니다.
               <br />
-              평일 14시 이전 주문 당일 출고.
+              결제는 없고, 미련은 무료로 제공됩니다.
             </div>
 
             <nav>
               <strong>고객센터</strong>
-              <a href="#faq">자주 묻는 질문</a>
-              <a href="#delivery">배송 조회</a>
-              <a href="#return">교환 · 반품</a>
+              <a href="#faq">굳이 자주 묻는 질문</a>
+              <a href="#delivery">없는 제품 배송 조회</a>
+              <a href="#return">안 산 상품 반품하기</a>
             </nav>
 
             <nav>
               <strong>회사</strong>
-              <a href="#about">브랜드 소개</a>
-              <a href="#partner">입점 문의</a>
-              <a href="#careers">채용</a>
+              <a href="#about">제법 그럴듯한 회사 소개</a>
+              <a href="#partner">입점 문의만 받아보기</a>
+              <a href="#careers">채용 공고 구경하기</a>
             </nav>
           </footer>
         </main>
