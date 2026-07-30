@@ -1,0 +1,955 @@
+/* 색상 · 폰트 · 헤더 높이(--header-h)는 index.css의 :root를 그대로 쓴다.
+   결제 화면에만 있는 하단 바 높이만 여기서 잡는다.
+   기준점: 900px 한 곳(모바일 우선). .wrap이 820px에서 멈추므로
+   1200px에서 더 벌어질 요소가 없다. index.css 상단 주석 참고. */
+.page {
+  --bar-h: 104px;
+
+  padding-bottom: var(--bar-h);
+}
+
+/* 완료 화면에는 고정 바가 없다. */
+.page.isDone {
+  padding-bottom: 0;
+}
+
+/* 사진이 늦게 뜰 때 자리만 잡아두는 바탕색 */
+.thumb {
+  display: block;
+  background: var(--n-200);
+}
+
+/* 사진 비율이 제각각이라 잘라서 채운다. */
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 주문할 상품이 없을 때 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.empty strong {
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--n-700);
+}
+
+/* .btn은 원래 <button>용이라 링크로 쓸 때 글자색을 다시 잡아준다. */
+.empty .btn,
+.empty .btn:hover {
+  padding: 0 24px;
+  color: #fff;
+}
+
+/* Pexels 출처 — 주문 상품 목록 아래 작게 */
+.credit {
+  margin: 0;
+  padding: 4px 0 0;
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.credit a {
+  color: var(--n-700);
+  text-decoration: underline;
+}
+
+.credit a:hover {
+  color: var(--accent-700);
+}
+
+/* ── Header ───────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--header-h);
+  padding: 0 8px 0 4px;
+  background: var(--bg);
+  border-bottom: 2px solid var(--rule);
+}
+
+.iconBtn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.header h1 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+.wink {
+  padding-right: 8px;
+  font-size: 12px;
+  color: var(--n-600);
+  white-space: nowrap;
+}
+
+.wrap {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* ── Steps ────────────────────────────── */
+.steps {
+  display: flex;
+  align-items: stretch;
+  background: var(--accent-100);
+  border-bottom: 2px solid var(--text);
+}
+
+.step {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--accent-700);
+  border-right: 1px solid var(--accent-300);
+}
+
+.step:last-child {
+  border-right: 0;
+}
+
+.step b {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.step[aria-current="step"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Sections ─────────────────────────── */
+.sec {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 2px solid var(--text);
+}
+
+.sec h2 {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.sec h2 small {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.cardLine {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.addr {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.addr b {
+  font-weight: 700;
+}
+
+.addr span {
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 2px solid var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ghost:hover {
+  background: var(--text);
+  color: #fff;
+}
+
+/* ── Payment methods ──────────────────── */
+.pays {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pay {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 64px;
+  padding: 12px;
+  text-align: left;
+  border: 2px solid var(--n-400);
+}
+
+.pay b {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.pay em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--n-600);
+}
+
+.pay:hover {
+  border-color: var(--accent-400);
+}
+
+.pay[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-100);
+}
+
+.pay[aria-pressed="true"] b {
+  color: var(--accent-700);
+}
+
+.rec {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 2px 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* ── Order items ──────────────────────── */
+.item {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--n-300);
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.name {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.name em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--n-600);
+}
+
+.brand {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--n-600);
+}
+
+.price {
+  font-weight: 800;
+  font-size: 15px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.strike {
+  color: var(--n-500);
+  text-decoration: line-through;
+}
+
+/* ── Dopamine meter ───────────────────── */
+.dopa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.dopaTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dopaTop b {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.dopaTop span {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.dbar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.dbar i {
+  display: block;
+  height: 100%;
+  background: #fff;
+  transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dopa p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.92;
+}
+
+/* ── Restraint slider ─────────────────── */
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slider input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 44px;
+  background: none;
+  cursor: pointer;
+}
+
+.slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: var(--n-300);
+}
+
+.slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -11px;
+  background: var(--accent);
+  border: 2px solid var(--text);
+}
+
+.slider input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: var(--n-300);
+}
+
+.slider input[type="range"]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  border: 2px solid var(--text);
+  border-radius: 0;
+}
+
+.val {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.val b {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text);
+}
+
+/* ── Summary ──────────────────────────── */
+.sum {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 16px;
+  border-bottom: 2px solid var(--text);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.row span:first-child {
+  color: var(--n-700);
+}
+
+.row small {
+  color: var(--n-500);
+}
+
+.row.saved span:last-child {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.row.grand {
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 2px solid var(--text);
+}
+
+.row.grand span:first-child {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.row.grand strong {
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+.row.grand em {
+  display: block;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--n-600);
+  text-align: right;
+}
+
+/* ── Terms ────────────────────────────── */
+.terms {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 2px solid var(--text);
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 4px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check input {
+  appearance: none;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  display: grid;
+  place-content: center;
+  border: 2px solid var(--n-500);
+  background: #fff;
+  cursor: pointer;
+}
+
+.check input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check input:checked::after {
+  content: "";
+  width: 11px;
+  height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ── Brag ─────────────────────────────── */
+.brag {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 16px 40px;
+}
+
+.brag h2 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px;
+  border: 2px solid var(--text);
+}
+
+.stat b {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--n-700);
+}
+
+.disclaim {
+  padding: 0 16px 32px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--n-600);
+}
+
+/* ── Sticky bar ───────────────────────── */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px 14px;
+  background: var(--bg);
+  border-top: 2px solid var(--text);
+}
+
+.barRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.barRow strong {
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--text);
+}
+
+.btn {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background: var(--accent-600);
+  color: #fff;
+}
+
+.btn[disabled] {
+  background: var(--n-400);
+  cursor: not-allowed;
+}
+
+/* 필수 동의 없이 눌렀을 때 좌우로 한 번 흔든다. */
+.btn.wob {
+  animation: wob 0.5s ease;
+}
+
+@keyframes wob {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.tiny {
+  margin: 0;
+  font-size: 11px;
+  color: var(--n-600);
+  text-align: center;
+}
+
+.anyway {
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--n-500);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.anyway:hover {
+  color: var(--n-700);
+}
+
+.anyway:disabled {
+  cursor: default;
+  color: var(--n-500);
+  text-decoration: none;
+}
+
+.anyway:disabled:hover {
+  color: var(--n-500);
+}
+
+/* ── Celebration ──────────────────────── */
+.done {
+  display: flex;
+  flex-direction: column;
+}
+
+.doneIn {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.stamp {
+  align-self: flex-start;
+  padding: 6px 10px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: pop 0.4s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.done h2 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.lead {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--n-700);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.receipt {
+  border: 2px solid var(--text);
+  background: #fff;
+}
+
+.receiptHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 2px dashed var(--n-400);
+}
+
+.receiptHead b {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.receiptHead span {
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.receiptRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+.receiptRow span:first-child {
+  flex: none;
+  color: var(--n-700);
+  white-space: nowrap;
+}
+
+.receiptRow span:last-child {
+  text-align: right;
+  text-wrap: pretty;
+}
+
+.receiptTotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-top: 2px dashed var(--n-400);
+}
+
+.receiptTotal b {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  padding: 7px 10px;
+  border: 2px solid var(--text);
+  background: var(--accent-100);
+  color: var(--accent-800);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.doneCta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doneCta .ghost {
+  justify-content: center;
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti i {
+  position: absolute;
+  top: -16px;
+  width: 8px;
+  height: 14px;
+  animation: fall linear forwards;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(0 0 0 / 45%);
+}
+
+.modal {
+  width: min(460px, 100%);
+  padding: 24px;
+  background: white;
+  border: 2px solid var(--n-900);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.modalClose {
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.deliveryList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deliveryOption {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  background: white;
+  border: 1px solid var(--n-300);
+  cursor: pointer;
+}
+
+.deliveryOption:hover {
+  background: var(--n-100);
+  border-color: var(--n-900);
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+  }
+}
+
+/* ── Tablet / desktop ─────────────────── */
+@media (min-width: 900px) {
+  .page {
+    --bar-h: 0px;
+  }
+
+  .header {
+    padding: 0 24px;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .wrap {
+    padding: 28px 24px 0;
+  }
+
+  .steps,
+  .sec,
+  .sum,
+  .terms {
+    border: 2px solid var(--text);
+  }
+
+  .sec,
+  .sum,
+  .terms {
+    border-top: 0;
+    padding: 24px;
+  }
+
+  .step {
+    padding: 14px 8px;
+    font-size: 13px;
+  }
+
+  .pays {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dopa {
+    padding: 20px 24px;
+  }
+
+  .bar {
+    position: static;
+    padding: 20px 24px 24px;
+    border: 2px solid var(--text);
+    border-top: 0;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .brag {
+    padding: 40px 0 24px;
+  }
+
+  .disclaim {
+    padding: 0 0 56px;
+  }
+
+  .done h2 {
+    font-size: 40px;
+  }
+
+  .doneIn {
+    padding: 56px 24px;
+  }
+}

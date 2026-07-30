@@ -1,0 +1,431 @@
+/* ── Category head ────────────────────── */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 40px 0;
+  font-size: 13px;
+  color: var(--n-600);
+}
+
+.crumbs a {
+  color: inherit;
+}
+
+.crumbs a:hover {
+  color: var(--accent-700);
+}
+
+.catHero {
+  padding: 16px 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 2px solid var(--text);
+}
+
+.catHero h1 {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.catHero h1 small {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--n-600);
+}
+
+.catHero p {
+  margin: 0;
+  max-width: 560px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--n-700);
+  text-wrap: pretty;
+}
+
+/* ── 하위 카테고리 칩 ─────────────────── */
+.subrail {
+  display: flex;
+  gap: 8px;
+  padding: 16px 40px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--n-300);
+  /* 칩이 넘칠 때 스크롤바가 줄을 흔들지 않게 감춘다. */
+  scrollbar-width: none;
+}
+
+.subrail::-webkit-scrollbar {
+  display: none;
+}
+
+.subrail a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 2px solid var(--n-400);
+  font-size: 13px;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.subrail a:hover {
+  border-color: var(--accent-400);
+  color: var(--accent-700);
+}
+
+.subrail a[aria-current="true"] {
+  border-color: var(--accent);
+  background: var(--accent-100);
+  color: var(--accent-700);
+  font-weight: 700;
+}
+
+.subrail a em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--n-500);
+}
+
+/* ── Toolbar ──────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 40px;
+  border-bottom: 1px solid var(--n-300);
+}
+
+.toolbar h2 {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.toolbar h2 small {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--n-600);
+}
+
+.sorts {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.sorts button {
+  color: inherit;
+  font-size: 13px;
+  min-height: 32px;
+}
+
+.sorts button:hover {
+  color: var(--accent-700);
+}
+
+.sorts button[aria-current="true"] {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+/* 모바일 전용 — 정렬 순환 · 카테고리 드로어 열기 */
+.sortSelect {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.filterBtn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 12px;
+  border: 2px solid var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ── Grid ─────────────────────────────── */
+.grid {
+  padding: 28px 40px 56px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardImg {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  /* 이미지가 늦게 뜰 때 자리만 잡아둔다. */
+  background: var(--n-200);
+}
+
+/* 사진 비율이 제각각이라 잘라서 채운다. */
+.cardImg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 7px;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cardBrand {
+  font-size: 11px;
+  color: var(--n-600);
+  letter-spacing: 0.06em;
+}
+
+.cardName {
+  font-size: 14px;
+  line-height: 1.35;
+  text-wrap: pretty;
+  color: inherit;
+}
+
+.cardPrice {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* 상품이 하나도 없는 칸 */
+.empty {
+  margin: 0;
+  padding: 56px 40px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--n-600);
+  text-align: center;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  padding: 0 40px 56px;
+}
+
+.more button {
+  border: 2px solid var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  min-height: 48px;
+  padding: 0 28px;
+}
+
+.more button:hover:not(:disabled) {
+  background: var(--text);
+  color: #fff;
+}
+
+.more button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* ── 없는 카테고리 ────────────────────── */
+.missing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 80px 40px;
+}
+
+.missing h1 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+
+.missing p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--n-700);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 20px;
+}
+
+.btn:hover {
+  background: var(--accent-600);
+  color: #fff;
+}
+
+/* ── Responsive ─── 기준점은 index.css 상단 주석 참고 ─── */
+/* ≤1200px : 3열로 줄이고 좌우 여백을 좁힌다. */
+@media (max-width: 1199.98px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 24px 28px 48px;
+    gap: 24px 20px;
+  }
+
+  .crumbs {
+    padding: 18px 28px 0;
+  }
+
+  .catHero {
+    padding: 14px 28px 22px;
+  }
+
+  .catHero h1 {
+    font-size: 30px;
+  }
+
+  .subrail,
+  .toolbar {
+    padding: 14px 28px;
+  }
+
+  .empty {
+    padding: 48px 28px;
+  }
+
+  .more {
+    padding: 0 28px 48px;
+  }
+
+  .missing {
+    padding: 64px 28px;
+  }
+}
+
+/* ≤900px : 정렬 탭이 순환 버튼으로 바뀌고 2열이 된다. */
+@media (max-width: 899.98px) {
+  .crumbs {
+    padding: 14px 16px 0;
+    font-size: 12px;
+  }
+
+  .catHero {
+    padding: 10px 16px 18px;
+    gap: 8px;
+  }
+
+  .catHero h1 {
+    font-size: 24px;
+    gap: 8px;
+  }
+
+  .catHero h1 small {
+    font-size: 12px;
+  }
+
+  .catHero p {
+    font-size: 13px;
+  }
+
+  .subrail {
+    padding: 12px 16px;
+    gap: 6px;
+  }
+
+  .toolbar {
+    padding: 12px 16px;
+  }
+
+  .toolbar h2 {
+    font-size: 15px;
+  }
+
+  .sorts {
+    display: none;
+  }
+
+  .sortSelect,
+  .filterBtn {
+    display: inline-flex;
+  }
+
+  .grid {
+    padding: 16px 16px 40px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 14px;
+  }
+
+  .cardBrand {
+    font-size: 10px;
+  }
+
+  .cardName {
+    font-size: 13px;
+  }
+
+  .cardPrice {
+    font-size: 14px;
+  }
+
+  .empty {
+    padding: 40px 16px;
+    font-size: 13px;
+  }
+
+  .more {
+    padding: 0 16px 40px;
+  }
+
+  .more button {
+    width: 100%;
+  }
+
+  .missing {
+    padding: 48px 16px;
+  }
+
+  .missing h1 {
+    font-size: 22px;
+  }
+}

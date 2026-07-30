@@ -1,0 +1,501 @@
+/* 색상 · 폰트 · 헤더 높이(--header-h)는 index.css의 :root를 그대로 쓴다.
+   모바일이 기본이고, 900px 부터 왼쪽 패널이 붙는 2단이 된다. */
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ───────────────────────────── */
+.header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--header-h);
+  padding: 0 16px;
+  border-bottom: 2px solid var(--rule);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.help {
+  font-size: 13px;
+  color: var(--n-700);
+}
+
+.help:hover {
+  color: var(--accent-700);
+}
+
+/* ── Layout ───────────────────────────── */
+.page {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* 좁은 화면에서는 왼쪽 패널을 숨긴다. */
+.aside {
+  display: none;
+}
+
+.pane {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 48px;
+}
+
+.formWrap {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intro h1 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.intro p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--n-700);
+  text-wrap: pretty;
+}
+
+/* ── Tabs ─────────────────────────────── */
+.tabs {
+  display: flex;
+  border: 2px solid var(--text);
+}
+
+.tabs button {
+  flex: 1;
+  min-height: 46px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--n-700);
+}
+
+.tabs button + button {
+  border-left: 2px solid var(--text);
+}
+
+.tabs button[aria-selected="true"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Form ─────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 14px;
+  border: 2px solid var(--text);
+  background: #fff;
+}
+
+.control:focus-within {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent-200);
+}
+
+/* 아이콘이 입력창에 밀려 찌그러지지 않게 고정한다. */
+.control svg {
+  flex: none;
+  color: var(--n-500);
+}
+
+.control input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  color: inherit;
+}
+
+.control input::placeholder {
+  color: var(--n-500);
+}
+
+.control button {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--n-600);
+}
+
+.control button:hover {
+  color: var(--text);
+}
+
+/* 오류는 붙잡을 때만 보인다. */
+.err {
+  display: none;
+  font-size: 12px;
+  color: var(--accent-700);
+}
+
+.field.bad .control {
+  border-color: var(--accent-700);
+  background: var(--accent-100);
+}
+
+.field.bad .err {
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.row a {
+  font-size: 13px;
+}
+
+.links {
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+/* ── Checkbox ─────────────────────────── */
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border: 2px solid var(--n-500);
+  background: #fff;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.check input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* 체크 표시는 기울인 ㄴ자 두 변으로 그린다. */
+.check input:checked::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ── Buttons ──────────────────────────── */
+.btn {
+  width: 100%;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background: var(--accent-600);
+  color: #fff;
+}
+
+.wob {
+  animation: wob 0.45s ease;
+}
+
+@keyframes wob {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.divide {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.divide::before,
+.divide::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--n-300);
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  border: 2px solid var(--text);
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.social:hover {
+  background: var(--text);
+  color: #fff;
+}
+
+.social i {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-200);
+  color: var(--accent-800);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.social:hover i {
+  background: #fff;
+}
+
+.footNote {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--n-600);
+  text-wrap: pretty;
+}
+
+.footNote b {
+  color: var(--text);
+}
+
+.fakeJoin {
+  cursor: pointer;
+}
+
+/* ── Footer ───────────────────────────── */
+.footer {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 16px 16px 24px;
+  border-top: 2px solid var(--rule);
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.footer a {
+  color: inherit;
+}
+
+.footer a:hover {
+  color: var(--accent-700);
+}
+
+/* ── Responsive ─── 기준점은 index.css 상단 주석 참고 ─── */
+/* ≥900px : 왼쪽 소개 패널이 붙고 폼이 오른쪽 고정 폭으로 선다. */
+@media (min-width: 900px) {
+  .header {
+    padding: 0 32px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .aside {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 48px 40px;
+    background: var(--accent);
+    color: #fff;
+    border-right: 2px solid var(--text);
+  }
+
+  .asideTop {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+  }
+
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .aside h2 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .aside p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    opacity: 0.92;
+  }
+
+  .pane {
+    flex: none;
+    width: 460px;
+    align-items: flex-start;
+    padding: 56px 40px 64px;
+  }
+
+  .formWrap {
+    max-width: none;
+    gap: 24px;
+  }
+
+  .intro h1 {
+    font-size: 30px;
+  }
+
+  .footer {
+    padding: 20px 32px 28px;
+  }
+}
+
+/* ≥1200px : 여백이 넉넉해지고 소셜 버튼이 한 줄로 선다. */
+@media (min-width: 1200px) {
+  .header {
+    padding: 0 48px;
+  }
+
+  .aside {
+    padding: 64px;
+  }
+
+  .aside h2 {
+    font-size: 46px;
+  }
+
+  .aside p {
+    font-size: 16px;
+  }
+
+  .pane {
+    width: 560px;
+    padding: 80px 72px;
+  }
+
+  .intro h1 {
+    font-size: 34px;
+  }
+
+  /* 이름표만 남기고 가로로 편다. */
+  .socials {
+    flex-direction: row;
+  }
+
+  .social {
+    flex: 1;
+  }
+
+  .social span {
+    display: none;
+  }
+
+  .footer {
+    padding: 24px 48px 32px;
+  }
+}

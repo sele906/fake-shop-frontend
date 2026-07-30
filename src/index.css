@@ -35,7 +35,15 @@
   --sidebar-w: 240px;
 }
 
-@media (max-width: 900px) {
+/* ── Breakpoints ──────────────────────────
+   md 900px  : 모바일 ↔ 데스크톱 (드로어→사이드바, 상세 1단→2단, 헤더 56→68)
+   lg 1200px : 열만 늘어남 (메인 4열, 상세 우측 컬럼 440px)
+
+   @media 에는 CSS 변수를 못 쓰므로 숫자는 각 파일에 그대로 적는다.
+   대신 방향에 따라 짝을 맞춘다 — 900px 에서 두 블록이 겹치지 않게:
+     데스크톱 우선(main.module.css) : max-width: 899.98px / 1199.98px
+     모바일 우선(detail.module.css) : min-width: 900px / 1200px       */
+@media (max-width: 899.98px) {
   :root {
     --header-h: 56px;
   }

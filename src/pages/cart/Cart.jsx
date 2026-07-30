@@ -1,0 +1,449 @@
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import styles from "./Cart.module.css";
+import { PRODUCTS, productImage, won } from "../../data/products";
+import { useCart } from "../../cart/CartProvider";
+import { MAX_QTY } from "../../cart/cartStorage";
+import useGoBack from "../../hooks/useGoBack";
+
+import { BiChevronLeft, BiX } from "react-icons/bi";
+
+const FREE_SHIP = 50000;
+const SHIP_FEE = 3500;
+
+export default function Cart() {
+  const goBack = useGoBack();
+  const navigate = useNavigate();
+
+  const {
+    items,
+    removeItem,
+    removeSelected,
+    changeQty,
+    toggleSelected,
+    selectAll,
+  } = useCart();
+
+  const [coupon, setCoupon] = useState("");
+
+  /* 품절은 상품의 속성이다. products.json에 재고 정보가 아직 없어서
+     지금은 "구매 불가" 묶음이 늘 비어 있고, soldOut 필드가 생기면 살아난다. */
+  const buyable = items.filter((item) => !item.product.soldOut);
+  const soldOut = items.filter((item) => item.product.soldOut);
+  const selected = buyable.filter((item) => item.selected);
+
+  /* 정가 합계 · 실제 결제액 · 할인은 선택된 줄만 센다. */
+  const listTotal = selected.reduce(
+    (sum, { product, qty }) => sum + (product.listPrice ?? product.price) * qty,
+    0
+  );
+  const itemTotal = selected.reduce(
+    (sum, { product, qty }) => sum + product.price * qty,
+    0
+  );
+  const discount = listTotal - itemTotal;
+  const shipFee = itemTotal === 0 || itemTotal >= FREE_SHIP ? 0 : SHIP_FEE;
+  const grandTotal = itemTotal + shipFee;
+  const points = Math.floor(itemTotal * 0.05);
+
+  const shipLeft = Math.max(0, FREE_SHIP - itemTotal);
+  const shipPercent = Math.min(100, Math.round((itemTotal / FREE_SHIP) * 100));
+
+  const isAllSelected = buyable.length > 0 && selected.length === buyable.length;
+
+  /* 장바구니에 없는 상품만 추천한다. */
+  const recommended = useMemo(() => {
+    const inCart = new Set(items.map((item) => item.productId));
+
+    return PRODUCTS.filter((product) => !inCart.has(product.id)).slice(0, 4);
+  }, [items]);
+
+  function removeLine(key) {
+    removeItem(key);
+    toast("상품을 삭제했습니다");
+  }
+
+  function handleRemoveSelected() {
+    if (selected.length === 0) {
+      toast("선택된 상품이 없습니다");
+      return;
+    }
+
+    toast(`${selected.length}개 상품을 삭제했습니다`);
+    removeSelected();
+  }
+
+  return (
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <button
+          type="button"
+          className={styles.iconBtn}
+          aria-label="뒤로"
+          onClick={goBack}
+        >
+          <BiChevronLeft size={22} aria-hidden="true" />
+        </button>
+
+        <h1>
+          장바구니 <em>{items.length}</em>
+        </h1>
+
+        <Link className={styles.home} to="/">
+          계속 쇼핑
+        </Link>
+      </header>
+
+      <div className={`${styles.wrap} ${styles.cols}`}>
+        {items.length === 0 ? (
+          <div className={styles.empty}>
+            <strong>장바구니가 비어 있어요</strong>
+            <p>담아둔 상품이 없습니다. 이주의 특가부터 둘러보세요.</p>
+            <Link className={styles.btn} to="/">
+              쇼핑 계속하기
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className={styles.layout}>
+              <section className={styles.ship} aria-label="무료배송 안내">
+                <p>
+                  {shipLeft > 0 ? (
+                    <>
+                      <b>{won(shipLeft)}</b> 더 담으면 <b>배송비 무료</b>까지
+                      도착해요
+                    </>
+                  ) : (
+                    <>
+                      <b>배송비 무료</b> 조건을 채웠어요
+                    </>
+                  )}
+                </p>
+
+                <div
+                  className={styles.meter}
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={shipPercent}
+                >
+                  <i style={{ width: `${shipPercent}%` }} />
+                </div>
+              </section>
+
+              <div className={styles.selbar}>
+                <label className={styles.check}>
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    onChange={(event) => selectAll(event.target.checked)}
+                  />
+                  <span>
+                    전체선택 ({selected.length}/{buyable.length})
+                  </span>
+                </label>
+
+                <button
+                  type="button"
+                  className={styles.linkBtn}
+                  onClick={handleRemoveSelected}
+                >
+                  선택 삭제
+                </button>
+              </div>
+
+              {buyable.length > 0 && (
+                <section className={styles.group} aria-label="안삼 직배송">
+                  <div className={styles.groupHead}>
+                    안삼 직배송 <span>· 무료배송</span>
+                  </div>
+
+                  {buyable.map(({ key, product, option, qty, selected: isSelected }) => (
+                    <article className={styles.item} key={key}>
+                      <label className={styles.check}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          aria-label={`${product.name} 선택`}
+                          onChange={(event) =>
+                            toggleSelected(key, event.target.checked)
+                          }
+                        />
+                      </label>
+
+                      <Link
+                        className={styles.thumb}
+                        to={`/product/${product.id}`}
+                        aria-label={product.name}
+                      >
+                        <img
+                          src={productImage(product.image)}
+                          alt={product.image.alt || product.name}
+                          loading="lazy"
+                        />
+                      </Link>
+
+                      <div className={styles.info}>
+                        <span className={styles.brand}>{product.brand}</span>
+
+                        <Link
+                          className={styles.name}
+                          to={`/product/${product.id}`}
+                        >
+                          {product.name}
+                        </Link>
+
+                        <span className={styles.opt}>{option}</span>
+
+                        {/* 줄에 따로 저장하지 않고 상품이 달고 있는 태그를 쓴다. */}
+                        {product.tag && (
+                          <span className={styles.flag}>{product.tag}</span>
+                        )}
+
+                        <div className={styles.line}>
+                          <div className={styles.qty}>
+                            <button
+                              type="button"
+                              aria-label="수량 줄이기"
+                              disabled={qty <= 1}
+                              onClick={() => changeQty(key, -1)}
+                            >
+                              −
+                            </button>
+
+                            <output aria-live="polite">{qty}</output>
+
+                            <button
+                              type="button"
+                              aria-label="수량 늘리기"
+                              disabled={qty >= MAX_QTY}
+                              onClick={() => changeQty(key, 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          <div className={styles.prices}>
+                            {product.listPrice && (
+                              <span className={styles.was}>
+                                {won(product.listPrice * qty)}
+                              </span>
+                            )}
+                            <span className={styles.now}>
+                              {won(product.price * qty)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        className={styles.remove}
+                        aria-label={`${product.name} 삭제`}
+                        onClick={() => removeLine(key)}
+                      >
+                        <BiX size={18} aria-hidden="true" />
+                      </button>
+                    </article>
+                  ))}
+                </section>
+              )}
+
+              {soldOut.length > 0 && (
+                <section className={styles.group} aria-label="구매 불가 상품">
+                  <div className={styles.groupHead}>
+                    구매 불가 <span>· 재입고 알림 신청 가능</span>
+                  </div>
+
+                  {soldOut.map(({ key, product }) => (
+                    <article
+                      className={`${styles.item} ${styles.out}`}
+                      key={key}
+                    >
+                      <label className={styles.check}>
+                        <input type="checkbox" disabled aria-label="선택 불가" />
+                      </label>
+
+                      <div className={styles.thumb}>
+                        <img
+                          src={productImage(product.image)}
+                          alt={product.image.alt || product.name}
+                          loading="lazy"
+                        />
+                      </div>
+
+                      <div className={styles.info}>
+                        <span className={styles.brand}>{product.brand}</span>
+
+                        <Link
+                          className={styles.name}
+                          to={`/product/${product.id}`}
+                        >
+                          {product.name}
+                        </Link>
+
+                        <span className={`${styles.flag} ${styles.warn}`}>
+                          품절
+                        </span>
+
+                        <div className={styles.line}>
+                          <div className={styles.prices}>
+                            <span className={styles.now}>
+                              {won(product.price)}
+                            </span>
+                          </div>
+
+                          <button
+                            type="button"
+                            className={styles.linkBtn}
+                            onClick={() =>
+                              toast("재입고 알림을 신청한 척했습니다")
+                            }
+                          >
+                            재입고 알림
+                          </button>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        className={styles.remove}
+                        aria-label={`${product.name} 삭제`}
+                        onClick={() => removeLine(key)}
+                      >
+                        <BiX size={18} aria-hidden="true" />
+                      </button>
+                    </article>
+                  ))}
+                </section>
+              )}
+            </div>
+
+            <div className={styles.side}>
+              <form
+                className={styles.coupon}
+                aria-label="쿠폰 적용"
+                onSubmit={(event) => {
+                  event.preventDefault();
+
+                  if (!coupon.trim()) {
+                    toast(
+                      <>
+                      사용 가능한 쿠폰이 없습니다. 예상하셨겠지만요.
+                    </>
+                    );
+                    return;
+                  }
+
+                  toast(
+                    <>
+                      존재하지 않는 쿠폰입니다.
+                      <br />
+                      하지만 입력하는 모습은 제법 그럴듯했습니다.
+                    </>
+                  );
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="쿠폰 코드 입력"
+                  aria-label="쿠폰 코드"
+                  value={coupon}
+                  onChange={(event) => setCoupon(event.target.value)}
+                />
+
+                <button type="submit">적용</button>
+              </form>
+
+              <section className={styles.sum} aria-label="결제 금액">
+                <h2>결제 금액</h2>
+
+                <div className={styles.sumRow}>
+                  <span>상품금액</span>
+                  <span>{won(listTotal)}</span>
+                </div>
+
+                <div className={`${styles.sumRow} ${styles.disc}`}>
+                  <span>상품할인</span>
+                  <span>{discount ? `−${won(discount)}` : "0원"}</span>
+                </div>
+
+                <div className={styles.sumRow}>
+                  <span>배송비</span>
+                  <span>{shipFee ? won(shipFee) : "무료"}</span>
+                </div>
+
+                <div className={`${styles.sumRow} ${styles.grand}`}>
+                  <span>총 결제금액</span>
+                  <strong>{won(grandTotal)}</strong>
+                </div>
+
+                <p className={styles.note}>
+                  멤버십 적립 예정 <b>{points.toLocaleString("ko-KR")}P</b> · 결제하는 기분만 안전하게 즐겨보세요.
+                </p>
+              </section>
+
+              <div className={styles.checkout}>
+                <div className={styles.checkoutRow}>
+                  <span>선택 {selected.length}개</span>
+                  <strong>{won(grandTotal)}</strong>
+                </div>
+
+                <button
+                  type="button"
+                  className={styles.btn}
+                  disabled={selected.length === 0}
+                  onClick={() => navigate("/checkout")}
+                >
+                  {selected.length
+                    ? `${won(grandTotal)} 주문하기`
+                    : "상품을 선택해 주세요"}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        <section className={styles.rec} aria-label="함께 담은 상품">
+          <h2>같이 담으면 좋은 것</h2>
+
+          <div className={styles.recGrid}>
+            {recommended.map((product) => (
+              <article className={styles.card} key={product.id}>
+                <Link
+                  className={styles.cardImg}
+                  to={`/product/${product.id}`}
+                  aria-label={product.name}
+                >
+                  <img
+                    src={productImage(product.image)}
+                    alt={product.image.alt || product.name}
+                    loading="lazy"
+                  />
+                </Link>
+
+                <span className={styles.cardBrand}>{product.brand}</span>
+
+                <Link className={styles.cardName} to={`/product/${product.id}`}>
+                  {product.name}
+                </Link>
+
+                <span className={styles.cardPrice}>{won(product.price)}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* 이 화면에도 사진이 실리므로 Pexels 출처를 남긴다. (공용 푸터 밖이다) */}
+        <p className={styles.credit}>
+          상품 이미지 출처:{" "}
+          <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
+            Pexels
+          </a>
+        </p>
+      </div>
+
+    </div>
+  );
+}
