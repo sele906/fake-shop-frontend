@@ -59,9 +59,22 @@ export default function Main() {
           ))}
         </nav>
 
-        <span className={styles.sortSelect}>
-          {activeSort} <BiCaretDown aria-hidden="true" />
-        </span>
+        {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
+        <div className={styles.sortSelect}>
+          <select
+            value={activeSort}
+            aria-label="정렬 기준"
+            onChange={(event) => setActiveSort(event.target.value)}
+          >
+            {SORTS.map((sort) => (
+              <option key={sort} value={sort}>
+                {sort}
+              </option>
+            ))}
+          </select>
+
+          <BiCaretDown aria-hidden="true" />
+        </div>
       </div>
 
       <section className={styles.grid} aria-label="상품 목록">

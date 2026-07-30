@@ -1,0 +1,75 @@
+/* 절약 영수증. 결제 완료 화면과 공유 링크 화면이 함께 쓴다.
+   색상 · 폰트는 index.css의 :root를 그대로 쓴다. */
+.receipt {
+  border: 2px solid var(--text);
+  background: #fff;
+}
+
+.receiptHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 16px;
+  /* 영수증처럼 보이도록 점선으로 끊는다. */
+  border-bottom: 2px dashed var(--n-400);
+}
+
+.receiptHead b {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.receiptHead span {
+  font-size: 12px;
+  color: var(--n-600);
+}
+
+.receiptRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 60px;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+.receiptRow span:first-child {
+  flex: none;
+  color: var(--n-700);
+  white-space: nowrap;
+}
+
+.receiptRow span:last-child {
+  text-align: right;
+  text-wrap: pretty;
+}
+
+.receiptTotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-top: 2px dashed var(--n-400);
+}
+
+.receiptTotal b {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  padding: 7px 10px;
+  border: 2px solid var(--text);
+  background: var(--accent-100);
+  color: var(--accent-800);
+  font-size: 12px;
+  font-weight: 700;
+}

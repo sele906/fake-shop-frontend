@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import styles from "./Checkout.module.css";
-import { productImage, won } from "../../data/products";
+import { findProduct, productImage, won } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
+import { copyText } from "../../lib/clipboard";
+import ReceiptCard from "../../receipt/ReceiptCard";
+import { receiptUrl } from "../../receipt/receiptLink";
 import useGoBack from "../../hooks/useGoBack";
 
 import { BiChevronLeft } from "react-icons/bi";
@@ -99,9 +103,45 @@ const STATS = [
   ["상위 3%", "이번 주 순위"],
 ];
 
+const RECEIPT_MESSAGES = [
+  {
+    min: 0,
+    note: "절제 0%. 이번 결제는 안 삼 할인이 전액 막았습니다.",
+    grade: "절제 훈련 필요",
+  },
+  {
+    min: 20,
+    note: "절제 20%. 손가락이 결제 직전에 멈췄습니다.",
+    grade: "초보 절제자",
+  },
+  {
+    min: 40,
+    note: "절제 40%. 사고 싶은 마음과 제법 비겼습니다.",
+    grade: "절제 적응 중",
+  },
+  {
+    min: 60,
+    note: "절제 60%. 안 사는 쪽으로 승부가 기울었습니다.",
+    grade: "안 삼 우세",
+  },
+  {
+    min: 80,
+    note: "절제 80%. 지름신이 퇴근 준비를 시작했습니다.",
+    grade: "절제 우등생",
+  },
+  {
+    min: 100,
+    note: "절제 100%. 교과서적인 안 삼이 완성됐습니다.",
+    grade: "등급 승급 임박",
+  },
+];
+
 const CONFETTI_COLORS = ["#4b70d3", "#2b4798", "#93a9e6", "#1c1e24", "#dce3f8"];
 const CONFETTI_COUNT = 70;
 const CONFETTI_MS = 3600;
+
+const SHARE_LABEL = "영수증 자랑하기";
+const SHARE_RESET_MS = 2400;
 
 /* 도파민 게이지 비율에 따라 마지막으로 통과한 문구를 반환 */
 function dopamineMessage(percent) {
@@ -136,6 +176,7 @@ function makeConfetti() {
 export default function Checkout() {
   const goBack = useGoBack("/cart");
   const navigate = useNavigate();
+  const location = useLocation();
   const { items: cartItems, clear } = useCart();
 
   const [payIndex, setPayIndex] = useState(0);
@@ -152,21 +193,46 @@ export default function Checkout() {
   const [confetti, setConfetti] = useState([]);
   const [anywayLabel, setAnywayLabel] = useState("그래도 진짜로 사고 싶어요");
   const isDisabled = anywayLabel === "여기서는 살 수 없습니다. 그게 이 사이트의 기능입니다.";
-  const [shareLabel, setShareLabel] = useState("자랑 문구 복사하기");
+  const [shareLabel, setShareLabel] = useState(SHARE_LABEL);
 
   const confettiTimer = useRef(null);
+  const shareTimer = useRef(null);
 
   const [deliveryIndex, setDeliveryIndex] = useState(0);
   const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
 
+  const modalRef = useRef(null);
+
   const [deliveryName, deliveryDate, deliveryRequest] =
     DELIVERY_MESSAGES[deliveryIndex];
 
-  /* 주문서에는 장바구니에서 선택한 줄만 올린다. */
-  const items = useMemo(
-    () => cartItems.filter((item) => item.selected),
-    [cartItems]
-  );
+  /* 상세에서 "바로 구매"로 들어오면 장바구니를 거치지 않은 주문 초안이 실려 온다. */
+  const buyNow = location.state?.buyNow ?? null;
+
+  /**
+   * 주문서에 올릴 줄.
+   *
+   * 바로 구매면 그 한 줄만, 아니면 장바구니에서 체크한 줄들이다.
+   * 두 경우 모두 { key, product, option, qty } 모양이라 아래가 갈리지 않는다.
+   */
+  const items = useMemo(() => {
+    if (buyNow) {
+      const product = findProduct(buyNow.productId);
+      if (!product) return [];
+
+      return [
+        {
+          key: `${buyNow.productId}::${buyNow.option}`,
+          product,
+          option: buyNow.option,
+          qty: buyNow.qty,
+          selected: true,
+        },
+      ];
+    }
+
+    return cartItems.filter((item) => item.selected);
+  }, [buyNow, cartItems]);
 
   const total = items.reduce(
     (sum, { product, qty }) => sum + product.price * qty,
@@ -177,7 +243,67 @@ export default function Checkout() {
     timeZone: "Asia/Seoul",
   }).format(new Date());
 
-  useEffect(() => () => clearTimeout(confettiTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(confettiTimer.current);
+      clearTimeout(shareTimer.current);
+    },
+    []
+  );
+
+  /* 배송지 모달이 열려 있는 동안: 배경 스크롤 잠금 · ESC로 닫기 · 포커스 가두기.
+     레이아웃 드로어(Layout.jsx)와 같은 방식이다. */
+  useEffect(() => {
+    if (!isDeliveryModalOpen) return;
+
+    /* 모달을 연 버튼. 닫을 때 여기로 포커스를 돌려준다. */
+    const opener = document.activeElement;
+
+    document.body.classList.add("modalOpen");
+
+    function focusables() {
+      const dialog = modalRef.current;
+      if (!dialog) return [];
+
+      return [...dialog.querySelectorAll("button, [href]")].filter(
+        (element) => !element.disabled
+      );
+    }
+
+    focusables()[0]?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setIsDeliveryModalOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const list = focusables();
+      if (list.length === 0) return;
+
+      const first = list[0];
+      const last = list[list.length - 1];
+
+      /* 끝에서 한 번 더 누르면 반대쪽 끝으로 돌려보내 모달 밖으로 못 나가게 한다. */
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("modalOpen");
+      opener?.focus?.();
+    };
+  }, [isDeliveryModalOpen]);
 
   const payName = PAY_METHODS[payIndex].name;
   const usedPoints = Math.round((total * restraint) / 100);
@@ -191,7 +317,16 @@ export default function Checkout() {
     setDopamineMsg(dopamineMessage(value));
   }
 
+  function getReceiptMessage(percent) {
+    return [...RECEIPT_MESSAGES]
+      .reverse()
+      .find(({ min }) => percent >= min);
+  }
+
   function submit() {
+
+    const receiptMessage = getReceiptMessage(restraint);
+
     if (!agreeService || !agreeThrill) {
       setIsWobbling(true);
       setDopamineMsg(
@@ -200,20 +335,21 @@ export default function Checkout() {
       return;
     }
 
-    /* 주문이 끝나면 장바구니를 비우므로, 영수증에 쓸 것은 여기서 찍어둔다. */
+    /* 주문이 끝나면 장바구니를 비우므로, 영수증에 쓸 것은 여기서 찍어둔다.
+       상품 데이터를 참조하지 않는 스냅샷이라 그대로 링크에 실을 수 있다. */
     setReceipt({
-      payName,
-      note:
-        restraint === 100
-          ? "절제 포인트 전액 사용. 교과서적인 안 삼입니다."
-          : `절제 포인트는 ${restraint}%만 썼지만, 나머지는 안 삼 할인이 알아서 막았습니다.`,
-      grade: restraint === 100 ? "등급 승급 임박" : "절제 훈련 필요",
-      items,
+      date: today,
       total,
+      payName,
+      note: receiptMessage.note,
+      grade: receiptMessage.grade,
+      itemCount: items.length,
+      items: items.map(({ product, qty }) => ({ name: product.name, qty })),
     });
 
     setIsDone(true);
-    clear();
+    /* 바로 구매는 장바구니에 담긴 적이 없으니 비울 것도 없다. */
+    if (!buyNow) clear();
     window.scrollTo({ top: 0 });
 
     setConfetti(makeConfetti());
@@ -226,12 +362,41 @@ export default function Checkout() {
     navigate("/");
   }
 
-  function copyBrag() {
-    /* 자랑은 완료 화면에서만 누르므로 영수증에 찍힌 금액을 쓴다. */
-    const text = `오늘 안삼에서 ${won(receipt?.total ?? total)} 안 썼습니다. 15일 연속 안 삼.`;
+  /* 영수증 내용을 통째로 담은 링크를 만들어 공유한다.
+     공유 시트가 없는 환경(데스크톱 등)에서는 링크를 복사한다. */
+  async function bragReceipt() {
+    if (!receipt) return;
 
-    navigator.clipboard?.writeText(text);
-    setShareLabel("복사했습니다. 마음껏 자랑하세요");
+    const url = receiptUrl(receipt);
+    const text = `오늘 안삼에서 ${won(receipt.total)} 안 썼습니다.`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "안삼 절약 영수증", text, url });
+        return;
+      } catch (error) {
+        /* 공유 시트를 그냥 닫은 것이므로 복사까지 하지는 않는다. */
+        if (error.name === "AbortError") return;
+
+        console.error("공유에 실패했습니다.", error);
+      }
+    }
+
+    const copied = await copyText(url);
+
+    if (copied) {
+      setShareLabel("링크를 복사했습니다. 마음껏 자랑하세요");
+    } else {
+      /* 복사가 막힌 환경에서는 성공한 척하지 않고 링크를 띄워 준다. */
+      setShareLabel("복사가 막혀 있습니다");
+      toast(url);
+    }
+
+    clearTimeout(shareTimer.current);
+    shareTimer.current = setTimeout(
+      () => setShareLabel(SHARE_LABEL),
+      SHARE_RESET_MS
+    );
   }
 
   return (
@@ -264,50 +429,13 @@ export default function Checkout() {
               </h2>
 
               <p className={styles.lead}>
-                장바구니는 비었고 잔고는 그대로입니다. 결제 버튼을 누른 손끝의
-                짜릿함만 정확히 챙겼습니다.
+                장바구니는 비었고 잔고는 그대로입니다. 
+                <br></br>
+                결제 버튼을 누른 손끝의 짜릿함만 정확히 챙겼습니다.
               </p>
 
-              <div className={styles.receipt}>
-                <div className={styles.receiptHead}>
-                  <b>절약 영수증</b>
-                  <span>{today}</span>
-                </div>
-
-                {/* 장바구니는 이미 비워졌으니 주문 시점에 찍어둔 목록을 쓴다. */}
-                {receipt.items.map(({ key, product, qty }) => (
-                  <div className={styles.receiptRow} key={key}>
-                    <span>
-                      {product.name}
-                      {qty > 1 ? ` ×${qty}` : ""}
-                    </span>
-                    <span>안 삼</span>
-                  </div>
-                ))}
-
-                <div className={styles.receiptRow}>
-                  <span>결제수단</span>
-                  <span>{receipt.payName}</span>
-                </div>
-
-                <div className={styles.receiptRow}>
-                  <span>절제 방식</span>
-                  <span>{receipt.note}</span>
-                </div>
-
-                <div className={styles.receiptTotal}>
-                  <span>오늘 아낀 금액</span>
-                  <b>{won(receipt.total)}</b>
-                </div>
-              </div>
-
-              <div className={styles.badges}>
-                <span className={styles.badge}>🏅 15일 연속 안 삼</span>
-                <span className={styles.badge}>
-                  잔고 방어 +{receipt.total.toLocaleString("ko-KR")}
-                </span>
-                <span className={styles.badge}>{receipt.grade}</span>
-              </div>
+              {/* 장바구니는 이미 비워졌으니 주문 시점에 찍어둔 스냅샷을 쓴다. */}
+              <ReceiptCard receipt={receipt} />
 
               <div className={styles.doneCta}>
                 <button
@@ -321,7 +449,7 @@ export default function Checkout() {
                 <button
                   type="button"
                   className={styles.ghost}
-                  onClick={copyBrag}
+                  onClick={bragReceipt}
                 >
                   {shareLabel}
                 </button>
@@ -458,6 +586,8 @@ export default function Checkout() {
                 step={5}
                 value={restraint}
                 aria-label="절제 포인트 사용 비율"
+                /* 채워진 만큼을 CSS가 알아야 해서 값을 변수로 내려준다. */
+                style={{ "--fill": `${restraint}%` }}
                 onChange={(event) => changeRestraint(Number(event.target.value))}
               />
 
@@ -554,7 +684,7 @@ export default function Checkout() {
                   onChange={(event) => setAgreeNudge(event.target.checked)}
                 />
                 <span>
-                  가끔 "그거 아직 안 샀어요?" 알림을 받겠습니다. (선택)
+                  장바구니 속 상품과 아름답게 작별하겠습니다. (선택)
                 </span>
               </label>
             </div>
@@ -608,9 +738,11 @@ export default function Checkout() {
             </section>
 
             <p className={styles.disclaim}>
-              안삼은 실제 상품을 판매하지 않는 가상의 쇼핑몰입니다. 결제, 배송,
-              환불, 고객센터, 재고, 택배기사님 모두 존재하지 않습니다. 남는 것은
-              기분과 잔고뿐입니다.
+              안삼은 실제 상품을 판매하지 않는 가상의 쇼핑몰입니다. 
+              <br />
+              결제, 배송, 환불, 고객센터, 재고, 택배기사님 모두 존재하지 않습니다. 
+              <br />
+              남는 것은 기분과 잔고뿐입니다.
             </p>
           </>
         )}
@@ -630,6 +762,7 @@ export default function Checkout() {
           onClick={() => setIsDeliveryModalOpen(false)}
         >
           <div
+            ref={modalRef}
             className={styles.modal}
             role="dialog"
             aria-modal="true"
@@ -655,6 +788,7 @@ export default function Checkout() {
                   type="button"
                   key={name}
                   className={styles.deliveryOption}
+                  aria-pressed={deliveryIndex === index}
                   onClick={() => {
                     setDeliveryIndex(index);
                     setIsDeliveryModalOpen(false);

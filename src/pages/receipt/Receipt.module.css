@@ -1,0 +1,113 @@
+/* 공유 링크로 들어온 영수증 화면. 영수증 자체는 ReceiptCard가 그린다.
+   색상 · 폰트는 index.css의 :root를 그대로 쓴다. 기준점: 900px(모바일 우선). */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px 64px;
+  background: var(--accent-100);
+}
+
+.inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stamp {
+  align-self: flex-start;
+  padding: 6px 10px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.inner h1 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+.lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--n-700);
+  text-wrap: pretty;
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.btn {
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.btn:hover {
+  background: var(--accent-600);
+  color: #fff;
+}
+
+.ghost {
+  background: none;
+  border: 2px solid var(--text);
+  color: var(--text);
+}
+
+.ghost:hover {
+  background: var(--text);
+  color: #fff;
+}
+
+.tiny {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--n-600);
+}
+
+/* ── Responsive ─── 기준점은 index.css 상단 주석 참고 ─── */
+@media (min-width: 900px) {
+  .page {
+    align-items: center;
+    padding: 64px 24px;
+  }
+
+  .inner {
+    max-width: 520px;
+    gap: 18px;
+  }
+
+  .inner h1 {
+    font-size: 34px;
+  }
+
+  /* 넓어지면 버튼 둘을 나란히 놓는다. */
+  .cta {
+    flex-direction: row;
+  }
+
+  .cta .btn {
+    flex: 1;
+  }
+}

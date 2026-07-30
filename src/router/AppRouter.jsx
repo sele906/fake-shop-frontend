@@ -6,6 +6,7 @@ import Main from "../pages/main/Main";
 import Category from "../pages/ctg/Ctg";
 import ProductDetail from "../pages/detail/Detail";
 import Login from "../pages/login/Login";
+import Receipt from "../pages/receipt/Receipt";
 import Cart from "../pages/cart/Cart";
 import Checkout from "../pages/checkout/Checkout";
 
@@ -35,6 +36,8 @@ function AppRouter() {
 
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
+        {/* 공유 링크로 열리는 영수증. 내용은 ?d= 안에 들어 있다. */}
+        <Route path="/receipt" element={<Receipt />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
       </Routes>

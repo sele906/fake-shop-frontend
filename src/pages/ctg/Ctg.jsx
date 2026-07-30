@@ -79,13 +79,6 @@ export default function Ctg() {
   }, [top]);
 
   const totalCount = top ? productsInCategory(top.code).length : 0;
-  const activeSort = SORTS.find((sort) => sort.key === sortKey) ?? SORTS[0];
-
-  /* 모바일에는 정렬 목록을 펼칠 자리가 없어 누를 때마다 다음 기준으로 넘긴다. */
-  function cycleSort() {
-    const next = SORTS[(SORTS.indexOf(activeSort) + 1) % SORTS.length];
-    setSortKey(next.key);
-  }
 
   if (!top) {
     return (
@@ -162,9 +155,22 @@ export default function Ctg() {
           ))}
         </nav>
 
-        <button type="button" className={styles.sortSelect} onClick={cycleSort}>
-          {activeSort.label} <BiCaretDown aria-hidden="true" />
-        </button>
+        {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
+        <div className={styles.sortSelect}>
+          <select
+            value={sortKey}
+            aria-label="정렬 기준"
+            onChange={(event) => setSortKey(event.target.value)}
+          >
+            {SORTS.map((sort) => (
+              <option key={sort.key} value={sort.key}>
+                {sort.label}
+              </option>
+            ))}
+          </select>
+
+          <BiCaretDown aria-hidden="true" />
+        </div>
       </div>
 
       {products.length === 0 ? (

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./Detail.module.css";
 import {
@@ -12,6 +12,7 @@ import {
 import { getCategoryPath } from "../../data/categories";
 import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
+import { copyText } from "../../lib/clipboard";
 import useGoBack from "../../hooks/useGoBack";
 
 import {
@@ -66,6 +67,7 @@ function stars(rating) {
 export default function Detail() {
   const { productId } = useParams();
   const goBack = useGoBack();
+  const navigate = useNavigate();
   const { addItem, count: cartCount } = useCart();
 
   /* 상품 id는 "0110-31871752"(카테고리코드-pexelsId) 형태의 문자열이다.
@@ -179,12 +181,48 @@ export default function Detail() {
     });
   }
 
-  /* 고른 옵션과 수량 그대로 담는다. 사이즈가 없는 상품은 "단일 옵션"으로 들어간다. */
-  function addToCart() {
-    const option = sizes.length > 0 ? sizes[sizeIndex] : DEFAULT_OPTION;
+  /* 모바일 브라우저에는 시스템 공유 시트가 있다. 없으면 주소를 복사한다. */
+  async function share() {
+    const url = window.location.href;
 
-    addItem(product, { option, qty });
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: product.name, url });
+        return;
+      } catch (error) {
+        /* 공유 시트를 그냥 닫은 것이므로 복사까지 하지는 않는다. */
+        if (error.name === "AbortError") return;
+
+        console.error("공유에 실패했습니다.", error);
+      }
+    }
+
+    const copied = await copyText(url);
+
+    toast(
+      copied
+        ? "주소를 복사했습니다"
+        : "복사가 막혀 있습니다. 주소창에서 직접 복사해 주세요"
+    );
+  }
+
+  /* 고른 옵션. 사이즈가 없는 상품은 "단일 옵션"이다. */
+  function chosenOption() {
+    return sizes.length > 0 ? sizes[sizeIndex] : DEFAULT_OPTION;
+  }
+
+  function addToCart() {
+    addItem(product, { option: chosenOption(), qty });
     toast(`장바구니에 ${qty}개 담았습니다`);
+  }
+
+  /* 바로 구매는 장바구니를 거치지 않는다. 주문서에 이 한 줄만 들고 간다. */
+  function buyNow() {
+    navigate("/checkout", {
+      state: {
+        buyNow: { productId: product.id, option: chosenOption(), qty },
+      },
+    });
   }
 
   const today = new Intl.DateTimeFormat("ko-KR", {
@@ -250,7 +288,7 @@ export default function Detail() {
           type="button"
           className={styles.iconBtn}
           aria-label="공유"
-          onClick={() => toast("주소를 복사한 척했습니다")}
+          onClick={share}
         >
           <BiShareAlt size={19} aria-hidden="true" />
         </button>
@@ -446,7 +484,7 @@ export default function Detail() {
               <button
                 type="button"
                 className={styles.btn}
-                onClick={() => toast("결제 화면은 끝내 열리지 않습니다")}
+                onClick={buyNow}
               >
                 바로 구매
               </button>

@@ -68,8 +68,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 모바일 드로어가 열려 있는 동안 배경 스크롤 잠금 */
-body.navOpen {
+/* 모바일 드로어 · 모달이 열려 있는 동안 배경 스크롤 잠금 */
+body.navOpen,
+body.modalOpen {
   overflow: hidden;
 }
 

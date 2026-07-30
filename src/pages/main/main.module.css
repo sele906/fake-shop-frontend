@@ -8,7 +8,12 @@
   gap: 14px;
   padding: 40px;
   border-bottom: 2px solid var(--text);
-  background: var(--n-400);
+  background-image:
+    linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 45%)),
+    url("../../assets/mainImg.jpg");
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 
@@ -115,12 +120,33 @@
   padding-bottom: 2px;
 }
 
+/* 모바일 전용 정렬 드롭다운. 목록은 브라우저가 그린다. */
 .sortSelect {
   display: none;
+  position: relative;
   align-items: center;
-  gap: 4px;
   font-size: 13px;
   color: var(--n-700);
+}
+
+.sortSelect select {
+  appearance: none;
+  /* 손가락으로 누를 수 있는 높이를 지킨다. 오른쪽은 화살표 자리. */
+  min-height: 44px;
+  padding: 0 20px 0 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* 화살표는 장식이라 클릭을 가로채지 않는다. */
+.sortSelect svg {
+  position: absolute;
+  right: 2px;
+  pointer-events: none;
 }
 
 .grid {
