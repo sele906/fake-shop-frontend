@@ -32,9 +32,9 @@ export default function Main() {
         <p>하지만 실제 결제도, 실제 배송도 없습니다.</p>
 
         <div className={styles.heroCta}>
-          <a className={styles.btn} href="#exhibition">
+          <Link className={styles.btn} to="/promo/weekly">
             일단 담으러 가기
-          </a>
+          </Link>
           <a className={`${styles.btn} ${styles.btnGhost}`} href="#coupon">
             쿠폰 있는 것처럼 굴기
           </a>

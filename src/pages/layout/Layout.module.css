@@ -128,6 +128,29 @@
   flex-direction: column;
   gap: 24px;
   background: var(--bg);
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--n-500) transparent;
+}
+
+/* Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--n-500);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--n-600);
 }
 
 .main {

@@ -58,6 +58,11 @@ body {
   margin: 0;
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--n-500) transparent;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -66,6 +71,25 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Chrome, Edge, Safari */
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--n-500);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--n-600);
 }
 
 /* 모바일 드로어 · 모달이 열려 있는 동안 배경 스크롤 잠금 */

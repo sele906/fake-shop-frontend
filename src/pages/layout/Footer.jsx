@@ -1,4 +1,5 @@
 import styles from "./Layout.module.css";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -11,17 +12,17 @@ export default function Footer() {
       </div>
 
       <nav>
-        <strong>고객센터</strong>
-        <a href="#faq">굳이 자주 묻는 질문</a>
-        <a href="#delivery">없는 제품 배송 조회</a>
-        <a href="#return">안 산 상품 반품하기</a>
+        <strong><Link to="/help">고객센터</Link></strong>
+        <Link to="/help/faq">굳이 자주 묻는 질문</Link>
+        <Link to="/delivery">없는 제품 배송 조회</Link>
+        <Link to="/help/return">안 산 상품 반품하기</Link>
       </nav>
 
       <nav>
-        <strong>회사</strong>
-        <a href="#about">제법 그럴듯한 회사 소개</a>
-        <a href="#partner">입점 문의만 받아보기</a>
-        <a href="#careers">채용 공고 구경하기</a>
+        <strong><Link to="/company">회사</Link></strong>
+        <Link to="/company/about">제법 그럴듯한 회사 소개</Link>
+        <Link to="/company/partner">입점 문의만 받아보기</Link>
+        <Link to="/careers">채용 공고 구경하기</Link>
       </nav>
 
       {/* Pexels 방침에 따라 목록 화면에 실린 사진의 출처를 남긴다. */}

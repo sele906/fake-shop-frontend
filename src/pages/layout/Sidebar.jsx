@@ -12,18 +12,27 @@ const PROMOS = [
   "안삼이 괜히 골라봄",
 ];
 
+const PROMO_PATHS = {
+  "이번 주도 안 살 것들": "/promo/weekly",
+  "방금 들어온 척": "/promo/new",
+  "안삼이 괜히 골라봄": "/promo/picked",
+};
+
 /* 카테고리 화면이 아닐 때(메인 등)는 첫 대분류를 펼쳐 둔다. */
 const FIRST_CODE = CATEGORIES[0]?.code ?? null;
 
 export default function Sidebar({ isOpen, onClose, onNavigate }) {
   /* 어느 칸을 보고 있는지는 주소에서 읽는다. 대분류·소분류 어느 쪽이든 받는다. */
   const match = useMatch("/category/:categoryCode");
+  const promoMatch = useMatch("/promo/:promoId");
   const path = getCategoryPath(match?.params.categoryCode);
   const topCode = path[0]?.code ?? null;
   const subCode = path[1]?.code ?? null;
+  const activePromo = PROMOS.find(
+    (promo) => PROMO_PATHS[promo] === `/promo/${promoMatch?.params.promoId}`
+  );
 
   const [expandedCode, setExpandedCode] = useState(topCode ?? FIRST_CODE);
-  const [activePromo, setActivePromo] = useState(PROMOS[2]);
 
   /* 다른 대분류로 이동하면 그 칸을 펼쳐 준다. */
   useEffect(() => {
@@ -114,17 +123,16 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
         <span className={styles.eyebrow}>기획</span>
 
         {PROMOS.map((promo) => (
-          <a
+          <Link
             key={promo}
-            href={`#promo-${promo}`}
+            to={PROMO_PATHS[promo]}
             className={activePromo === promo ? styles.sel : undefined}
             onClick={() => {
-              setActivePromo(promo);
               onNavigate();
             }}
           >
             {promo}
-          </a>
+          </Link>
         ))}
       </nav>
 
