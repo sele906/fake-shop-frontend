@@ -35,9 +35,9 @@ export default function Main() {
           <Link className={styles.btn} to="/promo/weekly">
             일단 담으러 가기
           </Link>
-          <a className={`${styles.btn} ${styles.btnGhost}`} href="#coupon">
+          <Link className={`${styles.btn} ${styles.btnGhost}`} to="/coupon">
             쿠폰 있는 것처럼 굴기
-          </a>
+          </Link>
         </div>
       </section>
 

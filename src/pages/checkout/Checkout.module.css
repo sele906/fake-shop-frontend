@@ -737,6 +737,12 @@
 
 .doneCta .ghost {
   justify-content: center;
+  /* 이 줄에는 버튼과 링크가 섞여 있다. 링크도 버튼처럼 보여야 한다. */
+  color: var(--text);
+}
+
+.doneCta .ghost:hover {
+  color: #fff;
 }
 
 .confetti {

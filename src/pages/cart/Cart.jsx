@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./Cart.module.css";
 import { PRODUCTS, productImage, won } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
 import { MAX_QTY } from "../../cart/cartStorage";
+import { couponDiscount } from "../../coupon/couponStorage";
+import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useGoBack from "../../hooks/useGoBack";
 
 import { BiChevronLeft, BiX } from "react-icons/bi";
@@ -27,6 +29,21 @@ export default function Cart() {
 
   const [coupon, setCoupon] = useState("");
 
+  /* 쿠폰 보관함(/coupon)에서 받아 localStorage에 쌓아둔 쿠폰들. */
+  const [ownedCoupons, , removeCoupons] = useSavedCoupons();
+  const [selectedCouponIds, setSelectedCouponIds] = useState([]);
+
+  /* 쿠폰함에서 삭제된 쿠폰이 선택 상태로 남지 않게 한다. */
+  useEffect(() => {
+    const ownedIds = new Set(ownedCoupons.map((item) => item.id));
+
+    setSelectedCouponIds((current) => {
+      const next = current.filter((id) => ownedIds.has(id));
+
+      return next.length === current.length ? current : next;
+    });
+  }, [ownedCoupons]);
+
   /* 품절은 상품의 속성이다. products.json에 재고 정보가 아직 없어서
      지금은 "구매 불가" 묶음이 늘 비어 있고, soldOut 필드가 생기면 살아난다. */
   const buyable = items.filter((item) => !item.product.soldOut);
@@ -44,13 +61,27 @@ export default function Cart() {
   );
   const discount = listTotal - itemTotal;
   const shipFee = itemTotal === 0 || itemTotal >= FREE_SHIP ? 0 : SHIP_FEE;
-  const grandTotal = itemTotal + shipFee;
+
+  const selectedCoupons = ownedCoupons.filter((item) =>
+    selectedCouponIds.includes(item.id)
+  );
+
+  /* 쿠폰은 몇 장이든 중복되지만 깎을 수 있는 건 낼 돈까지다.
+     0원이 바닥이고, 넘치는 만큼은 그냥 버려진다. */
+  const payable = itemTotal + shipFee;
+  const couponRaw = couponDiscount(selectedCoupons, itemTotal);
+  const couponOff = Math.min(payable, couponRaw);
+  const couponWasted = couponRaw - couponOff;
+
+  const grandTotal = payable - couponOff;
   const points = Math.floor(itemTotal * 0.05);
 
   const shipLeft = Math.max(0, FREE_SHIP - itemTotal);
   const shipPercent = Math.min(100, Math.round((itemTotal / FREE_SHIP) * 100));
 
   const isAllSelected = buyable.length > 0 && selected.length === buyable.length;
+  const isAllCouponsSelected =
+    ownedCoupons.length > 0 && selectedCouponIds.length === ownedCoupons.length;
 
   /* 장바구니에 없는 상품만 추천한다. */
   const recommended = useMemo(() => {
@@ -62,6 +93,35 @@ export default function Cart() {
   function removeLine(key) {
     removeItem(key);
     toast("상품을 삭제했습니다");
+  }
+
+  function toggleCoupon(couponId) {
+    setSelectedCouponIds((current) =>
+      current.includes(couponId)
+        ? current.filter((id) => id !== couponId)
+        : [...current, couponId]
+    );
+  }
+
+  function toggleAllCoupons() {
+    if (isAllCouponsSelected) {
+      setSelectedCouponIds([]);
+      return;
+    }
+
+    setSelectedCouponIds(ownedCoupons.map((item) => item.id));
+    toast(`${ownedCoupons.length}장을 전부 적용했습니다. 아무도 막지 않습니다.`);
+  }
+
+  /* 주문으로 넘어가면 고른 쿠폰은 쓴 것으로 보고 쿠폰함에서 없앤다.
+     결제는 일어나지 않지만 쿠폰이 닳는 것만은 진짜다. */
+  function goToCheckout() {
+    if (selectedCouponIds.length) {
+      removeCoupons(selectedCouponIds);
+      toast(`쿠폰 ${selectedCouponIds.length}장을 사용했습니다. 쿠폰함에서 사라집니다.`);
+    }
+
+    navigate("/checkout");
   }
 
   function handleRemoveSelected() {
@@ -321,40 +381,84 @@ export default function Cart() {
             </div>
 
             <div className={styles.side}>
-              <form
-                className={styles.coupon}
-                aria-label="쿠폰 적용"
-                onSubmit={(event) => {
-                  event.preventDefault();
+              <div className={styles.couponBox}>
+                <div className={styles.couponTitle}>
+                  <strong>쿠폰 할인</strong>
+                  <span>{selectedCouponIds.length}장 선택됨</span>
+                </div>
 
-                  if (!coupon.trim()) {
+                {ownedCoupons.length === 0 ? (
+                  <p className={styles.couponEmpty}>
+                    보유한 쿠폰이 없습니다.{" "}
+                    <Link to="/coupon">쿠폰 보관함</Link>에서 받아오세요. 몇
+                    장이든 중복됩니다.
+                  </p>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className={styles.selectAll}
+                      onClick={toggleAllCoupons}
+                    >
+                      {isAllCouponsSelected
+                        ? "전체 해제"
+                        : `${ownedCoupons.length}장 전부 선택`}
+                    </button>
+
+                    <div className={styles.couponList}>
+                      {ownedCoupons.map((item) => (
+                        <label key={item.id} className={styles.couponItem}>
+                          <input
+                            type="checkbox"
+                            checked={selectedCouponIds.includes(item.id)}
+                            onChange={() => toggleCoupon(item.id)}
+                          />
+
+                          <span>{item.name}</span>
+                          <strong>{item.benefit}</strong>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                <form
+                  className={styles.couponCode}
+                  aria-label="쿠폰 코드 적용"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+
+                    if (!coupon.trim()) {
+                      toast(
+                        <>
+                          사용 가능한 쿠폰 코드가 없습니다.
+                          <br />
+                          예상하셨겠지만요.
+                        </>
+                      );
+                      return;
+                    }
+
                     toast(
                       <>
-                      사용 가능한 쿠폰이 없습니다. 예상하셨겠지만요.
-                    </>
+                        존재하지 않는 쿠폰입니다.
+                        <br />
+                        하지만 입력하는 모습은 제법 그럴듯했습니다.
+                      </>
                     );
-                    return;
-                  }
+                  }}
+                >
+                  <input
+                    type="text"
+                    placeholder="수상한 쿠폰 코드 입력"
+                    aria-label="쿠폰 코드"
+                    value={coupon}
+                    onChange={(event) => setCoupon(event.target.value)}
+                  />
 
-                  toast(
-                    <>
-                      존재하지 않는 쿠폰입니다.
-                      <br />
-                      하지만 입력하는 모습은 제법 그럴듯했습니다.
-                    </>
-                  );
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="쿠폰 코드 입력"
-                  aria-label="쿠폰 코드"
-                  value={coupon}
-                  onChange={(event) => setCoupon(event.target.value)}
-                />
-
-                <button type="submit">적용</button>
-              </form>
+                  <button type="submit">적용</button>
+                </form>
+              </div>
 
               <section className={styles.sum} aria-label="결제 금액">
                 <h2>결제 금액</h2>
@@ -369,6 +473,11 @@ export default function Cart() {
                   <span>{discount ? `−${won(discount)}` : "0원"}</span>
                 </div>
 
+                <div className={`${styles.sumRow} ${styles.disc}`}>
+                  <span>쿠폰할인 {selectedCouponIds.length}장</span>
+                  <span>{couponOff ? `−${won(couponOff)}` : "0원"}</span>
+                </div>
+
                 <div className={styles.sumRow}>
                   <span>배송비</span>
                   <span>{shipFee ? won(shipFee) : "무료"}</span>
@@ -378,6 +487,13 @@ export default function Cart() {
                   <span>총 결제금액</span>
                   <strong>{won(grandTotal)}</strong>
                 </div>
+
+                {couponWasted > 0 && (
+                  <p className={styles.note}>
+                    쿠폰이 <b>{won(couponWasted)}</b>어치 남았지만 0원이
+                    바닥입니다. 나머지는 그냥 흘러넘칩니다.
+                  </p>
+                )}
 
                 <p className={styles.note}>
                   멤버십 적립 예정 <b>{points.toLocaleString("ko-KR")}P</b> · 결제하는 기분만 안전하게 즐겨보세요.
@@ -394,7 +510,7 @@ export default function Cart() {
                   type="button"
                   className={styles.btn}
                   disabled={selected.length === 0}
-                  onClick={() => navigate("/checkout")}
+                  onClick={goToCheckout}
                 >
                   {selected.length
                     ? `${won(grandTotal)} 주문하기`

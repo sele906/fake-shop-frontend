@@ -55,7 +55,7 @@ export default function ReceiptCard({ receipt }) {
       </div>
 
       <div className={styles.badges}>
-        <span className={styles.badge}>🏅 15일 연속 안 삼</span>
+        <span className={styles.badge}>🏅 이번에도 결제 안 함</span>
         <span className={styles.badge}>
           잔고 방어 +{total.toLocaleString("ko-KR")}
         </span>

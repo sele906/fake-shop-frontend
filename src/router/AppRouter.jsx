@@ -12,6 +12,8 @@ import Cart from "../pages/cart/Cart";
 import Checkout from "../pages/checkout/Checkout";
 import Help from "../pages/help/Help";
 import Company from "../pages/company/Company";
+import Coupon from "../pages/coupon/Coupon";
+import Delivery from "../pages/delivery/Delivery";
 
 /* 화면을 옮기면 스크롤은 맨 위에서 시작한다.
    목록을 한참 내려보다 상세로 들어갔을 때 중간부터 보이는 걸 막는다. */
@@ -39,14 +41,17 @@ function AppRouter() {
 
           <Route path="/help/:section?" element={<Help />} />
           <Route path="/company/:section?" element={<Company />} />
+          <Route path="/coupon" element={<Coupon />} />
         </Route>
 
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
-        {/* 공유 링크로 열리는 영수증. 내용은 ?d= 안에 들어 있다. */}
-        <Route path="/receipt" element={<Receipt />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/delivery" element={<Delivery />} />
+        
+        {/* 공유 링크로 열리는 영수증. 내용은 ?d= 안에 들어 있다. */}
+        <Route path="/receipt" element={<Receipt />} />
         
       </Routes>
     </>

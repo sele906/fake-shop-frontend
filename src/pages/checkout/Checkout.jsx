@@ -5,6 +5,7 @@ import styles from "./Checkout.module.css";
 import { findProduct, productImage, won } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
 import { copyText } from "../../lib/clipboard";
+import { makeOrderNumber, writeOrder } from "../../order/orderStorage";
 import ReceiptCard from "../../receipt/ReceiptCard";
 import { receiptUrl } from "../../receipt/receiptLink";
 import useGoBack from "../../hooks/useGoBack";
@@ -97,10 +98,10 @@ const DELIVERY_MESSAGES = [
 ];
 
 const STATS = [
-  ["14일", "연속 안 삼"],
-  ["3,482,000원", "누적 아낀 금액"],
-  ["절제 장인", "현재 등급"],
-  ["상위 3%", "이번 주 순위"],
+  ["0원", "실제 지출"],
+  ["0개", "배송 예정"],
+  ["무제한", "쿠폰 중복"],
+  ["구매 후회", "발생 전 차단"],
 ];
 
 const RECEIPT_MESSAGES = [
@@ -347,6 +348,23 @@ export default function Checkout() {
       items: items.map(({ product, qty }) => ({ name: product.name, qty })),
     });
 
+    /* 배송 조회(/delivery)가 읽을 주문을 남긴다. 장바구니가 비워진 뒤에도
+       무엇을 "주문한 척"했는지 알아야 하기 때문이다. */
+    writeOrder({
+      orderNumber: makeOrderNumber(),
+      orderedAt: new Date().toISOString(),
+      payName,
+      total,
+      items: items.map(({ product, option, qty }) => ({
+        productId: product.id,
+        name: product.name,
+        brand: product.brand,
+        option,
+        qty,
+        price: product.price,
+      })),
+    });
+
     setIsDone(true);
     /* 바로 구매는 장바구니에 담긴 적이 없으니 비울 것도 없다. */
     if (!buyNow) clear();
@@ -446,6 +464,10 @@ export default function Checkout() {
                   한 번 더 안 사러 가기
                 </button>
 
+                <Link className={styles.ghost} to="/delivery">
+                  배송 조회하기
+                </Link>
+
                 <button
                   type="button"
                   className={styles.ghost}
@@ -454,10 +476,6 @@ export default function Checkout() {
                   {shareLabel}
                 </button>
               </div>
-
-              <p className={styles.tiny}>
-                영수증은 저장되지 않습니다. 아무 일도 일어나지 않았기 때문입니다.
-              </p>
             </div>
           </section>
         ) : items.length === 0 ? (

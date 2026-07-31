@@ -360,38 +360,135 @@
 }
 
 /* ── Coupon + summary ─────────────────── */
-.coupon {
-  display: flex;
-  gap: 8px;
-  padding: 16px;
+/* ── Coupons ──────────────────────────── */
+.couponBox {
   border-bottom: 2px solid var(--text);
+  background: var(--bg);
 }
 
-.coupon input {
+.couponTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--text);
+}
+
+.couponTitle strong {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.couponTitle span {
+  font-size: 12px;
+  color: var(--n-500);
+}
+
+.couponEmpty {
+  margin: 0;
+  padding: 20px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--n-600);
+}
+
+.couponEmpty a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.selectAll {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px;
+  border-bottom: 1px solid var(--n-300);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.selectAll:hover {
+  background: var(--text);
+  color: #fff;
+}
+
+.couponList {
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--n-500) transparent;
+}
+
+.couponItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.couponItem + .couponItem {
+  border-top: 1px solid var(--n-200);
+}
+
+.couponItem:hover {
+  background: #fff;
+}
+
+.couponItem input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.couponItem span {
+  min-width: 0;
+  font-size: 13px;
+  /* 쿠폰 이름이 길어도 줄 높이가 흔들리지 않게 한 줄로 자른다. */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.couponItem strong {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.couponCode {
+  display: flex;
+  border-top: 1px solid var(--text);
+}
+
+.couponCode input {
   flex: 1;
   min-width: 0;
-  height: 44px;
-  padding: 0 12px;
-  border: 2px solid var(--text);
+  height: 46px;
+  padding: 0 14px;
+  border: 0;
   background: #fff;
   font-family: inherit;
   font-size: 14px;
 }
 
-.coupon input::placeholder {
+.couponCode input::placeholder {
   color: var(--n-600);
 }
 
-.coupon button {
-  height: 44px;
-  padding: 0 16px;
-  border: 2px solid var(--text);
+.couponCode button {
+  padding: 0 18px;
+  border-left: 1px solid var(--text);
   font-weight: 700;
   font-size: 14px;
   white-space: nowrap;
 }
 
-.coupon button:hover {
+.couponCode button:hover {
   background: var(--text);
   color: #fff;
 }
@@ -634,10 +731,15 @@
     border-top: 0;
   }
 
-  .coupon {
-    padding: 20px;
-    border: 0;
-    border-bottom: 2px solid var(--text);
+  .couponTitle,
+  .couponItem,
+  .couponEmpty {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .couponCode input {
+    padding: 0 20px;
   }
 
   .sum {

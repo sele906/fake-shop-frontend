@@ -64,8 +64,21 @@ const SOCIALS = [
 ];
 
 const FOOT_LINKS = [
-  { href: "#terms", label: "이용약관" },
-  { href: "#privacy", label: "개인정보 처리방침" },
+  { 
+    href: "#copyright", 
+    label: "© 2026 안삼 — 아무것도 판매하지 않습니다", 
+    message: "안삼은 아무것도 판매하지 않습니다. 그런데 저작권은 제법 진지하게 챙깁니다.",
+  },
+  { 
+    href: "#terms", 
+    label: "이용약관", 
+    message: "이용약관에 동의하지 않으셔도 됩니다. 이용 중인 서비스가 딱히 없기 때문입니다.",
+  },
+  { 
+    href: "#privacy", 
+    label: "개인정보 처리방침", 
+    message: "개인정보를 수집하지 않습니다. 저희도 고객님이 누구신지 전혀 모릅니다.", 
+  },
   {
     href: "#why",
     label: "안 사도 되는 이유",
@@ -74,7 +87,7 @@ const FOOT_LINKS = [
   {
     href: "#cs",
     label: "존재하지 않는 고객센터",
-    message: "고객센터는 존재하지 않습니다. 문의도 존재하지 않습니다.",
+    message: "고객센터 연결을 시도했습니다. 존재하지 않는 상담원이 친절히 부재중입니다.",
   },
 ];
 
@@ -177,13 +190,12 @@ export default function Login() {
           안삼 <span>STORE</span>
         </Link>
 
-        <a
+        <Link
           className={styles.help}
-          href="#help"
-          onClick={() => toast("도움말은 준비 중이며 앞으로도 그렇습니다.")}
+          to="/help"
         >
           도움은 드릴 수 없습니다
-        </a>
+        </Link>
       </header>
 
       <div className={styles.page}>
@@ -371,7 +383,6 @@ export default function Login() {
       </div>
 
       <footer className={styles.footer}>
-        <span>© 2026 안삼 — 아무것도 판매하지 않습니다</span>
 
         {FOOT_LINKS.map((link) => (
           <a
