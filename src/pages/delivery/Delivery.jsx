@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styles from "./Delivery.module.css";
 import { PRODUCTS, findProduct, productImage, won } from "../../data/products";
 import { clearOrder, readOrder } from "../../order/orderStorage";
+import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import { MISSION } from "../../coupon/hiddenStorage";
 
 const DELIVERY_STEPS = [
   {
@@ -121,6 +123,7 @@ export default function Delivery() {
      배송이 끝나면 저장소에서는 지우지만 화면은 그대로 두어야 하므로,
      읽은 값은 상태로 들고 있는다. */
   const [order] = useState(() => readOrder() ?? SAMPLE_ORDER);
+  const { unlock } = useHiddenCoupon();
   const isRealOrder = order !== SAMPLE_ORDER;
 
   useEffect(() => {
@@ -170,13 +173,16 @@ export default function Delivery() {
   function restartDelivery() {
     setElapsed(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    /* 숨은 쿠폰. 이미 받았으면 아무 일도 일어나지 않는다. */
+    unlock(MISSION.DELIVERY_REPLAY);
   }
 
   return (
     <div className={styles.page}>
       <header className={styles.pageHeader}>
         <Link className={styles.brand} to="/">
-          안삼 <span>DELIVERY</span>
+          안삼 <span>STORE</span>
         </Link>
         <p>실시간인 척 배송 조회</p>
       </header>

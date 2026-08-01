@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap");
 
 :root {
   /* Accent ramp — #4B70D3 */
@@ -28,7 +28,7 @@
   --n-900: #2a2d35;
   --rule: #b3b3b3;
 
-  --font: "Archivo", system-ui, -apple-system, "Apple SD Gothic Neo",
+  --font: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo",
     "Malgun Gothic", sans-serif;
 
   --header-h: 68px;

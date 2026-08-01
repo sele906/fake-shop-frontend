@@ -109,11 +109,17 @@
   color: var(--n-700);
 }
 
-.sorts a {
+.sorts button {
   color: inherit;
+  font-size: 13px;
+  min-height: 32px;
 }
 
-.sorts a[aria-current="true"] {
+.sorts button:hover {
+  color: var(--accent-700);
+}
+
+.sorts button[aria-current="true"] {
   color: var(--text);
   font-weight: 600;
   border-bottom: 2px solid var(--accent);
@@ -121,34 +127,6 @@
 }
 
 /* 모바일 전용 정렬 드롭다운. 목록은 브라우저가 그린다. */
-.sortSelect {
-  display: none;
-  position: relative;
-  align-items: center;
-  font-size: 13px;
-  color: var(--n-700);
-}
-
-.sortSelect select {
-  appearance: none;
-  /* 손가락으로 누를 수 있는 높이를 지킨다. 오른쪽은 화살표 자리. */
-  min-height: 44px;
-  padding: 0 20px 0 4px;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 13px;
-  color: inherit;
-  cursor: pointer;
-}
-
-/* 화살표는 장식이라 클릭을 가로채지 않는다. */
-.sortSelect svg {
-  position: absolute;
-  right: 2px;
-  pointer-events: none;
-}
-
 .grid {
   padding: 28px 40px 56px;
   display: grid;
@@ -245,10 +223,6 @@
 
   .sorts {
     display: none;
-  }
-
-  .sortSelect {
-    display: inline-flex;
   }
 
   .grid {

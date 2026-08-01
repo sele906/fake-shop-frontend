@@ -9,6 +9,7 @@ import {
   relatedProducts,
   won,
 } from "../../data/products";
+import { loadProductReviews } from "../../data/reviews";
 import { getCategoryPath } from "../../data/categories";
 import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
@@ -21,42 +22,10 @@ import {
   BiShareAlt,
 } from "react-icons/bi";
 
-/* 리뷰 데이터는 아직 없다. 화면 모양만 유지하려고 고정 리뷰를 그대로 쓴다. */
-const REVIEWS = [
-  {
-    id: 1,
-    rating: 5,
-    writer: "김*연",
-    option: "퀸 · 오트",
-    date: "7월 21일",
-    text: "세탁하고 나니 훨씬 부드러워졌어요. 오트 색이 사진보다 조금 더 따뜻한 톤입니다.",
-  },
-  {
-    id: 2,
-    rating: 4,
-    writer: "이*훈",
-    option: "싱글 · 차콜",
-    date: "7월 18일",
-    text: "여름에 덮고 자기 딱 좋은 두께. 다만 주름은 어느 정도 감안해야 합니다.",
-  },
-  {
-    id: 3,
-    rating: 5,
-    writer: "박*아",
-    option: "퀸 · 애쉬 블루",
-    date: "7월 12일",
-    text: "세 번째 구매예요. 색이 빠지지 않고 오래 갑니다.",
-  },
-];
-
-/* 별점 · 리뷰 수도 상품 데이터에 없어서 위 고정 리뷰에서 만든다. */
-const REVIEW_COUNT = REVIEWS.length;
-const RATING =
-  Math.round(
-    (REVIEWS.reduce((sum, review) => sum + review.rating, 0) / REVIEW_COUNT) * 10
-  ) / 10;
-
 const DETAIL_IMAGE_H = 900;
+
+/* 리뷰가 많은 상품은 111개까지 있다. 처음엔 조금만 펼친다. */
+const REVIEW_STEP = 5;
 
 /* 4.7 → ★★★★★ */
 function stars(rating) {
@@ -81,6 +50,10 @@ export default function Detail() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState("info");
+
+  /* 리뷰는 상세를 열고 나서 따로 받아 온다. 받기 전에는 null. */
+  const [reviewData, setReviewData] = useState(null);
+  const [shownReviews, setShownReviews] = useState(REVIEW_STEP);
 
   const tabsRef = useRef(null);
   const headerRef = useRef(null);
@@ -119,14 +92,28 @@ export default function Detail() {
       .filter(Boolean);
   }, [product]);
 
+  const reviews = reviewData?.reviews ?? [];
+  const reviewCount = reviewData?.reviewCount ?? 0;
+  const rating = reviewData?.averageRating ?? 0;
+
+  /* "몇 %가 만족" 문구도 분포에서 직접 센다. */
+  const positiveRate = reviewCount
+    ? Math.round(
+        ((reviewData.ratingDistribution[4] + reviewData.ratingDistribution[5]) /
+          reviewCount) *
+          100
+      )
+    : 0;
+
   const TABS = useMemo(
     () => [
       { id: "info", label: "상품정보" },
       { id: "spec", label: "상세스펙" },
-      { id: "reviews", label: `리뷰 ${REVIEW_COUNT}` },
+      /* 아직 못 받았으면 숫자 자리를 비워 둔다. */
+      { id: "reviews", label: reviewData ? `리뷰 ${reviewCount}` : "리뷰" },
       { id: "related", label: "함께 보기" },
     ],
-    []
+    [reviewData, reviewCount]
   );
 
   /* 상품이 바뀌면 옵션 · 수량을 초기화한다. */
@@ -135,6 +122,28 @@ export default function Detail() {
     setSizeIndex(0);
     setActiveTab("info");
     setSlideIndex(0);
+    setShownReviews(REVIEW_STEP);
+  }, [product?.id]);
+
+  /* 상품을 빠르게 옮겨 다니면 응답 순서가 뒤집힐 수 있어 늦게 온 건 버린다. */
+  useEffect(() => {
+    if (!product?.id) return;
+
+    let alive = true;
+    setReviewData(null);
+
+    loadProductReviews(product.id)
+      .then((data) => {
+        if (alive) setReviewData(data);
+      })
+      .catch((error) => {
+        console.error("리뷰를 불러오지 못했습니다.", error);
+        if (alive) setReviewData(null);
+      });
+
+    return () => {
+      alive = false;
+    };
   }, [product?.id]);
 
   /* 스크롤: 헤더 상품명 노출 + 탭 하이라이트 */
@@ -385,15 +394,27 @@ export default function Detail() {
               </div>
 
               <div className={styles.rating}>
-                <span className={styles.stars}>{stars(RATING)}</span>
-                <span>{RATING}</span>
-                <button
-                  type="button"
-                  className={styles.reviewLink}
-                  onClick={() => scrollToSection("reviews")}
-                >
-                  리뷰 {REVIEW_COUNT}개
-                </button>
+                {!reviewData && <span className={styles.ratingWait}>—</span>}
+
+                {reviewData && reviewCount === 0 && (
+                  <span className={styles.ratingWait}>
+                    아직 리뷰가 없습니다
+                  </span>
+                )}
+
+                {reviewCount > 0 && (
+                  <>
+                    <span className={styles.stars}>{stars(rating)}</span>
+                    <span>{rating}</span>
+                    <button
+                      type="button"
+                      className={styles.reviewLink}
+                      onClick={() => scrollToSection("reviews")}
+                    >
+                      리뷰 {reviewCount}개
+                    </button>
+                  </>
+                )}
               </div>
             </section>
 
@@ -547,31 +568,81 @@ export default function Detail() {
 
           <section className={styles.section} ref={setSectionRef("reviews")}>
             <h2>
-              리뷰 <small>{REVIEW_COUNT}</small>
+              리뷰 {reviewData && <small>{reviewCount}</small>}
             </h2>
 
-            <div className={styles.revSummary}>
-              <span className={styles.revScore}>{RATING}</span>
+            {!reviewData && <p className={styles.revEmpty}>리뷰를 불러오는 중입니다.</p>}
 
-              <div className={styles.revMeta}>
-                <span className={styles.stars}>{stars(RATING)}</span>
-                <small>96%가 재구매 의사를 남겼습니다</small>
-              </div>
-            </div>
+            {reviewData && reviewCount === 0 && (
+              <p className={styles.revEmpty}>
+                아직 리뷰가 없습니다.
+                <br />
+                사지 않은 사람의 후기를 기다리는 중입니다.
+              </p>
+            )}
 
-            <div>
-              {REVIEWS.map((review) => (
-                <article className={styles.review} key={review.id}>
-                  <div className={styles.reviewTop}>
-                    <span className={styles.stars}>{stars(review.rating)}</span>
-                    <span>{review.writer}</span>
-                    <span>{review.option}</span>
-                    <span>{review.date}</span>
+            {reviewCount > 0 && (
+              <>
+                <div className={styles.revSummary}>
+                  <div className={styles.revHead}>
+                    <span className={styles.revScore}>{rating}</span>
+
+                    <div className={styles.revMeta}>
+                      <span className={styles.stars}>{stars(rating)}</span>
+                      <small>{positiveRate}%가 4점 이상을 남겼습니다</small>
+                    </div>
                   </div>
-                  <p>{review.text}</p>
-                </article>
-              ))}
-            </div>
+
+                  {/* 5점부터 위에서 아래로 */}
+                  <ul className={styles.revBars}>
+                    {[5, 4, 3, 2, 1].map((score) => {
+                      const count = reviewData.ratingDistribution[score] ?? 0;
+
+                      return (
+                        <li key={score}>
+                          <span>{score}점</span>
+                          <i>
+                            <b
+                              style={{
+                                width: `${(count / reviewCount) * 100}%`,
+                              }}
+                            />
+                          </i>
+                          <small>{count}</small>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                <div>
+                  {reviews.slice(0, shownReviews).map((review) => (
+                    <article className={styles.review} key={review.id}>
+                      <div className={styles.reviewTop}>
+                        <span className={styles.stars}>
+                          {stars(review.rating)}
+                        </span>
+                        <span>{review.writer}</span>
+                        <span>{review.date}</span>
+                      </div>
+                      <p>{review.text}</p>
+                    </article>
+                  ))}
+                </div>
+
+                {shownReviews < reviewCount && (
+                  <button
+                    type="button"
+                    className={styles.revMore}
+                    onClick={() =>
+                      setShownReviews((shown) => shown + REVIEW_STEP)
+                    }
+                  >
+                    리뷰 더 보기 ({reviewCount - shownReviews}개 남음)
+                  </button>
+                )}
+              </>
+            )}
           </section>
 
           <section className={styles.section} ref={setSectionRef("related")}>

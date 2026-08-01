@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./Login.module.css";
+import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import { MISSION } from "../../coupon/hiddenStorage";
 
 import { BiEnvelope, BiHide, BiLockAlt, BiShow } from "react-icons/bi";
 
@@ -107,6 +109,7 @@ export default function Login() {
   const [tries, setTries] = useState(0);
   const [isEntering, setIsEntering] = useState(false);
   const [isWobbling, setIsWobbling] = useState(false);
+  const { unlock } = useHiddenCoupon();
 
   const enterTimer = useRef(null);
 
@@ -174,6 +177,13 @@ export default function Login() {
 
     const nickname = `${id.split("@")[0] || "익명"} 고객님`;
     enter(nickname, "self", `${nickname}, 다시 안 사러 오셨군요.`);
+  }
+
+  /* 비밀번호 찾기에는 숨은 쿠폰이 걸려 있다. 처음 눌렀을 때만 쿠폰이 온다. */
+  function forgetSecret() {
+    if (unlock(MISSION.LOGIN_ID)) return;
+
+    toast("아무거나 입력해도 들어갈 수 있습니다.");
   }
 
   /* 소셜 버튼은 눌리기만 한다. 로그인 흔적도 남기지 않고 어디로 넘어가지도 않는다. */
@@ -337,12 +347,7 @@ export default function Login() {
                   아이디를 잊으셨나요?
                 </a>
 
-                <a
-                  href="#forgot"
-                  onClick={() =>
-                    toast("아무거나 입력해도 들어갈 수 있습니다.")
-                  }
-                >
+                <a href="#forgot" onClick={forgetSecret}>
                   {current.forgot}
                 </a>
               </div>

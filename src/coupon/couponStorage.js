@@ -89,6 +89,22 @@ export function writeCoupons(coupons) {
   }
 }
 
+/**
+ * 같은 탭의 다른 화면에도 쿠폰함이 바뀐 것을 알린다.
+ *
+ * storage 이벤트는 값을 바꾼 탭에는 오지 않는다. 숨은 쿠폰처럼 쿠폰함 화면이
+ * 아닌 곳에서 저장할 때는 이걸 직접 쏴 줘야 열려 있는 쿠폰함 · 장바구니가
+ * 새 쿠폰을 본다. (useSavedCoupons가 이 이벤트를 듣는다)
+ */
+export function announceCoupons() {
+  try {
+    window.dispatchEvent(new StorageEvent("storage", { key: COUPON_KEY }));
+  } catch (error) {
+    /* 이벤트를 못 만들어도 저장은 끝난 상태다. 다음 화면 진입 때 읽힌다. */
+    console.error("쿠폰함 변경을 알리지 못했습니다.", error);
+  }
+}
+
 /** 내보내기 · 화면 미리보기용. coupon.json과 같은 배열 모양으로 뽑는다. */
 export function toCouponJson(coupons) {
   return JSON.stringify(coupons, null, 2);

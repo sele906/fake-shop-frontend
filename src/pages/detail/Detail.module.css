@@ -227,6 +227,11 @@
   color: var(--accent);
 }
 
+/* 리뷰를 받기 전 · 리뷰가 없는 상품에서 별점 자리를 지킨다. */
+.ratingWait {
+  color: var(--n-500);
+}
+
 /* ── Info rows ────────────────────────── */
 .rows {
   margin: 0;
@@ -479,6 +484,80 @@
   border: 2px solid var(--text);
 }
 
+/* 좁은 화면에서는 점수 아래에 별점을 두고, 분포 막대에 폭을 넘긴다. */
+.revHead {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 평점 분포. 막대는 장식이라 숫자를 옆에 같이 적는다. */
+.revBars {
+  flex: 1;
+  min-width: 0;
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.revBars li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--n-700);
+}
+
+.revBars li + li {
+  margin-top: 3px;
+}
+
+.revBars span {
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.revBars i {
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  background: var(--n-400);
+}
+
+.revBars b {
+  display: block;
+  height: 100%;
+  background: var(--text);
+}
+
+.revBars small {
+  width: 24px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 11px;
+}
+
+.revEmpty {
+  padding: 24px 0;
+  color: var(--n-600);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.revMore {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 16px;
+  border: 2px solid var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.revMore:hover {
+  background: var(--text);
+  color: #fff;
+}
+
 .revScore {
   font-weight: 800;
   font-size: 34px;
@@ -671,6 +750,12 @@
 @media (min-width: 900px) {
   .page {
     --bar-h: 0px;
+  }
+
+  .revHead {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
 
   .header {

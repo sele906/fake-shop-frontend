@@ -2,17 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./Ctg.module.css";
 import { getCategoryPath } from "../../data/categories";
-import { productImage, productsInCategory, won } from "../../data/products";
-
-import { BiCaretDown } from "react-icons/bi";
-
-/* 정렬 문구는 메인과 같게 두고, 실제 비교 방식만 여기서 정한다. */
-const SORTS = [
-  { key: "rec", label: "왠지 끌리는 순" },
-  { key: "new", label: "방금 나온 척순" },
-  { key: "low", label: "통장에 덜 미안한 순" },
-  { key: "views", label: "남들이 많이 본 척순" },
-];
+import {
+  SORTS,
+  productImage,
+  productsInCategory,
+  sortProducts,
+  won,
+} from "../../data/products";
+import SortDropdown from "../../components/SortDropdown";
 
 /* 대분류마다 한 줄. 없는 코드는 기본 문구로 넘어간다. */
 const NOTES = {
@@ -50,21 +47,10 @@ export default function Ctg() {
     setIsMoreDone(false);
   }, [categoryCode]);
 
-  const products = useMemo(() => {
-    const list = productsInCategory(current?.code);
-
-    switch (sortKey) {
-      /* 늦게 등록된 쪽이 신상품인 척한다. */
-      case "new":
-        return [...list].sort((a, b) => b.id - a.id);
-      case "low":
-        return [...list].sort((a, b) => a.price - b.price);
-      case "views":
-        return [...list].sort((a, b) => b.reviewCount - a.reviewCount);
-      default:
-        return list;
-    }
-  }, [current?.code, sortKey]);
+  const products = useMemo(
+    () => sortProducts(productsInCategory(current?.code), sortKey),
+    [current?.code, sortKey]
+  );
 
   /* 칩에 붙는 숫자. 소분류별로 한 번만 세어 둔다. */
   const subCounts = useMemo(() => {
@@ -156,21 +142,7 @@ export default function Ctg() {
         </nav>
 
         {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
-        <div className={styles.sortSelect}>
-          <select
-            value={sortKey}
-            aria-label="정렬 기준"
-            onChange={(event) => setSortKey(event.target.value)}
-          >
-            {SORTS.map((sort) => (
-              <option key={sort.key} value={sort.key}>
-                {sort.label}
-              </option>
-            ))}
-          </select>
-
-          <BiCaretDown aria-hidden="true" />
-        </div>
+        <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
       </div>
 
       {products.length === 0 ? (

@@ -7,12 +7,17 @@ import { useCart } from "../../cart/CartProvider";
 import { MAX_QTY } from "../../cart/cartStorage";
 import { couponDiscount } from "../../coupon/couponStorage";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
+import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
 
 import { BiChevronLeft, BiX } from "react-icons/bi";
 
 const FREE_SHIP = 50000;
 const SHIP_FEE = 3500;
+
+/* 숨은 쿠폰이 걸린 코드. 대소문자가 없는 한글이라 그대로 비교한다. */
+const HIDDEN_CODE = "진짜안삼";
 
 export default function Cart() {
   const goBack = useGoBack();
@@ -31,6 +36,7 @@ export default function Cart() {
 
   /* 쿠폰 보관함(/coupon)에서 받아 localStorage에 쌓아둔 쿠폰들. */
   const [ownedCoupons, , removeCoupons] = useSavedCoupons();
+  const { unlock } = useHiddenCoupon();
   const [selectedCouponIds, setSelectedCouponIds] = useState([]);
 
   /* 쿠폰함에서 삭제된 쿠폰이 선택 상태로 남지 않게 한다. */
@@ -111,6 +117,38 @@ export default function Cart() {
 
     setSelectedCouponIds(ownedCoupons.map((item) => item.id));
     toast(`${ownedCoupons.length}장을 전부 적용했습니다. 아무도 막지 않습니다.`);
+  }
+
+  /* 코드로 받을 수 있는 쿠폰은 숨은 쿠폰 하나뿐이다. 나머지는 전부 반려된다. */
+  function applyCouponCode(event) {
+    event.preventDefault();
+
+    const code = coupon.trim();
+
+    if (!code) {
+      toast(
+        <>
+          사용 가능한 쿠폰 코드가 없습니다.
+          <br />
+          예상하셨겠지만요.
+        </>
+      );
+      return;
+    }
+
+    /* 숨은 쿠폰. 처음 맞힌 한 번만 쿠폰이 오고, 그 뒤로는 아래로 떨어진다. */
+    if (code === HIDDEN_CODE && unlock(MISSION.CART_CODE)) {
+      setCoupon("");
+      return;
+    }
+
+    toast(
+      <>
+        존재하지 않는 쿠폰입니다.
+        <br />
+        하지만 입력하는 모습은 제법 그럴듯했습니다.
+      </>
+    );
   }
 
   /* 주문으로 넘어가면 고른 쿠폰은 쓴 것으로 보고 쿠폰함에서 없앤다.
@@ -425,28 +463,7 @@ export default function Cart() {
                 <form
                   className={styles.couponCode}
                   aria-label="쿠폰 코드 적용"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-
-                    if (!coupon.trim()) {
-                      toast(
-                        <>
-                          사용 가능한 쿠폰 코드가 없습니다.
-                          <br />
-                          예상하셨겠지만요.
-                        </>
-                      );
-                      return;
-                    }
-
-                    toast(
-                      <>
-                        존재하지 않는 쿠폰입니다.
-                        <br />
-                        하지만 입력하는 모습은 제법 그럴듯했습니다.
-                      </>
-                    );
-                  }}
+                  onSubmit={applyCouponCode}
                 >
                   <input
                     type="text"

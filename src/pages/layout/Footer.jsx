@@ -14,7 +14,6 @@ export default function Footer() {
       <nav>
         <strong><Link to="/help">고객센터</Link></strong>
         <Link to="/help/faq">굳이 자주 묻는 질문</Link>
-        <Link to="/delivery">없는 제품 배송 조회</Link>
         <Link to="/help/return">안 산 상품 반품하기</Link>
       </nav>
 

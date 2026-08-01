@@ -14,6 +14,7 @@ import Help from "../pages/help/Help";
 import Company from "../pages/company/Company";
 import Coupon from "../pages/coupon/Coupon";
 import Delivery from "../pages/delivery/Delivery";
+import Careers from"../pages/careers/Careers";
 
 /* 화면을 옮기면 스크롤은 맨 위에서 시작한다.
    목록을 한참 내려보다 상세로 들어갔을 때 중간부터 보이는 걸 막는다. */
@@ -41,6 +42,7 @@ function AppRouter() {
 
           <Route path="/help/:section?" element={<Help />} />
           <Route path="/company/:section?" element={<Company />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/coupon" element={<Coupon />} />
         </Route>
 

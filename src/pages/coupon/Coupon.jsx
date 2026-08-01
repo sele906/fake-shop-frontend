@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Coupon.module.css";
 import couponData from "../../data/coupon.json";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
+import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 
 const COUPON_TABS = [
   { id: "all", label: "전체 쿠폰" },
@@ -26,19 +27,17 @@ function groupLabel(group) {
   return GROUP_LABELS[group] ?? "출처 불명";
 }
 
+/* 숨은 쿠폰은 목록에 깔지 않는다. 미션을 깨야 쿠폰함에 들어온다. */
 const COUPONS = couponData.filter((coupon) => coupon.group !== "hidden");
-
-const HIDDEN_COUPONS = couponData.filter(
-  (coupon) => coupon.group === "hidden"
-);
 
 export default function Coupon() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [savedCoupons, setSavedCoupons] = useSavedCoupons();
+  const { hiddenCoupons, unlockedCount, isUnlocked } = useHiddenCoupon();
   const [rainRun, setRainRun] = useState(0);
   const [message, setMessage] = useState(
-    "받은 쿠폰은 이 브라우저에 저장됩니다. 서버는 관심이 없습니다."
+    "받은 쿠폰은 이 브라우저에만 저장됩니다."
   );
 
   const visibleCoupons = useMemo(() => {
@@ -216,19 +215,29 @@ export default function Coupon() {
             <span>SECRET ACHIEVEMENTS</span>
             <h2>숨겨진 업적 쿠폰</h2>
           </div>
-          <p>사이트 곳곳에서 쓸데없이 성실한 행동을 해보세요.</p>
+          <p>
+            사이트 곳곳에서 쓸데없이 성실한 행동을 해보세요. {hiddenCoupons.length}개 중{" "}
+            {unlockedCount}개를 찾으셨습니다.
+          </p>
         </div>
 
         <div className={styles.achievementGrid}>
-          {HIDDEN_COUPONS.map((coupon, index) => (
-            <article key={coupon.id}>
-              <span>LOCKED {String(index + 1).padStart(2, "0")}</span>
-              <h3>{coupon.description}</h3>
-              <p>
-                {coupon.name} {coupon.benefit}
-              </p>
-            </article>
-          ))}
+          {hiddenCoupons.map((coupon, index) => {
+            const done = isUnlocked(coupon.id);
+            const order = String(index + 1).padStart(2, "0");
+
+            return (
+              <article key={coupon.id} className={done ? styles.unlocked : undefined}>
+                <span>
+                  {done ? "UNLOCKED" : "LOCKED"} {order}
+                </span>
+                <h3>{coupon.mission ?? coupon.description}</h3>
+                <p>
+                  {coupon.name} {coupon.benefit}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </section>
 

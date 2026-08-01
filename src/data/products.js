@@ -12,6 +12,32 @@ import { findCategory } from "./categories";
  */
 export const PRODUCTS = productData;
 
+/**
+ * 목록 정렬 기준. 문구는 화면이 그대로 쓰고, 비교 방식은 sortProducts에만 둔다.
+ * 메인과 카테고리가 같은 배열을 보므로 순서와 문구도 자동으로 맞는다.
+ */
+export const SORTS = [
+  { key: "new", label: "방금 나온 척순" },
+  { key: "low", label: "통장에 덜 미안한 순" },
+  { key: "views", label: "남들이 많이 본 척순" },
+];
+
+/* 원본은 건드리지 않고 정렬한 새 배열을 돌려준다. */
+export function sortProducts(list, key) {
+  switch (key) {
+    /* createdAt은 자리수가 고정된 문자열이라 그대로 비교해도 시간순이 된다. */
+    case "new":
+      return [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    case "low":
+      return [...list].sort((a, b) => a.price - b.price);
+    /* 조회수는 없으니 fakePopularity를 본 척한다. */
+    case "views":
+      return [...list].sort((a, b) => b.fakePopularity - a.fakePopularity);
+    default:
+      return [...list];
+  }
+}
+
 export function won(value) {
   return value.toLocaleString("ko-KR") + "원";
 }

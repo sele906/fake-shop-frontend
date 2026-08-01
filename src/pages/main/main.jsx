@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Main.module.css";
-import { PRODUCTS, productImage, won } from "../../data/products";
+import {
+  PRODUCTS,
+  SORTS,
+  productImage,
+  sortProducts,
+  won,
+} from "../../data/products";
+import SortDropdown from "../../components/SortDropdown";
 
-import { BiCaretDown } from "react-icons/bi";
-
-const SORTS = [
-  "왠지 끌리는 순",
-  "방금 나온 척순",
-  "통장에 덜 미안한 순",
-  "남들이 많이 본 척순",
-];
-
-/* 상품이 1600개가 넘어서 메인에는 앞에서 조금만 깐다. */
-const FEATURED = PRODUCTS.slice(0, 24);
+/* 상품이 1400개가 넘어서 메인에는 정렬한 앞쪽만 조금 깐다. */
+const FEATURED_COUNT = 24;
 
 export default function Main() {
-  const [activeSort, setActiveSort] = useState(SORTS[0]);
+  const [sortKey, setSortKey] = useState(SORTS[0].key);
+
+  const featured = useMemo(
+    () => sortProducts(PRODUCTS, sortKey).slice(0, FEATURED_COUNT),
+    [sortKey]
+  );
 
   return (
     <>
@@ -48,37 +51,23 @@ export default function Main() {
 
         <nav className={styles.sorts} aria-label="정렬">
           {SORTS.map((sort) => (
-            <a
-              key={sort}
-              href={`#sort-${sort}`}
-              aria-current={activeSort === sort || undefined}
-              onClick={() => setActiveSort(sort)}
+            <button
+              key={sort.key}
+              type="button"
+              aria-current={sortKey === sort.key || undefined}
+              onClick={() => setSortKey(sort.key)}
             >
-              {sort}
-            </a>
+              {sort.label}
+            </button>
           ))}
         </nav>
 
         {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
-        <div className={styles.sortSelect}>
-          <select
-            value={activeSort}
-            aria-label="정렬 기준"
-            onChange={(event) => setActiveSort(event.target.value)}
-          >
-            {SORTS.map((sort) => (
-              <option key={sort} value={sort}>
-                {sort}
-              </option>
-            ))}
-          </select>
-
-          <BiCaretDown aria-hidden="true" />
-        </div>
+        <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
       </div>
 
       <section className={styles.grid} aria-label="상품 목록">
-        {FEATURED.map((product) => (
+        {featured.map((product) => (
           <article className={styles.card} key={product.id}>
             <Link
               className={styles.cardImg}

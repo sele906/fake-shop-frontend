@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./Company.module.css";
+import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import { MISSION } from "../../coupon/hiddenStorage";
 
 const VALUES = [
   {
@@ -59,6 +61,7 @@ export default function Company() {
   const [category, setCategory] = useState("");
   const [website, setWebsite] = useState("");
   const [story, setStory] = useState("");
+  const { unlock } = useHiddenCoupon();
 
   useEffect(() => {
     if (!section) return;
@@ -92,6 +95,9 @@ export default function Company() {
       );
       return;
     }
+
+    /* 숨은 쿠폰: 브랜드명에 '안삼'을 넣은 사람. 쿠폰이 나오면 반려는 미뤄둔다. */
+    if (brandName.includes("안삼") && unlock(MISSION.PARTNER_BRAND)) return;
 
     const reason =
       rejectionReasons[Math.floor(Math.random() * rejectionReasons.length)];

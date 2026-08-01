@@ -1,0 +1,83 @@
+/* 데스크톱에는 정렬 탭이 따로 있다. 기준점은 index.css 상단 주석 참고. */
+.wrap {
+  display: none;
+  position: relative;
+}
+
+@media (max-width: 899.98px) {
+  .wrap {
+    display: inline-block;
+  }
+}
+
+/* 버튼은 테두리 없이 글자와 화살표만. 툴바에서 가장 조용한 요소다. */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* 손가락이 닿을 높이를 지킨다. */
+  min-height: 44px;
+  padding: 0 2px;
+  color: var(--n-700);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.trigger svg {
+  width: 15px;
+  height: 15px;
+  color: var(--n-500);
+}
+
+.trigger[aria-expanded="true"] {
+  color: var(--text);
+}
+
+.trigger[aria-expanded="true"] svg {
+  color: var(--text);
+  transform: rotate(180deg);
+}
+
+/* 툴바 오른쪽 끝에 붙어 있어 목록도 오른쪽을 기준으로 편다. */
+.list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  min-width: 200px;
+  margin: 0;
+  padding: 6px 0;
+  border: 2px solid var(--text);
+  background: #fff;
+  list-style: none;
+}
+
+.list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  /* 항목 사이가 붙으면 잘못 누른다. 넉넉히 벌려 둔다. */
+  min-height: 52px;
+  padding: 0 18px;
+  color: var(--n-800);
+  font-size: 14px;
+  text-align: left;
+}
+
+.list button:hover {
+  background: var(--n-100);
+}
+
+.list button[aria-checked="true"] {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.list button svg {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+}
