@@ -7,12 +7,12 @@
 
 ## 🔗 배포 링크
 
-- Web: 배포 주소
-- GitHub: [https://github.com/sele906](https://github.com/sele906)
+- Web: [바로가기](https://fake-shop-frontend-ivory.vercel.app)
+- GitHub: [바로가기](https://github.com/sele906/fake-shop-frontend)
 
 ## 📷 미리보기
 
-![안삼 메인 화면](이미지 경로)
+![안삼 메인 화면](docs/mainScreenShot.png)
 
 ## 💡 기획 의도
 
@@ -24,22 +24,21 @@
 
 ## ✨ 주요 기능
 
-- 카테고리별 상품 탐색
-- 상품 검색 및 정렬
+- 카테고리별 상품 탐색 및 검색·정렬
 - 상품 상세 정보와 리뷰 조회
 - 장바구니 상품 관리
 - 쿠폰 발급 및 적용
-- 가짜 결제 프로세스
-- 가짜 배송 조회
-- 히든 미션과 이벤트성 인터랙션
-- LocalStorage를 이용한 사용자 상태 유지
+- 히든 미션 수행
+- 가짜 결제와 배송 조회
+- LocalStorage 기반 상태 유지
+- 반응형 웹 UI
 
 ## 🛠 기술 스택
 
 ### Frontend
 
 - React
-- React Router
+- React Router DOM
 - JavaScript
 - CSS Modules
 - React Icons
@@ -48,29 +47,29 @@
 
 - Vercel
 
-### Data
+### Data & State
 
 - JSON 기반 상품 데이터
-- LocalStorage 기반 클라이언트 상태 저장
+- LocalStorage 기반 클라이언트 상태 관리
 
-## 실행 방법
+## 🚀 실행 방법
 
 ```bash
-git clone 저장소주소
-cd 프로젝트폴더
+git clone https://github.com/sele906/fake-shop-frontend.git
+cd fake-shop-frontend
 npm install
 npm start
 ```
 
 개발 서버는 기본적으로 아래 주소에서 실행됩니다.
 
-```bash
+```text
 http://localhost:3000
 ```
 
-## 프로젝트 구조
+## 📁 프로젝트 구조
 
-```bash
+```text
 src
 ├─ api
 ├─ assets
@@ -82,12 +81,12 @@ src
 └─ utils
 ```
 
-## 주요 구현 내용
+## 🔍 주요 구현 내용
 
 ### JSON 기반 상품 데이터 구성
 
 서버 없이도 다양한 상품을 탐색할 수 있도록
-상품, 카테고리, 리뷰, 브랜드, 스펙 데이터를 JSON 구조로 설계했습니다.
+상품, 카테고리, 리뷰, 브랜드, 스펙 데이터 1446건을 JSON 구조로 설계했습니다.
 
 상품마다 서로 다른 리뷰 수, 별점, 작성자와 작성일을 가지도록
 데이터 생성 과정을 자동화했습니다.
@@ -113,7 +112,7 @@ LocalStorage에 필요한 사용자 데이터를 저장했습니다.
 실제 결제가 이루어지지 않는 프로젝트 특성을 활용해
 결제 실패, 배송 이동, 상품 도착 등의 과정을 위트 있는 UI로 구성했습니다.
 
-## 트러블 슈팅
+## 🧩 트러블 슈팅
 
 ### 서버 없이 사용자 상태를 유지하는 문제
 
@@ -141,17 +140,15 @@ LocalStorage에 필요한 사용자 데이터를 저장했습니다.
 - 리뷰 내용에 맞춰 개별 별점을 부여
 - 리뷰별 별점의 평균으로 상품 별점을 계산
 
-## 데이터 및 이미지 출처
+## 📌 데이터 및 이미지 출처
 
 - 상품 이미지는 Pexels에서 제공하는 이미지를 사용했습니다.
 - 프로젝트에 표시되는 상품명, 브랜드, 설명과 리뷰는 가상의 데이터입니다.
 - 본 프로젝트에서는 실제 상품 판매 및 결제가 이루어지지 않습니다.
 
-## 향후 개선 계획
+## 🗺️ 향후 개선 계획
 
 - TypeScript 적용
-- 전역 상태 관리 구조 개선
-- 접근성 개선
+- 접근성 및 반응형 UI 개선
 - 테스트 코드 추가
 - 다국어 지원
-- 사용자 행동에 따른 추가 히든 미션 구현
