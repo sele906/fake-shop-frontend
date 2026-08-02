@@ -4,6 +4,17 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className={styles.footer}>
+      {/* 가게 소개보다 만든 사람 소개를 먼저 내보내는 줄. 아래 컬럼은 그대로 둔다. */}
+      <Link className={styles.hire} to="/careers">
+        <div className={styles.hireInfo}>
+          <strong>이 사이트를 만든 개발자</strong>
+          <span className={styles.hireLead}>기획부터 배포까지 직접 만든 백엔드 개발자의 이야기입니다.</span>
+        </div>
+        <span className={styles.hireCta} aria-hidden="true">
+          이력과 프로젝트 보기 →
+        </span>
+      </Link>
+
       <div>
         <strong>안삼 STORE</strong>
         사고 싶은 마음만 정성껏 모았습니다.

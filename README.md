@@ -1,70 +1,163 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+들어갈 항목
+프로젝트 이름과 한 줄 소개
+배포 링크
+대표 이미지 또는 GIF
+프로젝트 기획 의도
+주요 기능
+기술 스택
+프로젝트 실행 방법
+폴더 구조
+핵심 구현 내용
+트러블 슈팅
+데이터 출처와 주의사항
+향후 개선 계획
 
-## Available Scripts
+# 안삼 (ANSAM)
 
-In the project directory, you can run:
+> 사고 싶은 마음만 사고, 실제 물건은 사지 않는 가짜 쇼핑몰
 
-### `npm start`
+쇼핑몰의 탐색, 장바구니, 쿠폰, 결제, 배송 조회 경험을  
+실제 구매 없이 즐길 수 있도록 만든 인터랙티브 웹 프로젝트입니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🔗 배포 링크
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Web: 배포 주소
+- GitHub: 저장소 주소
 
-### `npm test`
+## 📷 미리보기
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![안삼 메인 화면](이미지 경로)
 
-### `npm run build`
+<!-- 가능하면 이미지보다 GIF 하나가 더 좋음 -->
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 💡 기획 의도
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+온라인 쇼핑에서 상품을 둘러보고 장바구니에 담는 과정 자체가  
+하나의 재미가 될 수 있다는 점에서 출발했습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+실제 결제 기능 없이도 쇼핑몰 특유의 인터랙션과 도파민을 경험할 수 있도록  
+가짜 결제, 가짜 배송 조회, 쿠폰, 히든 미션 등의 기능을 구현했습니다.
 
-### `npm run eject`
+## ✨ 주요 기능
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- 카테고리별 상품 탐색
+- 상품 검색 및 정렬
+- 상품 상세 정보와 리뷰 조회
+- 장바구니 상품 관리
+- 쿠폰 발급 및 적용
+- 가짜 결제 프로세스
+- 가짜 배송 조회
+- 히든 미션과 이벤트성 인터랙션
+- LocalStorage를 이용한 사용자 상태 유지
+- 반응형 웹 UI
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠 기술 스택
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- React
+- React Router
+- JavaScript
+- CSS Modules
+- React Icons
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Vercel
 
-### `npm run build` fails to minify
+### Data
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- JSON 기반 상품 데이터
+- LocalStorage 기반 클라이언트 상태 저장
+
+## 🚀 실행 방법
+
+```bash
+git clone 저장소주소
+cd 프로젝트폴더
+npm install
+npm start
+
+개발 서버는 기본적으로 아래 주소에서 실행됩니다.
+http://localhost:3000
+
+프로젝트 구조
+src
+├─ api
+├─ assets
+├─ components
+├─ data
+├─ pages
+├─ routes
+├─ styles
+└─ utils
+🔍 주요 구현 내용
+JSON 기반 상품 데이터 구성
+
+서버 없이도 다양한 상품을 탐색할 수 있도록
+상품, 카테고리, 리뷰, 브랜드, 스펙 데이터를 JSON 구조로 설계했습니다.
+
+상품마다 서로 다른 리뷰 수, 별점, 작성자와 작성일을 가지도록
+데이터 생성 과정을 자동화했습니다.
+
+LocalStorage 상태 유지
+
+로그인이나 서버 없이도 장바구니와 쿠폰 상태가 유지되도록
+LocalStorage에 필요한 사용자 데이터를 저장했습니다.
+
+저장된 데이터가 없거나 형식이 올바르지 않은 경우를 고려해
+기본값으로 복구하도록 처리했습니다.
+
+쿠폰 중복 발급 방지
+
+동일한 미션을 반복해도 쿠폰이 여러 번 발급되지 않도록
+쿠폰 ID를 기준으로 보유 여부를 확인했습니다.
+
+쿠폰 발급, 알림 표시, 쿠폰함 반영 과정을 분리해
+각 상태가 독립적으로 관리되도록 구현했습니다.
+
+가짜 결제와 배송 인터랙션
+
+실제 결제가 이루어지지 않는 프로젝트 특성을 활용해
+결제 실패, 배송 이동, 상품 도착 등의 과정을 위트 있는 UI로 구성했습니다.
+
+🧩 트러블 슈팅
+서버 없이 사용자 상태를 유지하는 문제
+
+문제:
+
+새로고침하면 장바구니와 쿠폰 정보가 사라짐
+동일한 히든 미션이 반복 실행될 수 있음
+
+해결:
+
+상태가 변경될 때 LocalStorage에 데이터를 동기화
+앱 실행 시 저장 데이터를 초기 상태로 복원
+쿠폰과 미션에 고유 ID를 부여해 중복 여부 확인
+대량의 상품 및 리뷰 데이터 구성
+
+문제:
+
+상품마다 리뷰 수와 내용이 달라 수작업 작성이 어려움
+리뷰 별점과 상품 평균 별점의 일관성이 필요함
+
+해결:
+
+엑셀과 JSON 사전을 활용해 데이터를 생성
+리뷰 내용에 맞춰 개별 별점을 부여
+리뷰별 별점의 평균으로 상품 별점을 계산
+📌 데이터 및 이미지 출처
+상품 이미지는 Pexels에서 제공하는 이미지를 사용했습니다.
+프로젝트에 표시되는 상품명, 브랜드, 설명과 리뷰는 가상의 데이터입니다.
+본 프로젝트에서는 실제 상품 판매 및 결제가 이루어지지 않습니다.
+🗺 향후 개선 계획
+TypeScript 적용
+전역 상태 관리 구조 개선
+접근성 개선
+테스트 코드 추가
+다국어 지원
+사용자 행동에 따른 추가 히든 미션 구현
+👩‍💻 개발자
+GitHub: 주소
+Portfolio: 주소

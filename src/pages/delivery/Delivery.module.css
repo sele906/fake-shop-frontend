@@ -470,13 +470,17 @@
   border-top: 1px solid var(--n-300);
 }
 
-.sampleNote {
+/* 합계 줄과 같은 위치의 <p>라 아래 `.orderItems > p`(flex)에 잡힌다.
+   구체성을 맞춰 두 줄짜리 안내 문구로 되돌린다. */
+.orderItems > .sampleNote {
+  display: block;
   margin: 0 0 10px;
   padding: 10px 12px;
-  border: 1px dashed var(--n-400);
+  border-bottom: 1px solid var(--n-400);
   color: var(--n-600);
   font-size: 12px;
   line-height: 1.6;
+  text-align: center;
 }
 
 .orderItems article img,

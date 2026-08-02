@@ -74,6 +74,7 @@ export default function Header({ isNavOpen, onToggleNav }) {
         aria-label={`장바구니 ${count}개`}
       >
         <BiCart size={20} aria-hidden="true" />
+        {count > 0 && <span className={styles.badge}>{count}</span>}
       </Link>
 
       <nav className={styles.utils} aria-label="사용자 메뉴">

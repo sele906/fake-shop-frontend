@@ -221,6 +221,10 @@
     font-size: 15px;
   }
 
+  .toolbar h2 small {
+      display: none;
+  }
+
   .sorts {
     display: none;
   }

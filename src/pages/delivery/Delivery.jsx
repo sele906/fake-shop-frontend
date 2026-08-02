@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Delivery.module.css";
-import { PRODUCTS, findProduct, productImage, won } from "../../data/products";
+import { findProduct, productImage, won } from "../../data/products";
 import { clearOrder, readOrder } from "../../order/orderStorage";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
@@ -95,23 +95,13 @@ const CONFETTI_PIECES = Array.from({ length: 72 }, (_, index) => ({
   ],
 }));
 
-/* 주문 없이 /delivery로 바로 들어온 경우에 보여줄 견본.
-   푸터의 "없는 제품 배송 조회"로도 들어올 수 있어 화면이 비면 안 된다. */
+/* 주문 없이 /delivery로 바로 들어온 경우. 푸터의 "없는 제품 배송 조회"로도
+   들어올 수 있으니 배송 연출은 그대로 두고, 상품 목록만 비운다. */
 const SAMPLE_ORDER = {
   orderNumber: "ANSAM-아까있었음",
   payName: "",
-  total: PRODUCTS.slice(0, 2).reduce(
-    (sum, product, index) => sum + product.price * (index + 1),
-    0
-  ),
-  items: PRODUCTS.slice(0, 2).map((product, index) => ({
-    productId: product.id,
-    name: product.name,
-    brand: product.brand,
-    option: "",
-    qty: index + 1,
-    price: product.price,
-  })),
+  total: 0,
+  items: [],
 };
 
 const DELIVERY_SECONDS = 25;
@@ -398,33 +388,35 @@ export default function Delivery() {
             <div className={styles.orderItems}>
               <h3>주문한 척한 상품</h3>
 
-              {!isRealOrder && (
+              {/* 담은 것이 없으면 빈 목록 대신 안내 문구 한 줄만 남긴다. */}
+              {orderItems.length === 0 ? (
                 <p className={styles.sampleNote}>
-                  최근 주문이 없어 견본을 띄웠습니다. 주문서에서 0원 결제를
-                  마치면 그 내역이 여기로 올라옵니다.
+                  주문한 상품이 없습니다. 이주의 특가부터 둘러보세요.
                 </p>
+              ) : (
+                <>
+                  {orderItems.map((item, index) => (
+                    <article key={`${item.productId}-${item.option}-${index}`}>
+                      {/* 상품이 products.json에서 사라졌으면 자리만 비워 둔다. */}
+                      {item.image ? (
+                        <img src={item.image} alt={item.alt} />
+                      ) : (
+                        <span className={styles.noImage} aria-hidden="true" />
+                      )}
+                      <div>
+                        <small>{item.brand}</small>
+                        <strong>{item.name}</strong>
+                        <span>
+                          {item.qty}개 · {won(item.price * item.qty)}
+                        </span>
+                      </div>
+                    </article>
+                  ))}
+                  <p>
+                    담았던 금액 <strong>{won(orderTotal)}</strong>
+                  </p>
+                </>
               )}
-
-              {orderItems.map((item, index) => (
-                <article key={`${item.productId}-${item.option}-${index}`}>
-                  {/* 상품이 products.json에서 사라졌으면 자리만 비워 둔다. */}
-                  {item.image ? (
-                    <img src={item.image} alt={item.alt} />
-                  ) : (
-                    <span className={styles.noImage} aria-hidden="true" />
-                  )}
-                  <div>
-                    <small>{item.brand}</small>
-                    <strong>{item.name}</strong>
-                    <span>
-                      {item.qty}개 · {won(item.price * item.qty)}
-                    </span>
-                  </div>
-                </article>
-              ))}
-              <p>
-                담았던 금액 <strong>{won(orderTotal)}</strong>
-              </p>
             </div>
 
             <button type="button" onClick={restartDelivery}>

@@ -100,13 +100,23 @@
 }
 
 .iconBtn {
+  position: relative;
   display: none;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   /* 장바구니 아이콘은 <a>라 링크 색을 물려받는다. 아이콘은 본문색으로. */
   color: inherit;
+}
+
+/* 아이콘 위에 얹히는 뱃지는 상세 헤더(Detail.module.css)와 같은 자리에 둔다. */
+.iconBtn .badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+  padding: 0 4px;
 }
 
 /* ── Shell ────────────────────────────── */
@@ -333,6 +343,56 @@
   margin-bottom: 8px;
 }
 
+/* 채용(이라고 쓰고 자기소개) 줄 — .credit과 같은 방식으로 한 줄을 다 쓴다.
+   위 `.footer strong`과 구체성이 같으므로 반드시 이 아래에 둔다. */
+.hire {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 0 18px 20px 18px;
+  border-bottom: 1px solid var(--n-300);
+  color: var(--text);
+  transition: background 0.16s ease;
+}
+
+.hireEyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent-700);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.hire strong {
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+
+.hireLead {
+  display: block;
+  color: var(--n-700);
+  font-size: 13px;
+}
+
+/* Detail의 solid 태그와 같은 언어 — 검은 블록에 흰 글씨. */
+.hireCta {
+  flex: none;
+  padding: 10px 16px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.hire:hover .hireCta {
+  background: var(--accent-700);
+}
+
 .footer nav {
   display: flex;
   flex-direction: column;
@@ -488,5 +548,16 @@
   .footer {
     padding: 24px 16px 40px;
     gap: 20px 32px;
+  }
+
+  /* 폭이 좁으면 문구와 버튼이 어중간하게 갈리므로 아래로 쌓는다. */
+  .hire {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 16px 16px 16px;
+  }
+
+  .hireCta {
+    text-align: center;
   }
 }

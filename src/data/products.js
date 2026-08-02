@@ -17,6 +17,9 @@ export const PRODUCTS = productData;
  * 메인과 카테고리가 같은 배열을 보므로 순서와 문구도 자동으로 맞는다.
  */
 export const SORTS = [
+  /* products.json에 담긴 순서 그대로. 원본 데이터와 대조할 때 쓴다.
+     목록은 SORTS[0]으로 시작하므로 이 항목이 기본 정렬이 된다. */
+  { key: "none", label: "정렬 없음" },
   { key: "new", label: "방금 나온 척순" },
   { key: "low", label: "통장에 덜 미안한 순" },
   { key: "views", label: "남들이 많이 본 척순" },
@@ -33,6 +36,7 @@ export function sortProducts(list, key) {
     /* 조회수는 없으니 fakePopularity를 본 척한다. */
     case "views":
       return [...list].sort((a, b) => b.fakePopularity - a.fakePopularity);
+    /* "none"(정렬 없음)과 모르는 키는 받은 순서를 그대로 둔다. */
     default:
       return [...list];
   }
