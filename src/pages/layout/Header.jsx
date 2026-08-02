@@ -5,7 +5,7 @@ import { useCart } from "../../cart/CartProvider";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
-import { BiCart, BiMenu, BiSearch } from "react-icons/bi";
+import { BiCart, BiMenu } from "react-icons/bi";
 
 /* 로고 연타로 인정하는 간격. 이보다 뜸해지면 처음부터 다시 센다. */
 const LOGO_GAP_MS = 1200;
@@ -49,24 +49,7 @@ export default function Header({ isNavOpen, onToggleNav }) {
         <Link className={styles.brand} to="/" onClick={handleBrandClick}>
           안삼 <span>STORE</span>
         </Link>
-
-        {/* <form
-          className={styles.search}
-          role="search"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <input
-            type="search"
-            placeholder="검색이나 해보기"
-            aria-label="상품 검색"
-          />
-          <BiSearch size={16} aria-hidden="true" />
-        </form> */}
       </div>
-
-      {/* <button type="button" className={styles.iconBtn} aria-label="검색">
-        <BiSearch size={20} aria-hidden="true" />
-      </button> */}
 
       <Link
         className={styles.iconBtn}
