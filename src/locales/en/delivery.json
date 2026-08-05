@@ -1,0 +1,87 @@
+{
+  "subtitle": "Delivery tracking, allegedly live",
+  "intro": {
+    "eyebrow": "IMAGINARY TRACKING SERVICE",
+    "titleLine1": "Between your expectations",
+    "titleLine2": "and reality",
+    "lead": "No location permission, no map API. Just watch a nonexistent parcel take 25 seconds to reach the front door of your heart."
+  },
+  "map": {
+    "eyebrow": "FAKE DELIVERY MAP",
+    "title": "Fake delivery world map",
+    "etaDone": "Imaginary delivery complete",
+    "etaRemaining": "Arriving in {{seconds}}s",
+    "svgAria": "Imaginary delivery route for a product that does not exist",
+    "rerouteStrong": "Recalculating the route.",
+    "rerouteRest": "There was never a destination to begin with.",
+    "caption": "This map bears no relation to any real location, and the courier does not exist either.",
+    "scale": "500m, imaginary"
+  },
+  "areas": {
+    "cart": "Cart District",
+    "rationalize": "Rationalization Ave",
+    "coupon": "57-Coupon Junction",
+    "impulse": "Impulse Buy Road",
+    "home": "The House Where Nothing Arrives"
+  },
+  "steps": {
+    "paid": {
+      "place": "Payment Complete Block",
+      "message": "Your pretend order has been received."
+    },
+    "warehouse": {
+      "place": "Storage for Things We Don't Have",
+      "message": "Searching the warehouse for an item that isn't there."
+    },
+    "packing": {
+      "place": "Empty Box Packing Center",
+      "message": "An empty box has been carefully packed."
+    },
+    "hub": {
+      "place": "The Unnecessary Middle Hub",
+      "message": "Taking the long way despite the shorter route."
+    },
+    "nearby": {
+      "place": "Pretending to Be Near You",
+      "message": "It looks close. It is not."
+    },
+    "door": {
+      "place": "The Front Door of Your Heart",
+      "message": "Delivered directly into your heart."
+    }
+  },
+  "status": {
+    "delivered": "Delivered",
+    "inTransit": "In imaginary transit",
+    "arrived": "Arrived",
+    "seconds": "{{seconds}}s"
+  },
+  "card": {
+    "title": "Your order has arrived at<br />{{place}}.",
+    "progress": "Progress",
+    "nextStop": "Next stop",
+    "noMore": "Nothing further",
+    "timeLeft": "Time remaining",
+    "zeroSeconds": "0s",
+    "aboutSeconds": "About {{seconds}}s",
+    "orderNumber": "Order number",
+    "payMethod": "Payment method",
+    "itemsTitle": "Items you pretended to order",
+    "emptyNote": "No items ordered. Start with this week's deals.",
+    "itemLine": "{{qty}} × {{amount}}",
+    "basket": "What you added",
+    "restart": "Replay the delivery"
+  },
+  "timeline": {
+    "eyebrow": "25 SECOND JOURNEY",
+    "title": "Delivery stages",
+    "second": "{{second}}s"
+  },
+  "disclaimer": "NOBUY's delivery tracking is not connected to any real order, location data, or courier API. We collect no personal data and ship no products.",
+  "done": {
+    "eyebrow": "DELIVERY COMPLETE!",
+    "title": "Delivered to your heart!",
+    "lead": "Your item has been left safely at the lobby door of your heart."
+  },
+  "sampleOrderNumber": "NOBUY-ITWASHEREAMOMENTAGO"
+}

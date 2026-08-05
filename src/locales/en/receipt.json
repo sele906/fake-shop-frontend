@@ -1,0 +1,28 @@
+{
+  "broken": {
+    "title": "This receipt can't be read",
+    "leadLine1": "The link was cut off, or this isn't a receipt URL.",
+    "leadLine2": "It's faster to just not-buy something and make a new one.",
+    "cta": "Go not-buy something"
+  },
+  "stamp": "NOBUY COMPLETE",
+  "titleLine1": "This person bought",
+  "titleLine2": "absolutely nothing today",
+  "leadLine1": "You have received a brag.",
+  "leadLine2": "Every won of it is still sitting in the bank.",
+  "ctaPrimary": "Let me not-buy things too",
+  "ctaSecondary": "Just fill a cart",
+  "tiny": "This receipt exists only inside the link. It is stored nowhere.",
+  "card": {
+    "title": "Savings receipt",
+    "notBought": "NOT BOUGHT",
+    "others": "And others",
+    "othersCount_one": "{{count}} more not bought",
+    "othersCount_other": "{{count}} more not bought",
+    "payMethod": "Payment method",
+    "restraintStyle": "Restraint style",
+    "saved": "Saved today",
+    "badgeNoPay": "🏅 Didn't pay this time either",
+    "badgeDefended": "Balance defended +{{amount}}"
+  }
+}

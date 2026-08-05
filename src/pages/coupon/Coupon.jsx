@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Coupon.module.css";
-import couponData from "../../data/coupon.json";
+import { getVisibleCoupons } from "../../data/coupons";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 
@@ -11,9 +11,6 @@ const TAB_IDS = ["all", "basic", "today", "cart", "category", "suspicious"];
 /* coupon.json의 group 값. 이 밖의 값은 "출처 불명"으로 떨어진다. */
 const KNOWN_GROUPS = ["basic", "today", "cart", "category", "suspicious"];
 
-/* 숨은 쿠폰은 목록에 깔지 않는다. 미션을 깨야 쿠폰함에 들어온다. */
-const COUPONS = couponData.filter((coupon) => coupon.group !== "hidden");
-
 export default function Coupon() {
   const { t } = useTranslation("coupon");
   const navigate = useNavigate();
@@ -21,6 +18,11 @@ export default function Coupon() {
   const [savedCoupons, setSavedCoupons] = useSavedCoupons();
   const { hiddenCoupons, unlockedCount, isUnlocked } = useHiddenCoupon();
   const [rainRun, setRainRun] = useState(0);
+
+  /* 숨은 쿠폰은 목록에 깔지 않는다. 미션을 깨야 쿠폰함에 들어온다.
+     데이터는 DataProvider가 채운 뒤이고 언어가 바뀌면 이 화면째 다시 그려지므로,
+     처음 한 번만 읽어 두면 된다. */
+  const coupons = useMemo(getVisibleCoupons, []);
 
   /* 문장이 아니라 무엇을 알릴지만 들고 있는다. 문장을 상태에 넣어 두면
      언어를 바꿨을 때 옛 언어의 안내가 그대로 남는다. */
@@ -34,9 +36,9 @@ export default function Coupon() {
   }
 
   const visibleCoupons = useMemo(() => {
-    if (activeTab === "all") return COUPONS;
-    return COUPONS.filter((coupon) => coupon.group === activeTab);
-  }, [activeTab]);
+    if (activeTab === "all") return coupons;
+    return coupons.filter((coupon) => coupon.group === activeTab);
+  }, [activeTab, coupons]);
 
   const savedIds = useMemo(
     () => new Set(savedCoupons.map((coupon) => coupon.id)),
@@ -63,7 +65,7 @@ export default function Coupon() {
   }
 
   function startCouponRain() {
-    const todayCoupons = COUPONS.filter((coupon) => coupon.group === "today");
+    const todayCoupons = coupons.filter((coupon) => coupon.group === "today");
     const added = saveCoupons(todayCoupons);
 
     setRainRun((current) => current + 1);

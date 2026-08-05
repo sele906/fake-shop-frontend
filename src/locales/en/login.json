@@ -1,0 +1,111 @@
+{
+  "modes": {
+    "pw": {
+      "tab": "Pretend password",
+      "label": "Password",
+      "placeholder": "It means nothing anyway",
+      "error": "We have no way to check it, but blank is still a problem.",
+      "forgot": "Forgot your password?",
+      "submits": [
+        "Pretend to log in",
+        "Pretend to log in anyway",
+        "Just let me through"
+      ],
+      "nudges": [
+        "That password is far too serious. Try something sloppier.",
+        "Authentication failed, but we are generous."
+      ]
+    },
+    "code": {
+      "tab": "Pretend code",
+      "label": "Verification code",
+      "placeholder": "It means nothing anyway",
+      "error": "Six digits will do. We don't check right from wrong.",
+      "forgot": "Didn't get the code?",
+      "submits": [
+        "Pretend to verify",
+        "Pretend to verify anyway",
+        "Just let me through"
+      ],
+      "nudges": [
+        "That code is far too accurate. Try something sloppier.",
+        "Authentication failed, but we are generous."
+      ]
+    }
+  },
+  "socials": {
+    "kakao": {
+      "label": "Vaguely start with Kakao",
+      "message": "We did not contact Kakao about anything."
+    },
+    "naver": {
+      "label": "Pretend it's a Naver account",
+      "message": "Naver knows nothing about this."
+    },
+    "google": {
+      "label": "Continue without telling Google",
+      "message": "Not linked to your Google account in any way. Relax."
+    },
+    "apple": {
+      "label": "Hide your identity with Apple",
+      "message": "Apple doesn't know who you are either."
+    }
+  },
+  "footLinks": {
+    "copyright": {
+      "label": "© 2026 NOBUY — we sell nothing",
+      "message": "NOBUY sells nothing. We do take copyright fairly seriously, though."
+    },
+    "terms": {
+      "label": "Terms of service",
+      "message": "You don't have to agree to the terms. There isn't really a service in use."
+    },
+    "privacy": {
+      "label": "Privacy policy",
+      "message": "We collect no personal data. We have no idea who you are."
+    },
+    "why": {
+      "label": "Reasons you don't need it",
+      "message": "You already have something similar at home. That's the reason."
+    },
+    "cs": {
+      "label": "The support center that doesn't exist",
+      "message": "We tried to connect you. A nonexistent agent is politely unavailable."
+    }
+  },
+  "help": "We cannot help you",
+  "aside": {
+    "kicker": "NOBUY membership",
+    "titleLine1": "Just bring the urge",
+    "titleLine2": "to buy things",
+    "lead": "We don't verify your ability to actually buy anything. No credit limit, no balance, no credit score. There's no reason to check."
+  },
+  "intro": {
+    "title": "Sign in to NOBUY",
+    "lead": "Just bring the urge to buy. We don't verify your ability to actually buy anything."
+  },
+  "tablistAria": "Sign-in method",
+  "idLabel": "ID",
+  "idPlaceholder": "Type anything",
+  "idError": "We don't care about the format, but write something.",
+  "hideSecret": "Hide password",
+  "showSecret": "Show password",
+  "keepSignedIn": "I allow this browser to remember me",
+  "entering": "Letting you in…",
+  "forgotId": "Forgot your ID?",
+  "toast": {
+    "emptyFields": "Anything is fine. Nothing at all is a problem.",
+    "forgotId": "We don't know either. Just make a new one.",
+    "forgotSecret": "Anything you type will get you in.",
+    "welcome": "{{nickname}}, back to not buying things again.",
+    "join": "There is no sign-up. Just act like a stranger."
+  },
+  "anonymous": "Anonymous",
+  "nickname": "{{name}}",
+  "divider": "or",
+  "footNote": {
+    "notMember": "Not a member yet?",
+    "join": "Pretend to be a first-time visitor",
+    "agree": "Signing in means agreeing that nothing will ever be shipped."
+  }
+}

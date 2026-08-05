@@ -1,0 +1,410 @@
+[
+  {
+    "id": "basic-1",
+    "group": "basic",
+    "name": "You’re Here, Have a Coupon",
+    "benefit": "7%",
+    "description": "Awarded solely for showing up"
+  },
+  {
+    "id": "basic-2",
+    "group": "basic",
+    "name": "Let’s Pretend It’s Your First Visit",
+    "benefit": "10%",
+    "description": "We’ll pretend not to notice even if it isn’t"
+  },
+  {
+    "id": "basic-3",
+    "group": "basic",
+    "name": "Oh, You’re Back Coupon",
+    "benefit": "8%",
+    "description": "Pretending to be delighted by your return"
+  },
+  {
+    "id": "basic-4",
+    "group": "basic",
+    "name": "Not a Member, Still Welcome",
+    "benefit": "₩5,000",
+    "description": "All the welcome, none of the sign-up"
+  },
+  {
+    "id": "basic-5",
+    "group": "basic",
+    "name": "You Worked Hard Today Coupon",
+    "benefit": "12%",
+    "description": "No proof of hardship required"
+  },
+  {
+    "id": "basic-6",
+    "group": "basic",
+    "name": "Just Because Coupon",
+    "benefit": "₩3,000",
+    "description": "We couldn’t think of a reason"
+  },
+  {
+    "id": "basic-7",
+    "group": "basic",
+    "name": "No Questions Asked Coupon",
+    "benefit": "9%",
+    "description": "We genuinely ask nothing"
+  },
+  {
+    "id": "basic-8",
+    "group": "basic",
+    "name": "VIP in Name Only",
+    "benefit": "15%",
+    "description": "Every customer is a VIP here"
+  },
+  {
+    "id": "basic-9",
+    "group": "basic",
+    "name": "ANSAM Loyal Customer Coupon",
+    "benefit": "13%",
+    "description": "You’ve never bought anything, but you’re a regular now"
+  },
+  {
+    "id": "basic-10",
+    "group": "basic",
+    "name": "Mood Reset Coupon",
+    "benefit": "₩4,500",
+    "description": "Results may vary; mood improvement not guaranteed"
+  },
+  {
+    "id": "today-1",
+    "group": "today",
+    "name": "Monday Survivor Coupon",
+    "benefit": "12%",
+    "description": "For anyone who made it through Monday"
+  },
+  {
+    "id": "today-2",
+    "group": "today",
+    "name": "Mentally Clocked Out Friday Coupon",
+    "benefit": "10%",
+    "description": "Your body is at work, but your mind has left"
+  },
+  {
+    "id": "today-3",
+    "group": "today",
+    "name": "Late-Night Impulse Prevention Coupon",
+    "benefit": "18%",
+    "description": "For the courage it took to fill your cart at 2 a.m."
+  },
+  {
+    "id": "today-4",
+    "group": "today",
+    "name": "Secret Lunch Break Browsing Coupon",
+    "benefit": "7%",
+    "description": "We do not check whether you visited during work hours"
+  },
+  {
+    "id": "today-5",
+    "group": "today",
+    "name": "I’m Off Work, Everything Is Mine Coupon",
+    "benefit": "11%",
+    "description": "That brief moment of wealth after clocking out"
+  },
+  {
+    "id": "today-6",
+    "group": "today",
+    "name": "Damp Rainy Day Coupon",
+    "benefit": "₩6,000",
+    "description": "Sometimes it rains even without a weather API"
+  },
+  {
+    "id": "today-7",
+    "group": "today",
+    "name": "The Sun Is Too Bright Coupon",
+    "benefit": "6%",
+    "description": "A discount instead of lowering the brightness"
+  },
+  {
+    "id": "today-8",
+    "group": "today",
+    "name": "Too Hot to Make Decisions Coupon",
+    "benefit": "14%",
+    "description": "Summer impulse purchases receive special consideration"
+  },
+  {
+    "id": "today-9",
+    "group": "today",
+    "name": "Too Cold, Finger Slipped Coupon",
+    "benefit": "14%",
+    "description": "Consideration for almost pressing the checkout button"
+  },
+  {
+    "id": "today-10",
+    "group": "today",
+    "name": "What Day Is It Again? Coupon",
+    "benefit": "8%",
+    "description": "Exclusively for customers who have lost all sense of time"
+  },
+  {
+    "id": "cart-1",
+    "group": "cart",
+    "name": "Only Added It to the Cart Coupon",
+    "benefit": "5%",
+    "description": "Purchase intent is entirely optional"
+  },
+  {
+    "id": "cart-2",
+    "group": "cart",
+    "name": "Thought About It Three Times Coupon",
+    "benefit": "7%",
+    "description": "Unlocked after three trips back to the product page"
+  },
+  {
+    "id": "cart-3",
+    "group": "cart",
+    "name": "Saw the Price and Quietly Closed the Tab",
+    "benefit": "10%",
+    "description": "A reward for making a sensible decision"
+  },
+  {
+    "id": "cart-4",
+    "group": "cart",
+    "name": "Cart Abandonment Expert Coupon",
+    "benefit": "15%",
+    "description": "For products aged in your cart for at least 24 hours"
+  },
+  {
+    "id": "cart-5",
+    "group": "cart",
+    "name": "What If It Sells Out? Coupon",
+    "benefit": "6%",
+    "description": "Your heart was shaken by fake stock numbers"
+  },
+  {
+    "id": "cart-6",
+    "group": "cart",
+    "name": "Read Every Review Coupon",
+    "benefit": "₩4,000",
+    "description": "A reward for your impressive attention span"
+  },
+  {
+    "id": "cart-7",
+    "group": "cart",
+    "name": "Changed the Options Ten Times Coupon",
+    "benefit": "8%",
+    "description": "That’s not indecision. That’s careful consideration"
+  },
+  {
+    "id": "cart-8",
+    "group": "cart",
+    "name": "Removed It, Then Added It Back Coupon",
+    "benefit": "9%",
+    "description": "A reunion discount"
+  },
+  {
+    "id": "cart-9",
+    "group": "cart",
+    "name": "Saw the Total and Came to Your Senses",
+    "benefit": "20%",
+    "description": "An excellent decision, honestly"
+  },
+  {
+    "id": "cart-10",
+    "group": "cart",
+    "name": "Escaped Right Before Checkout Coupon",
+    "benefit": "25%",
+    "description": "The highest known level of self-control"
+  },
+  {
+    "id": "category-1",
+    "group": "category",
+    "name": "I Have Clothes, but I’m Looking Anyway",
+    "benefit": "12%",
+    "description": "Valid in the Fashion category"
+  },
+  {
+    "id": "category-2",
+    "group": "category",
+    "name": "I Only Have One Face Coupon",
+    "benefit": "10%",
+    "description": "Valid in the Beauty category"
+  },
+  {
+    "id": "category-3",
+    "group": "category",
+    "name": "Everything Looks Delicious When You’re Hungry",
+    "benefit": "8%",
+    "description": "Valid in the Food category"
+  },
+  {
+    "id": "category-4",
+    "group": "category",
+    "name": "Can’t Remember If I Already Own This",
+    "benefit": "7%",
+    "description": "Valid in the Household Supplies category"
+  },
+  {
+    "id": "category-5",
+    "group": "category",
+    "name": "I Don’t Cook, but I Need the Tools",
+    "benefit": "11%",
+    "description": "Valid in the Kitchen category"
+  },
+  {
+    "id": "category-6",
+    "group": "category",
+    "name": "More Decor Than House Coupon",
+    "benefit": "13%",
+    "description": "Valid in the Furniture & Home Decor category"
+  },
+  {
+    "id": "category-7",
+    "group": "category",
+    "name": "The New Product Made Me Do It",
+    "benefit": "9%",
+    "description": "Valid in the Electronics & Appliances category"
+  },
+  {
+    "id": "category-8",
+    "group": "category",
+    "name": "I Won’t Use It, but It’s Pretty",
+    "benefit": "15%",
+    "description": "Valid in the Stationery & Office category"
+  },
+  {
+    "id": "category-9",
+    "group": "category",
+    "name": "One Item Does Not Make a Collection",
+    "benefit": "12%",
+    "description": "Valid in the Hobbies & Collectibles category"
+  },
+  {
+    "id": "category-10",
+    "group": "category",
+    "name": "Buying the Gear Comes First",
+    "benefit": "14%",
+    "description": "Valid in the Sports & Leisure category"
+  },
+  {
+    "id": "category-11",
+    "group": "category",
+    "name": "They Deserve Better Than I Do",
+    "benefit": "10%",
+    "description": "Valid in the Pet Supplies category"
+  },
+  {
+    "id": "category-12",
+    "group": "category",
+    "name": "Small and Cute? Add to Cart",
+    "benefit": "8%",
+    "description": "Valid in the Kids & Baby category"
+  },
+  {
+    "id": "suspicious-1",
+    "group": "suspicious",
+    "name": "Pretend Anniversary Sale Coupon",
+    "benefit": "30%",
+    "description": "Every day is our anniversary"
+  },
+  {
+    "id": "suspicious-2",
+    "group": "suspicious",
+    "name": "While the Boss Is Asleep Coupon",
+    "benefit": "35%",
+    "description": "There was never a boss"
+  },
+  {
+    "id": "suspicious-3",
+    "group": "suspicious",
+    "name": "The Manager Went Home Coupon",
+    "benefit": "40%",
+    "description": "There was never a manager either"
+  },
+  {
+    "id": "suspicious-4",
+    "group": "suspicious",
+    "name": "Pricing Mistake Coupon",
+    "benefit": "50%",
+    "description": "We have no intention of fixing it"
+  },
+  {
+    "id": "suspicious-5",
+    "group": "suspicious",
+    "name": "We’ve Given Up Running This Store",
+    "benefit": "70%",
+    "description": "The store will remain open"
+  },
+  {
+    "id": "suspicious-6",
+    "group": "suspicious",
+    "name": "You Scrolled All the Way Down Coupon",
+    "benefit": "80%",
+    "description": "Issued upon reaching the bottom of the page"
+  },
+  {
+    "id": "suspicious-7",
+    "group": "suspicious",
+    "name": "Nobody Stop Me Coupon",
+    "benefit": "90%",
+    "description": "Only your own consent is required"
+  },
+  {
+    "id": "suspicious-8",
+    "group": "suspicious",
+    "name": "You Weren’t Going to Buy It Anyway",
+    "benefit": "100%",
+    "description": "A remarkably accurate observation"
+  },
+  {
+    "id": "suspicious-9",
+    "group": "suspicious",
+    "name": "The Store Will Pay for It",
+    "benefit": "110%",
+    "description": "Any extra discount will be paid in imagination"
+  },
+  {
+    "id": "suspicious-10",
+    "group": "suspicious",
+    "name": "Legendary Negative Checkout Coupon",
+    "benefit": "200%",
+    "description": "The store now owes you money"
+  },
+  {
+    "id": "hidden-1",
+    "group": "hidden",
+    "name": "Purchase Abandonment Grant",
+    "benefit": "13%",
+    "description": "A small grant for genuinely deciding not to buy.",
+    "mission": "Enter “REALLYNOTBUYING” in the cart coupon-code field"
+  },
+  {
+    "id": "hidden-2",
+    "group": "hidden",
+    "name": "Confidential Access Coupon",
+    "benefit": "15%",
+    "description": "There is nothing confidential, but access is granted.",
+    "mission": "Click the ANSAM logo at the top five times in a row"
+  },
+  {
+    "id": "hidden-3",
+    "group": "hidden",
+    "name": "Coupon in Place of Your Memory",
+    "benefit": "₩8,000",
+    "description": "Try to recover a password that does not exist"
+  },
+  {
+    "id": "hidden-4",
+    "group": "hidden",
+    "name": "Only Thinking About Joining the Store Coupon",
+    "benefit": "20%",
+    "description": "Enter “ANSAM” as the brand name in the seller inquiry form"
+  },
+  {
+    "id": "hidden-5",
+    "group": "hidden",
+    "name": "Delivery Starts Over Coupon",
+    "benefit": "30%",
+    "description": "Click “Recreate Delivery History” in delivery tracking"
+  },
+  {
+    "id": "hidden-6",
+    "group": "hidden",
+    "name": "Job Application Prep Complete Coupon",
+    "benefit": "17%",
+    "description": "Click “Copy Email” on the job listing page"
+  }
+]

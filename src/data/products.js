@@ -1,8 +1,8 @@
-import productData from "./products.json";
 import { findCategory } from "./categories";
 
 /**
- * 상품 목록. 서버가 없으니 products.json을 그대로 들고 온다.
+ * 상품 목록. 화면이 그려지기 전에 data/index.js가 setProducts로 채워 넣는다.
+ * 그 뒤로는 아래 함수들이 전부 동기로 답한다.
  *
  * 한 상품의 모양:
  *   { id, brand, name, description, categoryCode, categoryName,
@@ -10,20 +10,46 @@ import { findCategory } from "./categories";
  *     image:  { url, alt, pexelsId, searchKeyword },
  *     detail: { title, paragraphs: [...], spec: [{ label, value }] } }
  */
-export const PRODUCTS = productData;
+let products = [];
+
+export function setProducts(list) {
+  products = list;
+}
+
+export function getProducts() {
+  return products;
+}
 
 /**
- * 목록 정렬 기준. 문구는 화면이 그대로 쓰고, 비교 방식은 sortProducts에만 둔다.
- * 메인과 카테고리가 같은 배열을 보므로 순서와 문구도 자동으로 맞는다.
+ * 목록 정렬 기준. 비교 방식은 sortProducts에만 둔다.
+ * 메인과 카테고리가 같은 배열을 보므로 순서가 자동으로 맞는다.
+ *
+ * 화면에 보일 이름은 데이터가 아니라 문구라서 common.json의 sort가 들고 있다.
+ * 목록을 그리는 쪽에서 useSortOptions로 키와 이름을 붙여 쓴다.
  */
-export const SORTS = [
-  /* products.json에 담긴 순서 그대로. 원본 데이터와 대조할 때 쓴다.
-     목록은 SORTS[0]으로 시작하므로 이 항목이 기본 정렬이 된다. */
-  { key: "none", label: "정렬 없음" },
-  { key: "new", label: "방금 나온 척순" },
-  { key: "low", label: "통장에 덜 미안한 순" },
-  { key: "views", label: "남들이 많이 본 척순" },
-];
+export const SORT_KEYS = ["new", "low", "views"];
+
+/**
+ * 스펙에서 사이즈 항목을 찾을 때 쓰는 이름.
+ *
+ * products.json에 든 항목 이름이라 언어를 탄다. 화면 문구가 아니어서
+ * locales가 아니라 데이터를 아는 이 파일에 둔다. 두 언어 모두 이 이름이
+ * 정확히 붙은 상품이 325개로 같다.
+ */
+const SIZE_SPEC_LABEL = { ko: "사이즈", en: "Size" };
+
+/* 사이즈 칩에 쓸 목록. 해당 스펙이 없는 상품은 빈 배열이다. */
+export function sizeOptions(product, lang) {
+  const label = SIZE_SPEC_LABEL[lang] ?? SIZE_SPEC_LABEL.ko;
+  const row = product?.detail?.spec?.find((item) => item.label === label);
+
+  if (!row) return [];
+
+  return row.value
+    .split("/")
+    .map((size) => size.trim())
+    .filter(Boolean);
+}
 
 /* 원본은 건드리지 않고 정렬한 새 배열을 돌려준다. */
 export function sortProducts(list, key) {
@@ -36,18 +62,14 @@ export function sortProducts(list, key) {
     /* 조회수는 없으니 fakePopularity를 본 척한다. */
     case "views":
       return [...list].sort((a, b) => b.fakePopularity - a.fakePopularity);
-    /* "none"(정렬 없음)과 모르는 키는 받은 순서를 그대로 둔다. */
+    /* 모르는 키는 받은 순서를 그대로 둔다. */
     default:
       return [...list];
   }
 }
 
-export function won(value) {
-  return value.toLocaleString("ko-KR") + "원";
-}
-
 export function findProduct(id) {
-  return PRODUCTS.find((product) => product.id === id);
+  return products.find((product) => product.id === id);
 }
 
 /**
@@ -65,7 +87,7 @@ export function productsInCategory(code) {
     ...category.children.map((child) => child.code),
   ]);
 
-  return PRODUCTS.filter((product) => codes.has(product.categoryCode));
+  return products.filter((product) => codes.has(product.categoryCode));
 }
 
 /* 상세 하단 "함께 보는 상품" — 같은 소분류를 먼저 채우고, 모자라면 같은 대분류에서 가져온다. */

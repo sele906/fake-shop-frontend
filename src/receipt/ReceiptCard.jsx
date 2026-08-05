@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styles from "./ReceiptCard.module.css";
-import { won } from "../data/products";
+import usePrice from "../lib/usePrice";
 
 /**
  * 절약 영수증. 결제 완료 화면과 공유 링크 화면이 같은 것을 쓴다.
@@ -12,6 +12,7 @@ import { won } from "../data/products";
  */
 export default function ReceiptCard({ receipt }) {
   const { t } = useTranslation(["receipt", "common"]);
+  const price = usePrice();
   const { date, total, payName, note, grade, itemCount, items } = receipt;
 
   /* 링크로 온 영수증은 상품 줄이 잘려 있을 수 있다. */
@@ -54,7 +55,7 @@ export default function ReceiptCard({ receipt }) {
 
         <div className={styles.receiptTotal}>
           <span>{t("card.saved")}</span>
-          <b>{won(total)}</b>
+          <b>{price(total)}</b>
         </div>
       </div>
 

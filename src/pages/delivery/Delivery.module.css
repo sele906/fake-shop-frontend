@@ -29,6 +29,13 @@
   color: var(--accent);
 }
 
+/* 헤더는 space-between이라 오른쪽 항목들을 하나로 묶어 준다. */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .pageHeader p {
   margin: 0;
   color: var(--n-600);

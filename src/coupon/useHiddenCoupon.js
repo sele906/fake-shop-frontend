@@ -7,13 +7,8 @@ import {
   readCoupons,
   writeCoupons,
 } from "./couponStorage";
-import {
-  HIDDEN_COUPONS,
-  HIDDEN_KEY,
-  findHiddenCoupon,
-  readUnlocked,
-  writeUnlocked,
-} from "./hiddenStorage";
+import { HIDDEN_KEY, readUnlocked, writeUnlocked } from "./hiddenStorage";
+import { findHiddenCoupon, getHiddenCoupons } from "../data/coupons";
 
 /**
  * 숨은 업적 쿠폰을 다루는 곳. 미션은 사이트 곳곳(로그인 · 배송 조회 · 헤더 로고
@@ -92,7 +87,7 @@ export default function useHiddenCoupon() {
   }, []);
 
   return {
-    hiddenCoupons: HIDDEN_COUPONS,
+    hiddenCoupons: getHiddenCoupons(),
     unlockedIds,
     unlockedCount: unlockedIds.length,
     isUnlocked,

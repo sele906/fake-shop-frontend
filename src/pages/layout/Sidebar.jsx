@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Layout.module.css";
-import { CATEGORIES, getCategoryPath } from "../../data/categories";
+import { getCategories, getCategoryPath } from "../../data/categories";
 import { productsInCategory } from "../../data/products";
 
 import { BiCaretDown, BiCaretRight, BiX } from "react-icons/bi";
@@ -10,11 +10,14 @@ import { BiCaretDown, BiCaretRight, BiX } from "react-icons/bi";
 /* 주소의 :promoId와 그대로 맞물린다. 표시할 이름은 layout.json의 sidebar.promo에서 읽는다. */
 const PROMO_IDS = ["weekly", "new", "picked"];
 
-/* 카테고리 화면이 아닐 때(메인 등)는 첫 대분류를 펼쳐 둔다. */
-const FIRST_CODE = CATEGORIES[0]?.code ?? null;
-
 export default function Sidebar({ isOpen, onClose, onNavigate }) {
   const { t } = useTranslation("layout");
+
+  /* 데이터는 DataProvider가 채운 뒤라 여기서는 그냥 읽으면 된다. */
+  const categories = getCategories();
+
+  /* 카테고리 화면이 아닐 때(메인 등)는 첫 대분류를 펼쳐 둔다. */
+  const firstCode = categories[0]?.code ?? null;
 
   /* 어느 칸을 보고 있는지는 주소에서 읽는다. 대분류·소분류 어느 쪽이든 받는다. */
   const match = useMatch("/category/:categoryCode");
@@ -24,7 +27,7 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
   const subCode = path[1]?.code ?? null;
   const activePromoId = promoMatch?.params.promoId ?? null;
 
-  const [expandedCode, setExpandedCode] = useState(topCode ?? FIRST_CODE);
+  const [expandedCode, setExpandedCode] = useState(topCode ?? firstCode);
 
   /* 다른 대분류로 이동하면 그 칸을 펼쳐 준다. */
   useEffect(() => {
@@ -54,7 +57,7 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
           {t("sidebar.categories")}
         </div>
 
-        {CATEGORIES.map((category) => {
+        {categories.map((category) => {
           const isExpanded = expandedCode === category.code;
           const isCurrent = topCode === category.code;
 

@@ -11,7 +11,7 @@ import { BiCaretDown, BiCheck } from "react-icons/bi";
  * 네이티브 select를 쓰지 않는 이유는 목록의 여백을 정할 수 없기 때문이다.
  * 항목마다 손가락이 닿을 높이를 주려고 직접 그린다.
  *
- *   <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
+ *   <SortDropdown options={sorts} value={sortKey} onChange={setSortKey} />
  *
  * options는 [{ key, label }] 모양이다.
  */

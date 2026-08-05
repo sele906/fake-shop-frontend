@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "kicker": "This is a store where nobody buys",
+    "titleLine1": "Fill your cart",
+    "titleLine2": "and browse to your heart's content",
+    "lead": "But there is no real checkout, and no real delivery.",
+    "ctaPrimary": "Go add something anyway",
+    "ctaSecondary": "Act like you have coupons"
+  },
+  "toolbar": {
+    "title": "Everyone's browsing for no reason",
+    "tempting_one": "{{count}} item tempting you",
+    "tempting_other": "{{count}} items tempting you"
+  },
+  "sortAria": "Sort",
+  "gridAria": "Product list"
+}

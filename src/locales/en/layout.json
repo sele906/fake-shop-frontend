@@ -1,0 +1,37 @@
+{
+  "header": {
+    "openCategories": "Open categories",
+    "cartAria_one": "Cart, {{count}} item",
+    "cartAria_other": "Cart, {{count}} items",
+    "userMenu": "User menu",
+    "login": "Pretend to log in",
+    "cart": "Things you won't buy"
+  },
+  "footer": {
+    "hireTitle": "The developer who built this",
+    "hireLead": "A backend developer who built the whole thing, from planning to deploy.",
+    "hireCta": "See the résumé and projects →",
+    "storeLead1": "We carefully collected the urge to buy.",
+    "storeLead2": "No checkout, and the lingering regret is free.",
+    "helpTitle": "Support",
+    "helpFaq": "Questions nobody asked",
+    "helpReturn": "Return something you never bought",
+    "companyTitle": "Company",
+    "companyAbout": "A fairly convincing About page",
+    "companyPartner": "Send a partnership inquiry into the void",
+    "companyCareers": "Browse the job listings",
+    "imageCredit": "Product photos:"
+  },
+  "sidebar": {
+    "categories": "Categories",
+    "close": "Close",
+    "all": "All",
+    "promoTitle": "Collections",
+    "promo": {
+      "weekly": "Not buying these this week either",
+      "new": "Pretending to be new",
+      "picked": "NOBUY picked these for no reason"
+    },
+    "login": "Pretend to log in"
+  }
+}

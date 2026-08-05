@@ -1,0 +1,40 @@
+{
+  "notes": {
+    "0100": "The closet is already full, but the eyes keep wandering back here.",
+    "0200": "Nobody reads the ingredients. The bottle just looks nice.",
+    "0300": "In the cart, we always eat healthy.",
+    "0400": "You lived fine without these until you saw them.",
+    "0500": "The cooking never improves. Only the gadgets multiply.",
+    "0600": "You can't change the floor plan, so you change the cart instead.",
+    "0700": "What you own still works, but it somehow looks slower now.",
+    "0800": "No use whatsoever. Collecting is the whole point.",
+    "0900": "It started as a hobby. It is now a storage problem.",
+    "1000": "Buy the gear first and you're already halfway to a workout.",
+    "1100": "This aisle fills up before anything you'd buy for yourself.",
+    "1200": "\"It's for my niece\" works best in this aisle.",
+    "default": "Feel free to just look around."
+  },
+  "missing": {
+    "title": "No such category",
+    "lead": "Either the URL is wrong, or we haven't built this aisle yet.",
+    "cta": "Just go back home"
+  },
+  "crumbsAria": "Breadcrumb",
+  "home": "Home",
+  "tempting_one": "{{count}} item tempting you",
+  "tempting_other": "{{count}} items tempting you",
+  "subrailAria": "Subcategories",
+  "all": "All",
+  "count_one": "{{count}} item",
+  "count_other": "{{count}} items",
+  "sortAria": "Sort",
+  "gridAria": "Product list",
+  "empty": {
+    "line1": "This aisle is still empty.",
+    "line2": "You can not-buy anything anywhere, so try another aisle."
+  },
+  "more": {
+    "label": "Load more products",
+    "done": "That's everything"
+  }
+}

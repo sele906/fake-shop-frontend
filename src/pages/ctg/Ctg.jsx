@@ -4,19 +4,21 @@ import { useTranslation } from "react-i18next";
 import styles from "./Ctg.module.css";
 import { getCategoryPath } from "../../data/categories";
 import {
-  SORTS,
   productImage,
   productsInCategory,
   sortProducts,
-  won,
 } from "../../data/products";
 import SortDropdown from "../../components/SortDropdown";
+import usePrice from "../../lib/usePrice";
+import useSortOptions from "../../lib/useSortOptions";
 
 export default function Ctg() {
   const { t } = useTranslation("ctg");
   const { categoryCode } = useParams();
 
-  const [sortKey, setSortKey] = useState(SORTS[0].key);
+  const price = usePrice();
+  const sorts = useSortOptions();
+  const [sortKey, setSortKey] = useState(sorts[0].key);
   const [isMoreDone, setIsMoreDone] = useState(false);
 
   /* 주소의 코드는 대분류일 수도, 소분류일 수도 있다.
@@ -114,7 +116,7 @@ export default function Ctg() {
         </h2>
 
         <nav className={styles.sorts} aria-label={t("sortAria")}>
-          {SORTS.map((sort) => (
+          {sorts.map((sort) => (
             <button
               key={sort.key}
               type="button"
@@ -127,7 +129,7 @@ export default function Ctg() {
         </nav>
 
         {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
-        <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
+        <SortDropdown options={sorts} value={sortKey} onChange={setSortKey} />
       </div>
 
       {products.length === 0 ? (
@@ -168,7 +170,9 @@ export default function Ctg() {
                     {product.name}
                   </Link>
 
-                  <span className={styles.cardPrice}>{won(product.price)}</span>
+                  <span className={styles.cardPrice}>
+                    {price(product.price)}
+                  </span>
                 </div>
               </article>
             ))}

@@ -1,4 +1,4 @@
-# 안삼 (ANSAM)
+# 안삼 (NOBUY)
 
 **[한국어](./README.md) | [English](./README.en.md)**
 
@@ -14,7 +14,7 @@
 
 ## 📷 미리보기
 
-![안삼 메인 화면](docs/mainScreenShot.png)
+![안삼 메인 화면](docs/main_screenShot_ko.png)
 
 ## 💡 기획 의도
 
@@ -33,6 +33,7 @@
 - 사이트 곳곳에 숨겨진 히든 미션 6종과 업적 쿠폰
 - 가짜 결제, 배송 경로 애니메이션, 절제·도파민 게이지
 - 서버 없이 링크 하나로 공유되는 영수증
+- 한국어 · 영어 전환과 브라우저 언어 자동 감지
 - LocalStorage 기반 상태 유지와 탭 간 실시간 동기화
 - 반응형 웹 UI
 
@@ -43,9 +44,10 @@
 - React 19.2
 - Create React App (react-scripts 5.0.1)
 - React Router DOM 6.30
+- react-i18next 17.0 · i18next 26.3
 - JavaScript ES2020+
 - CSS Modules
-- React Icons 5.7 
+- React Icons 5.7
 - Sonner 2.0
 
 ### Deployment
@@ -72,16 +74,23 @@ http://localhost:3000
 ```text
 src
 ├─ assets
-├─ cart        
-├─ components  
-├─ coupon      
-├─ data        
+├─ cart
+├─ components
+├─ coupon
+├─ data
+│  ├─ ko
+│  ├─ en
+│  └─ index.js
 ├─ hooks
-├─ lib         
-├─ order       
-├─ pages       
-├─ receipt     
-└─ router      
+├─ lib
+├─ locales
+│  ├─ ko
+│  └─ en
+├─ order
+├─ pages
+├─ receipt
+├─ router
+└─ i18n.js
 ```
 
 ## 🔍 주요 구현 내용
@@ -125,6 +134,12 @@ LocalStorage에 필요한 사용자 데이터를 저장했습니다.
 JSON을 UTF-8로 바꾼 뒤 Base64URL로 인코딩해 `/receipt?d=` 뒤에 붙입니다.
 
 상품 데이터를 다시 만들어도 예전에 공유한 링크가 그대로 열리도록 하기 위해서 주소에는 상품 이름과 수량 스냅샷을 담았습니다.
+
+### 한국어 · 영어 다국어 지원
+
+`src/locales`의 언어별 json을 통해 다국어를 지원합니다.
+방문자의 브라우저 언어를 감지해 첫 화면을 정하고,
+고른 언어는 `localStorage`에 남겨 다음 방문에도 유지됩니다.
 
 ### 탭 간 상태 동기화
 
@@ -197,4 +212,3 @@ JSON을 UTF-8로 바꾼 뒤 Base64URL로 인코딩해 `/receipt?d=` 뒤에 붙�
 - TypeScript 적용
 - 접근성 및 반응형 UI 개선
 - 테스트 코드 추가
-- 다국어 지원

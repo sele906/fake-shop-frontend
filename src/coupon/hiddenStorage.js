@@ -1,4 +1,4 @@
-import couponData from "../data/coupon.json";
+import { getHiddenCoupons } from "../data/coupons";
 
 /**
  * 숨은 업적 쿠폰의 달성 기록을 localStorage에 넣고 꺼내는 곳.
@@ -10,15 +10,12 @@ import couponData from "../data/coupon.json";
  * 쿠폰함(couponStorage.js)과 나눠 둔다. 쿠폰함은 사용자가 지울 수 있어서
  * 쿠폰이 있는지로만 판단하면, 지운 뒤 같은 미션을 반복해 몇 번이고 다시
  * 받을 수 있기 때문이다. 미션을 깼다는 사실은 쿠폰과 별개로 남긴다.
+ *
+ * 쿠폰 원본은 data/coupons.js가 들고 있다. 언어를 바꾸면 그쪽이 새 언어의
+ * 쿠폰으로 갈리지만 id는 그대로라 여기 저장한 기록은 그대로 유효하다.
  */
 export const HIDDEN_KEY = "ansam.hidden.v1";
 const VERSION = 1;
-
-export const HIDDEN_COUPONS = couponData.filter(
-  (coupon) => coupon.group === "hidden"
-);
-
-const HIDDEN_IDS = new Set(HIDDEN_COUPONS.map((coupon) => coupon.id));
 
 /**
  * 미션이 걸린 자리에 붙이는 이름. 화면에서 "hidden-6" 같은 문자열을 직접
@@ -33,16 +30,14 @@ export const MISSION = {
   CAREERS_COPY: "hidden-6",
 };
 
-export function findHiddenCoupon(id) {
-  return HIDDEN_COUPONS.find((coupon) => coupon.id === id) ?? null;
-}
-
 /* 지금 coupon.json에 있는 미션만 남긴다. 없어진 미션의 기록은 버린다. */
 export function normalizeUnlocked(rawIds) {
   if (!Array.isArray(rawIds)) return [];
 
+  const hiddenIds = new Set(getHiddenCoupons().map((coupon) => coupon.id));
+
   const kept = rawIds.filter(
-    (id) => typeof id === "string" && HIDDEN_IDS.has(id)
+    (id) => typeof id === "string" && hiddenIds.has(id)
   );
 
   return [...new Set(kept)];

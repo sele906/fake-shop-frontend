@@ -1,0 +1,77 @@
+{
+  "projects": {
+    "beluo": {
+      "name": "Beluo",
+      "period": "Dec 2025 – Apr 2026",
+      "role": "Solo developer · from planning to deploy",
+      "summary": "An AI character chat service where users create their own characters and pick the model they want to talk to.",
+      "points": [
+        "With 1.12M messages stored, chat room lookups were scanning the whole collection. I designed a compound index matched to the query and sort pattern, cutting a single lookup from 2,794ms to 1ms. Under 30 concurrent users: p95 30ms, 0% failure rate.",
+        "FCM pushes were sent synchronously after each AI response, exhausting the thread pool. Moving them to asynchronous dispatch over RabbitMQ raised throughput from 111 TPS to 1,892 TPS and cut response time from 336ms to 19ms.",
+        "Credits weren't being granted because payment webhook signature verification was failing. I fixed it by separating secrets per environment and correcting the order of raw body verification.",
+        "Built JWT and Google OAuth2 authentication, model selection across OpenAI, Claude, and Groq, automatic summarization of long conversations, and the credit deduction flow."
+      ],
+      "links": {
+        "service": "Visit the service",
+        "github": "View on GitHub"
+      }
+    },
+    "library": {
+      "name": "Library Management System",
+      "period": "Oct 2024 – Nov 2024",
+      "role": "Personal project",
+      "summary": "A library management web service handling book loans and seat reservations. It was an attempt to move the classification and search methods I studied in library science into real data structures.",
+      "points": [
+        "Implemented the book, member, and loan domains with Java and the Spring Framework.",
+        "Managed loan history and seat reservation data with MyBatis and PostgreSQL.",
+        "Built separate user and admin screens with JSP, jQuery, and Bootstrap.",
+        "Set up a publicly reachable deployment with AWS EC2, Nginx, and DuckDNS."
+      ],
+      "links": {
+        "site": "Visit the site"
+      }
+    }
+  },
+  "hero": {
+    "eyebrow": "WE ARE NOT HIRING",
+    "titleLine1": "We are not hiring",
+    "titleLine2": "so let me apply instead",
+    "lead": "The only genuine section in NOBUY STORE. Everything below is a résumé, not a joke.",
+    "contactAria": "Contact",
+    "github": "Browse GitHub"
+  },
+  "intro": {
+    "title": "The backend developer who built this store",
+    "lead": "This part is serious.",
+    "sloganLine1": "I work on the parts where,",
+    "sloganLine2": "if they break, users notice first.",
+    "paragraph1": "I'm a backend developer who builds API servers with Spring Boot. I've mostly worked on things that must not fail quietly — authentication, third-party API integration, payments — and I prefer confirming problems with logs and numbers before fixing them, rather than guessing.",
+    "paragraph2": "Building the AI character chat service Beluo alone, from planning to deploy, I worked through slow queries, delayed notifications, and payment webhooks that failed verification, one at a time. This store is a frontend exercise meant to widen a backend-only view, which is why it has nothing to sell."
+  },
+  "projectSection": {
+    "title": "Selected projects",
+    "lead": "Actually deployed, and payments actually work."
+  },
+  "stackSection": {
+    "title": "Tech stack",
+    "lead": "Only what I've actually used on a project."
+  },
+  "contact": {
+    "title": "Get in touch",
+    "lead": "Partnership inquiries get rejected, but interview offers get a proper reply.",
+    "label": "EMAIL",
+    "note": "Job offers, take-home assignments, and project conversations are all welcome.",
+    "send": "Send an email",
+    "copy": "Copy email"
+  },
+  "toast": {
+    "copyFailedTitle": "Copy failed",
+    "copyFailedLead": "Please write down {{email}} manually.",
+    "copiedTitle": "Address copied",
+    "copiedLead": "The only feature on this store that actually works."
+  },
+  "outro": {
+    "text": "If you read this far, you've already spent longer here than anyone else.",
+    "link": "Go back and keep browsing"
+  }
+}

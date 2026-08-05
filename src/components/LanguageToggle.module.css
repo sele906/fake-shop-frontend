@@ -1,0 +1,45 @@
+/* 헤더 높이 안에 들어가는 2칸 토글. 프로젝트의 각진 스타일을 따른다. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--text);
+  background: var(--bg);
+  line-height: 1;
+}
+
+.toggle button {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--n-700);
+  padding: 7px 9px;
+  min-width: 36px;
+}
+
+.toggle button:hover {
+  color: var(--text);
+}
+
+/* 고른 언어. aria-pressed로 상태를 알리고 색은 그걸 따라간다. */
+.toggle button[aria-pressed="true"] {
+  background: var(--text);
+  color: #fff;
+}
+
+.toggle button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+@media (max-width: 899.98px) {
+  .toggle button {
+    font-size: 11px;
+    padding: 6px 7px;
+    min-width: 32px;
+  }
+}

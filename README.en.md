@@ -1,4 +1,4 @@
-# ANSAM (안삼)
+# NOBUY (안삼)
 
 **[한국어](./README.md) | [English](./README.en.md)**
 
@@ -14,7 +14,7 @@ and delivery-tracking experience of an online store without ever making a real p
 
 ## 📷 Preview
 
-![ANSAM main screen](docs/mainScreenShot.png)
+![NOBUY main screen](docs/main_screenShot_en.png)
 
 ## 💡 Motivation
 
@@ -34,6 +34,7 @@ hidden missions, and more.
 - 6 hidden missions scattered across the site, plus achievement coupons
 - Fake checkout, animated delivery route, and restraint/dopamine gauges
 - Receipts shareable through a single link, with no server involved
+- Korean/English switching with automatic browser-language detection
 - LocalStorage-based state persistence with real-time sync across tabs
 - Responsive web UI
 
@@ -44,6 +45,7 @@ hidden missions, and more.
 - React 19.2
 - Create React App (react-scripts 5.0.1)
 - React Router DOM 6.30
+- react-i18next 17.0 · i18next 26.3
 - JavaScript ES2020+
 - CSS Modules
 - React Icons 5.7
@@ -73,16 +75,23 @@ http://localhost:3000
 ```text
 src
 ├─ assets
-├─ cart        
-├─ components  
-├─ coupon      
-├─ data        
+├─ cart
+├─ components
+├─ coupon
+├─ data
+│  ├─ ko
+│  ├─ en
+│  └─ index.js
 ├─ hooks
-├─ lib         
-├─ order       
-├─ pages       
-├─ receipt     
-└─ router      
+├─ lib
+├─ locales
+│  ├─ ko
+│  └─ en
+├─ order
+├─ pages
+├─ receipt
+├─ router
+└─ i18n.js
 ```
 
 ## 🔍 Implementation Highlights
@@ -128,6 +137,12 @@ encoded as Base64URL, and appended after `/receipt?d=`.
 
 The URL stores a snapshot of product names and quantities, so previously shared links
 still open correctly even after the product data is regenerated.
+
+### Korean and English localization
+
+Multilingual support is implemented using language-specific JSON files in `src/locales`.
+
+The visitor's browser language determines the initial language, and the selected language is saved in `localStorage` so it persists across future visits.
 
 ### Cross-tab state sync
 
@@ -181,7 +196,7 @@ Problem:
 
 - Writing a change received from another tab straight back to storage made `storage` events bounce back and forth indefinitely
 - Conversely, the `storage` event never fires in the tab that made the change, so the coupon
-  wallet could not notice changes saved from another screen, such as hidden coupons
+  wallet couldn't notice changes saved from another screen, such as hidden coupons
 
 Solution:
 
@@ -200,4 +215,3 @@ Solution:
 - Migrate to TypeScript
 - Improve accessibility and responsive UI
 - Add tests
-- Multi-language support

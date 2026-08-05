@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Trans, useTranslation } from "react-i18next";
 import styles from "./Cart.module.css";
-import { PRODUCTS, productImage, won } from "../../data/products";
+import { getProducts, productImage } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { couponDiscount } from "../../coupon/couponStorage";
@@ -11,18 +11,34 @@ import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
+import LanguageToggle from "../../components/LanguageToggle";
+import usePrice from "../../lib/usePrice";
 
 import { BiChevronLeft, BiX } from "react-icons/bi";
 
 const FREE_SHIP = 50000;
 const SHIP_FEE = 3500;
 
-/* 숨은 쿠폰이 걸린 코드. 대소문자가 없는 한글이라 그대로 비교한다.
-   화면에 그리는 문구가 아니라 사용자가 입력해야 하는 값이라 번역하지 않는다. */
-const HIDDEN_CODE = "진짜안삼";
+/**
+ * 숨은 쿠폰이 걸린 코드.
+ *
+ * 화면에 그리는 문구가 아니라 사용자가 입력하는 값이라 locales에 두지 않는다.
+ * 언어를 가리지 않고 둘 다 받는다. 한쪽 언어로 알아낸 코드를 스크린샷으로
+ * 공유했을 때, 다른 언어로 보던 사람이 입력해도 통해야 하기 때문이다.
+ *
+ * 영어 코드는 공백과 대소문자를 무시한다. 한글은 대소문자가 없어 그대로 비교한다.
+ */
+const HIDDEN_CODES = ["진짜안삼", "notbuying"];
+
+function isHiddenCode(input) {
+  const normalized = input.replace(/\s+/g, "").toLowerCase();
+
+  return HIDDEN_CODES.includes(normalized);
+}
 
 export default function Cart() {
   const { t } = useTranslation(["cart", "common"]);
+  const price = usePrice();
   const goBack = useGoBack();
   const navigate = useNavigate();
 
@@ -96,7 +112,9 @@ export default function Cart() {
   const recommended = useMemo(() => {
     const inCart = new Set(items.map((item) => item.productId));
 
-    return PRODUCTS.filter((product) => !inCart.has(product.id)).slice(0, 4);
+    return getProducts()
+      .filter((product) => !inCart.has(product.id))
+      .slice(0, 4);
   }, [items]);
 
   /* 사이즈가 없는 상품의 옵션은 저장소가 정한 고정값이라 그릴 때만 번역한다.
@@ -146,7 +164,7 @@ export default function Cart() {
     }
 
     /* 숨은 쿠폰. 처음 맞힌 한 번만 쿠폰이 오고, 그 뒤로는 아래로 떨어진다. */
-    if (code === HIDDEN_CODE && unlock(MISSION.CART_CODE)) {
+    if (isHiddenCode(code) && unlock(MISSION.CART_CODE)) {
       setCoupon("");
       return;
     }
@@ -197,6 +215,8 @@ export default function Cart() {
           {t("title")} <em>{items.length}</em>
         </h1>
 
+        <LanguageToggle />
+
         <Link className={styles.home} to="/">
           {t("keepShopping")}
         </Link>
@@ -220,7 +240,7 @@ export default function Cart() {
                     <Trans
                       ns="cart"
                       i18nKey="ship.remaining"
-                      values={{ amount: won(shipLeft) }}
+                      values={{ amount: price(shipLeft) }}
                       components={{ b: <b /> }}
                     />
                   ) : (
@@ -348,11 +368,11 @@ export default function Cart() {
                           <div className={styles.prices}>
                             {product.listPrice && (
                               <span className={styles.was}>
-                                {won(product.listPrice * qty)}
+                                {price(product.listPrice * qty)}
                               </span>
                             )}
                             <span className={styles.now}>
-                              {won(product.price * qty)}
+                              {price(product.price * qty)}
                             </span>
                           </div>
                         </div>
@@ -421,7 +441,7 @@ export default function Cart() {
                         <div className={styles.line}>
                           <div className={styles.prices}>
                             <span className={styles.now}>
-                              {won(product.price)}
+                              {price(product.price)}
                             </span>
                           </div>
 
@@ -523,12 +543,12 @@ export default function Cart() {
 
                 <div className={styles.sumRow}>
                   <span>{t("sum.itemTotal")}</span>
-                  <span>{won(listTotal)}</span>
+                  <span>{price(listTotal)}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.disc}`}>
                   <span>{t("sum.itemDiscount")}</span>
-                  <span>{discount ? `−${won(discount)}` : t("sum.zero")}</span>
+                  <span>{discount ? `−${price(discount)}` : t("sum.zero")}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.disc}`}>
@@ -537,17 +557,17 @@ export default function Cart() {
                       count: selectedCouponIds.length,
                     })}
                   </span>
-                  <span>{couponOff ? `−${won(couponOff)}` : t("sum.zero")}</span>
+                  <span>{couponOff ? `−${price(couponOff)}` : t("sum.zero")}</span>
                 </div>
 
                 <div className={styles.sumRow}>
                   <span>{t("sum.shipping")}</span>
-                  <span>{shipFee ? won(shipFee) : t("sum.free")}</span>
+                  <span>{shipFee ? price(shipFee) : t("sum.free")}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.grand}`}>
                   <span>{t("sum.grandTotal")}</span>
-                  <strong>{won(grandTotal)}</strong>
+                  <strong>{price(grandTotal)}</strong>
                 </div>
 
                 {couponWasted > 0 && (
@@ -555,7 +575,7 @@ export default function Cart() {
                     <Trans
                       ns="cart"
                       i18nKey="sum.wasted"
-                      values={{ amount: won(couponWasted) }}
+                      values={{ amount: price(couponWasted) }}
                       components={{ b: <b /> }}
                     />
                   </p>
@@ -578,7 +598,7 @@ export default function Cart() {
                   <span>
                     {t("checkout.selectedCount", { count: selected.length })}
                   </span>
-                  <strong>{won(grandTotal)}</strong>
+                  <strong>{price(grandTotal)}</strong>
                 </div>
 
                 <button
@@ -588,7 +608,7 @@ export default function Cart() {
                   onClick={goToCheckout}
                 >
                   {selected.length
-                    ? t("checkout.order", { amount: won(grandTotal) })
+                    ? t("checkout.order", { amount: price(grandTotal) })
                     : t("checkout.selectFirst")}
                 </button>
               </div>
@@ -620,7 +640,7 @@ export default function Cart() {
                   {product.name}
                 </Link>
 
-                <span className={styles.cardPrice}>{won(product.price)}</span>
+                <span className={styles.cardPrice}>{price(product.price)}</span>
               </article>
             ))}
           </div>

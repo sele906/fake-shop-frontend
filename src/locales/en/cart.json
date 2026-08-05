@@ -1,0 +1,89 @@
+{
+  "back": "Back",
+  "title": "Cart",
+  "keepShopping": "Keep browsing",
+  "toast": {
+    "removed": "Item removed",
+    "allCouponsApplied_one": "Applied all {{count}} coupon. Nobody is stopping you.",
+    "allCouponsApplied_other": "Applied all {{count}} coupons. Nobody is stopping you.",
+    "noCodeLine1": "No valid coupon code.",
+    "noCodeLine2": "You saw that coming, though.",
+    "badCodeLine1": "That coupon doesn't exist.",
+    "badCodeLine2": "But you typed it very convincingly.",
+    "couponsUsed_one": "Used {{count}} coupon. It's gone from your wallet.",
+    "couponsUsed_other": "Used {{count}} coupons. They're gone from your wallet.",
+    "noneSelected": "Nothing is selected",
+    "removedSelected_one": "Removed {{count}} item",
+    "removedSelected_other": "Removed {{count}} items",
+    "restockRequested": "We pretended to sign you up for a restock alert"
+  },
+  "empty": {
+    "title": "Your cart is empty",
+    "lead": "Nothing in here yet. Start with this week's deals.",
+    "cta": "Keep browsing"
+  },
+  "ship": {
+    "aria": "Free shipping progress",
+    "remaining": "Add <b>{{amount}}</b> more to reach <b>free shipping</b>",
+    "met": "You've unlocked <b>free shipping</b>"
+  },
+  "selbar": {
+    "selectAll": "Select all ({{selected}}/{{total}})",
+    "removeSelected": "Remove selected"
+  },
+  "group": {
+    "directAria": "Shipped by NOBUY",
+    "directHead": "Shipped by NOBUY",
+    "directNote": "· Free shipping",
+    "soldOutAria": "Unavailable items",
+    "soldOutHead": "Unavailable",
+    "soldOutNote": "· Restock alerts available"
+  },
+  "item": {
+    "selectAria": "Select {{name}}",
+    "removeAria": "Remove {{name}}",
+    "qtyDown": "Decrease quantity",
+    "qtyUp": "Increase quantity",
+    "cannotSelect": "Cannot select",
+    "soldOut": "Sold out",
+    "restock": "Restock alert"
+  },
+  "coupon": {
+    "title": "Coupon discount",
+    "selectedCount_one": "{{count}} selected",
+    "selectedCount_other": "{{count}} selected",
+    "empty": "You don't have any coupons. Grab some from the <walletLink>coupon wallet</walletLink>. Stack as many as you like.",
+    "deselectAll": "Deselect all",
+    "selectAll_one": "Select all {{count}}",
+    "selectAll_other": "Select all {{count}}",
+    "codeFormAria": "Apply coupon code",
+    "codePlaceholder": "Enter a suspicious coupon code",
+    "codeAria": "Coupon code",
+    "apply": "Apply"
+  },
+  "sum": {
+    "aria": "Order total",
+    "title": "Order total",
+    "itemTotal": "Subtotal",
+    "itemDiscount": "Product discount",
+    "couponDiscount_one": "Coupon discount ({{count}})",
+    "couponDiscount_other": "Coupon discount ({{count}})",
+    "shipping": "Shipping",
+    "free": "Free",
+    "zero": "₩0",
+    "grandTotal": "Total",
+    "wasted": "You still have <b>{{amount}}</b> of coupon left, but zero is the floor. The rest just spills over.",
+    "points": "Membership points pending: <b>{{points}}P</b> · Enjoy the feeling of checking out, safely."
+  },
+  "checkout": {
+    "selectedCount_one": "{{count}} selected",
+    "selectedCount_other": "{{count}} selected",
+    "order": "Order for {{amount}}",
+    "selectFirst": "Please select an item"
+  },
+  "rec": {
+    "aria": "Frequently added together",
+    "title": "Goes well in the cart with"
+  },
+  "imageCredit": "Product photos:"
+}

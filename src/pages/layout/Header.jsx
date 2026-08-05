@@ -5,6 +5,7 @@ import styles from "./Layout.module.css";
 import { useCart } from "../../cart/CartProvider";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
+import LanguageToggle from "../../components/LanguageToggle";
 
 import { BiCart, BiMenu } from "react-icons/bi";
 
@@ -52,6 +53,10 @@ export default function Header({ isNavOpen, onToggleNav }) {
           {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
       </div>
+
+      {/* .utils는 900px 이하에서 숨겨지므로 토글은 그 밖에 둔다.
+          모바일에서도 언어를 바꿀 수 있어야 한다. */}
+      <LanguageToggle />
 
       <Link
         className={styles.iconBtn}

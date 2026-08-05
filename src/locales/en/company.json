@@ -1,0 +1,101 @@
+{
+  "values": [
+    {
+      "number": "01",
+      "title": "Browsing over buying",
+      "description": "Instead of rushing you to purchase, we think first about letting you look around and add freely."
+    },
+    {
+      "number": "02",
+      "title": "Imagining over shipping",
+      "description": "We care more about the fun of choosing than about a box actually arriving."
+    },
+    {
+      "number": "03",
+      "title": "Taste over ownership",
+      "description": "We build a store that records what caught your eye, not what you bought."
+    }
+  ],
+  "partnerSteps": [
+    {
+      "title": "Just send the inquiry",
+      "description": "Nothing is transmitted, but the feeling of writing it is provided."
+    },
+    {
+      "title": "Wait while we pretend to review",
+      "description": "A staff member does nothing, with a very serious expression."
+    },
+    {
+      "title": "Get politely rejected",
+      "description": "Every brand equally fails to get listed."
+    }
+  ],
+  "rejectionReasons": [
+    "Your brand seems a little too real, which doesn't fit how NOBUY operates.",
+    "The products are viable enough that we couldn't possibly handle them.",
+    "Sales potential was detected, so internal policy required a rejection.",
+    "The reviewer nearly approved it, then came to their senses.",
+    "Listing you would risk making this look like an actual store.",
+    "Your brand description was so persuasive that it raised concerns.",
+    "The fact that you have products to sell conflicts with our core values.",
+    "Your enthusiasm was more intimidating than the products, hence the rejection.",
+    "After review, you'd be better off listing at a normal store.",
+    "The paperwork is flawless, but we do not have a warehouse."
+  ],
+  "hero": {
+    "eyebrow": "ABOUT NOBUY STORE",
+    "titleLine1": "We sell nothing,",
+    "titleLine2": "but we take taste seriously",
+    "lead": "NOBUY STORE is a fake store built so you can browse the urge to buy safely, and stretch out the thrill just before checkout.",
+    "quickLinksAria": "Company shortcuts",
+    "aboutLink": "About",
+    "partnerLink": "Partnerships"
+  },
+  "about": {
+    "title": "A fairly convincing About page",
+    "lead": "We believe not buying can also be a good shopping experience.",
+    "sloganLine1": "Less of what you need,",
+    "sloganLine2": "more of what you want to look at.",
+    "paragraph1": "NOBUY STORE began by imagining a space where you could discover your taste without owning anything. The familiar routine of comparing prices and filling a cart stays exactly the same. Only the final payment is politely omitted.",
+    "paragraph2": "There are no real orders and no real deliveries, but the time you spend choosing is taken quite seriously. Building a store that's genuinely fun without buying things you don't need is our fairly convincing goal."
+  },
+  "facts": {
+    "paymentsTerm": "Real payments",
+    "paymentsValue": "0",
+    "shipmentsTerm": "Real shipments",
+    "shipmentsValue": "0",
+    "cartTerm": "Carts in your head",
+    "cartValue": "Unlimited"
+  },
+  "partner": {
+    "title": "Send a partnership inquiry into the void",
+    "lead": "You won't actually be listed, but the feeling of inquiring is fully provided.",
+    "formEyebrow": "PARTNERSHIP FORM",
+    "formTitle": "We'll hear your brand's story, at least",
+    "formLead": "Nothing you type is sent anywhere. Feel free to just pretend to apply.",
+    "brandLabel": "The thing you call a brand",
+    "brandPlaceholder": "A fairly convincing brand name",
+    "emailLabel": "An email to wait for a reply at",
+    "emailPlaceholder": "No reply is coming",
+    "categoryLabel": "Product category",
+    "categoryPlaceholder": "Pick the least awkward category",
+    "categories": {
+      "fashion": "Things you can wear",
+      "beauty": "Things you can apply",
+      "food": "Things that look edible",
+      "living": "Things that look right at home",
+      "digital": "Things that probably need charging",
+      "etc": "Things we gave up classifying"
+    },
+    "websiteLabel": "A link claiming you exist",
+    "websitePlaceholder": "https://if-you-really-do",
+    "storyLabel": "Why you must be listed here",
+    "storyPlaceholder": "Introduce yourself, knowing you can't actually sell anything.",
+    "actionNote": "Submitting does not file an inquiry. The rejection, however, is handled promptly.",
+    "submit": "Pretend to apply"
+  },
+  "toast": {
+    "rejectedTitle": "Application result: rejected",
+    "emptyReason": "There was nothing to review, so this was rejected astonishingly fast."
+  }
+}

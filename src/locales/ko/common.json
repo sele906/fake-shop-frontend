@@ -4,8 +4,20 @@
     "suffix": "STORE",
     "full": "안삼 STORE"
   },
+  "loading": "안 살 것들을 불러오는 중입니다.",
+  "loadFailed": {
+    "title": "상품을 불러오지 못했습니다",
+    "lead": "연결이 끊겼거나 데이터를 받지 못했습니다.",
+    "retry": "다시 시도"
+  },
   "sortLabel": "정렬 기준",
+  "sort": {
+    "new": "방금 나온 척순",
+    "low": "통장에 덜 미안한 순",
+    "views": "남들이 많이 본 척순"
+  },
   "intlLocale": "ko-KR",
+  "price": "{{amount}}원",
   "defaultOption": "단일 옵션",
   "hiddenCoupon": {
     "eyebrow": "SECRET COUPON UNLOCKED",

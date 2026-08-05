@@ -1,0 +1,477 @@
+[
+  {
+    "code": "0100",
+    "parentCode": null,
+    "name": "Fashion"
+  },
+  {
+    "code": "0110",
+    "parentCode": "0100",
+    "name": "Women's Clothing"
+  },
+  {
+    "code": "0120",
+    "parentCode": "0100",
+    "name": "Men's Clothing"
+  },
+  {
+    "code": "0130",
+    "parentCode": "0100",
+    "name": "Underwear & Loungewear"
+  },
+  {
+    "code": "0140",
+    "parentCode": "0100",
+    "name": "Shoes"
+  },
+  {
+    "code": "0150",
+    "parentCode": "0100",
+    "name": "Bags"
+  },
+  {
+    "code": "0160",
+    "parentCode": "0100",
+    "name": "Fashion Accessories"
+  },
+  {
+    "code": "0200",
+    "parentCode": null,
+    "name": "Beauty"
+  },
+  {
+    "code": "0210",
+    "parentCode": "0200",
+    "name": "Skincare"
+  },
+  {
+    "code": "0220",
+    "parentCode": "0200",
+    "name": "Makeup"
+  },
+  {
+    "code": "0230",
+    "parentCode": "0200",
+    "name": "Cleansing"
+  },
+  {
+    "code": "0240",
+    "parentCode": "0200",
+    "name": "Hair Care"
+  },
+  {
+    "code": "0250",
+    "parentCode": "0200",
+    "name": "Body Care"
+  },
+  {
+    "code": "0260",
+    "parentCode": "0200",
+    "name": "Fragrance"
+  },
+  {
+    "code": "0270",
+    "parentCode": "0200",
+    "name": "Nail & Beauty Accessories"
+  },
+  {
+    "code": "0300",
+    "parentCode": null,
+    "name": "Food"
+  },
+  {
+    "code": "0310",
+    "parentCode": "0300",
+    "name": "Snacks & Desserts"
+  },
+  {
+    "code": "0320",
+    "parentCode": "0300",
+    "name": "Beverages & Coffee"
+  },
+  {
+    "code": "0330",
+    "parentCode": "0300",
+    "name": "Ready Meals & Frozen Foods"
+  },
+  {
+    "code": "0340",
+    "parentCode": "0300",
+    "name": "Fresh Food"
+  },
+  {
+    "code": "0350",
+    "parentCode": "0300",
+    "name": "Rice, Noodles & Grains"
+  },
+  {
+    "code": "0360",
+    "parentCode": "0300",
+    "name": "Sauces & Seasonings"
+  },
+  {
+    "code": "0370",
+    "parentCode": "0300",
+    "name": "Health Foods"
+  },
+  {
+    "code": "0400",
+    "parentCode": null,
+    "name": "Household Supplies"
+  },
+  {
+    "code": "0410",
+    "parentCode": "0400",
+    "name": "Bathroom Supplies"
+  },
+  {
+    "code": "0420",
+    "parentCode": "0400",
+    "name": "Cleaning Supplies"
+  },
+  {
+    "code": "0430",
+    "parentCode": "0400",
+    "name": "Laundry Supplies"
+  },
+  {
+    "code": "0440",
+    "parentCode": "0400",
+    "name": "Storage & Organization"
+  },
+  {
+    "code": "0450",
+    "parentCode": "0400",
+    "name": "Household Consumables"
+  },
+  {
+    "code": "0460",
+    "parentCode": "0400",
+    "name": "Seasonal Household Items"
+  },
+  {
+    "code": "0470",
+    "parentCode": "0400",
+    "name": "Safety & Security"
+  },
+  {
+    "code": "0500",
+    "parentCode": null,
+    "name": "Kitchen"
+  },
+  {
+    "code": "0510",
+    "parentCode": "0500",
+    "name": "Tableware"
+  },
+  {
+    "code": "0520",
+    "parentCode": "0500",
+    "name": "Cups & Tumblers"
+  },
+  {
+    "code": "0530",
+    "parentCode": "0500",
+    "name": "Pots & Pans"
+  },
+  {
+    "code": "0540",
+    "parentCode": "0500",
+    "name": "Cooking Utensils"
+  },
+  {
+    "code": "0550",
+    "parentCode": "0500",
+    "name": "Food Storage Containers"
+  },
+  {
+    "code": "0560",
+    "parentCode": "0500",
+    "name": "Kitchen Storage"
+  },
+  {
+    "code": "0570",
+    "parentCode": "0500",
+    "name": "Kitchen Consumables"
+  },
+  {
+    "code": "0600",
+    "parentCode": null,
+    "name": "Furniture & Home Decor"
+  },
+  {
+    "code": "0610",
+    "parentCode": "0600",
+    "name": "Furniture"
+  },
+  {
+    "code": "0620",
+    "parentCode": "0600",
+    "name": "Lighting"
+  },
+  {
+    "code": "0630",
+    "parentCode": "0600",
+    "name": "Bedding"
+  },
+  {
+    "code": "0640",
+    "parentCode": "0600",
+    "name": "Home Textiles"
+  },
+  {
+    "code": "0650",
+    "parentCode": "0600",
+    "name": "Home Decor"
+  },
+  {
+    "code": "0660",
+    "parentCode": "0600",
+    "name": "Clocks & Mirrors"
+  },
+  {
+    "code": "0670",
+    "parentCode": "0600",
+    "name": "Flowers & Gardening"
+  },
+  {
+    "code": "0700",
+    "parentCode": null,
+    "name": "Electronics & Appliances"
+  },
+  {
+    "code": "0710",
+    "parentCode": "0700",
+    "name": "Smart Devices"
+  },
+  {
+    "code": "0720",
+    "parentCode": "0700",
+    "name": "Computers & Laptops"
+  },
+  {
+    "code": "0730",
+    "parentCode": "0700",
+    "name": "Computer Accessories"
+  },
+  {
+    "code": "0740",
+    "parentCode": "0700",
+    "name": "Audio Devices"
+  },
+  {
+    "code": "0750",
+    "parentCode": "0700",
+    "name": "Mobile Accessories"
+  },
+  {
+    "code": "0760",
+    "parentCode": "0700",
+    "name": "Home Appliances"
+  },
+  {
+    "code": "0770",
+    "parentCode": "0700",
+    "name": "Kitchen Appliances"
+  },
+  {
+    "code": "0800",
+    "parentCode": null,
+    "name": "Stationery & Office"
+  },
+  {
+    "code": "0810",
+    "parentCode": "0800",
+    "name": "Notebooks & Planners"
+  },
+  {
+    "code": "0820",
+    "parentCode": "0800",
+    "name": "Writing Instruments"
+  },
+  {
+    "code": "0830",
+    "parentCode": "0800",
+    "name": "Stickers & Decoration"
+  },
+  {
+    "code": "0840",
+    "parentCode": "0800",
+    "name": "Art Supplies"
+  },
+  {
+    "code": "0850",
+    "parentCode": "0800",
+    "name": "Office Supplies"
+  },
+  {
+    "code": "0860",
+    "parentCode": "0800",
+    "name": "Desk Accessories"
+  },
+  {
+    "code": "0870",
+    "parentCode": "0800",
+    "name": "Cards & Gift Wrapping"
+  },
+  {
+    "code": "0900",
+    "parentCode": null,
+    "name": "Hobbies & Collectibles"
+  },
+  {
+    "code": "0910",
+    "parentCode": "0900",
+    "name": "Crafts & DIY"
+  },
+  {
+    "code": "0920",
+    "parentCode": "0900",
+    "name": "Art & Drawing"
+  },
+  {
+    "code": "0930",
+    "parentCode": "0900",
+    "name": "Games & Board Games"
+  },
+  {
+    "code": "0940",
+    "parentCode": "0900",
+    "name": "Figures & Merchandise"
+  },
+  {
+    "code": "0950",
+    "parentCode": "0900",
+    "name": "Books & Music"
+  },
+  {
+    "code": "0960",
+    "parentCode": "0900",
+    "name": "Photography & Cameras"
+  },
+  {
+    "code": "0970",
+    "parentCode": "0900",
+    "name": "Collecting Supplies"
+  },
+  {
+    "code": "1000",
+    "parentCode": null,
+    "name": "Sports & Leisure"
+  },
+  {
+    "code": "1010",
+    "parentCode": "1000",
+    "name": "Home Fitness"
+  },
+  {
+    "code": "1020",
+    "parentCode": "1000",
+    "name": "Yoga & Pilates"
+  },
+  {
+    "code": "1030",
+    "parentCode": "1000",
+    "name": "Camping"
+  },
+  {
+    "code": "1040",
+    "parentCode": "1000",
+    "name": "Hiking & Outdoor"
+  },
+  {
+    "code": "1050",
+    "parentCode": "1000",
+    "name": "Travel Accessories"
+  },
+  {
+    "code": "1060",
+    "parentCode": "1000",
+    "name": "Cycling"
+  },
+  {
+    "code": "1070",
+    "parentCode": "1000",
+    "name": "Sporting Goods"
+  },
+  {
+    "code": "1100",
+    "parentCode": null,
+    "name": "Pet Supplies"
+  },
+  {
+    "code": "1110",
+    "parentCode": "1100",
+    "name": "Dog Supplies"
+  },
+  {
+    "code": "1120",
+    "parentCode": "1100",
+    "name": "Cat Supplies"
+  },
+  {
+    "code": "1130",
+    "parentCode": "1100",
+    "name": "Pet Food"
+  },
+  {
+    "code": "1140",
+    "parentCode": "1100",
+    "name": "Pet Treats"
+  },
+  {
+    "code": "1150",
+    "parentCode": "1100",
+    "name": "Pet Toys"
+  },
+  {
+    "code": "1160",
+    "parentCode": "1100",
+    "name": "Walking Supplies"
+  },
+  {
+    "code": "1170",
+    "parentCode": "1100",
+    "name": "Grooming & Hygiene"
+  },
+  {
+    "code": "1200",
+    "parentCode": null,
+    "name": "Kids & Baby"
+  },
+  {
+    "code": "1210",
+    "parentCode": "1200",
+    "name": "Toys"
+  },
+  {
+    "code": "1220",
+    "parentCode": "1200",
+    "name": "Kids' Fashion"
+  },
+  {
+    "code": "1230",
+    "parentCode": "1200",
+    "name": "Maternity & Baby Care"
+  },
+  {
+    "code": "1240",
+    "parentCode": "1200",
+    "name": "Kids' Daily Essentials"
+  },
+  {
+    "code": "1250",
+    "parentCode": "1200",
+    "name": "Learning & Books"
+  },
+  {
+    "code": "1260",
+    "parentCode": "1200",
+    "name": "Baby Formula & Food"
+  },
+  {
+    "code": "1270",
+    "parentCode": "1200",
+    "name": "Baby Travel Gear"
+  }
+]

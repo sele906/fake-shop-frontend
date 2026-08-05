@@ -6,6 +6,20 @@ import styles from "./Company.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
+/**
+ * 브랜드명에 이게 들어가면 숨은 쿠폰이 나온다.
+ *
+ * 사용자가 입력하는 값이라 locales에 두지 않고, 언어를 가리지 않고 둘 다 받는다.
+ * 영어 쪽은 대소문자를 무시한다.
+ */
+const BRAND_HINTS = ["안삼", "nobuy"];
+
+function hasBrandHint(brandName) {
+  const normalized = brandName.toLowerCase();
+
+  return BRAND_HINTS.some((hint) => normalized.includes(hint));
+}
+
 /* select의 value로 나가는 값이라 언어를 타지 않는다. 표시할 이름만 company.json에 있다. */
 const CATEGORY_IDS = [
   "fashion",
@@ -59,9 +73,8 @@ export default function Company() {
       return;
     }
 
-    /* 숨은 쿠폰: 브랜드명에 '안삼'을 넣은 사람. 쿠폰이 나오면 반려는 미뤄둔다.
-       사용자가 입력하는 값과 비교하는 자리라 번역하지 않는다. */
-    if (brandName.includes("안삼") && unlock(MISSION.PARTNER_BRAND)) return;
+    /* 숨은 쿠폰: 브랜드명에 안삼 · NOBUY를 넣은 사람. 쿠폰이 나오면 반려는 미뤄둔다. */
+    if (hasBrandHint(brandName) && unlock(MISSION.PARTNER_BRAND)) return;
 
     const reasons = t("rejectionReasons", { returnObjects: true });
     const reason = reasons[Math.floor(Math.random() * reasons.length)];

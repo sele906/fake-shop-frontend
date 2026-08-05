@@ -3,13 +3,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Trans, useTranslation } from "react-i18next";
 import styles from "./Checkout.module.css";
-import { findProduct, productImage, won } from "../../data/products";
+import { findProduct, productImage } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
 import { copyText } from "../../lib/clipboard";
 import { makeOrderNumber, writeOrder } from "../../order/orderStorage";
 import ReceiptCard from "../../receipt/ReceiptCard";
 import { receiptUrl } from "../../receipt/receiptLink";
 import useGoBack from "../../hooks/useGoBack";
+import LanguageToggle from "../../components/LanguageToggle";
+import usePrice from "../../lib/usePrice";
 
 import { BiChevronLeft } from "react-icons/bi";
 
@@ -56,6 +58,7 @@ function makeConfetti() {
 
 export default function Checkout() {
   const { t } = useTranslation(["checkout", "common"]);
+  const price = usePrice();
   const goBack = useGoBack("/cart");
   const navigate = useNavigate();
   const location = useLocation();
@@ -266,7 +269,7 @@ export default function Checkout() {
     if (!receipt) return;
 
     const url = receiptUrl(receipt);
-    const text = t("share.text", { amount: won(receipt.total) });
+    const text = t("share.text", { amount: price(receipt.total) });
 
     if (navigator.share) {
       try {
@@ -310,6 +313,8 @@ export default function Checkout() {
         </button>
 
         <h1>{t("title")}</h1>
+
+        <LanguageToggle />
 
         <span className={styles.wink}>{t("wink")}</span>
       </header>
@@ -410,7 +415,7 @@ export default function Checkout() {
                     </div>
 
                     <div className={`${styles.price} ${styles.strike}`}>
-                      {won(product.price * qty)}
+                      {price(product.price * qty)}
                     </div>
                   </article>
                 ))}
@@ -529,12 +534,12 @@ export default function Checkout() {
             <section className={styles.sum} aria-label={t("sum.aria")}>
               <div className={styles.row}>
                 <span>{t("sum.basket")}</span>
-                <span>{won(total)}</span>
+                <span>{price(total)}</span>
               </div>
 
               <div className={styles.row}>
                 <span>{t("sum.restraintPoints")}</span>
-                <span>−{won(usedPoints)}</span>
+                <span>−{price(usedPoints)}</span>
               </div>
 
               <div className={styles.row}>
@@ -542,7 +547,7 @@ export default function Checkout() {
                   {t("sum.notBuyDiscount")}{" "}
                   <small>{t("sum.notBuyDiscountNote")}</small>
                 </span>
-                <span>−{won(total - usedPoints)}</span>
+                <span>−{price(total - usedPoints)}</span>
               </div>
 
               <div className={styles.row}>
@@ -552,7 +557,7 @@ export default function Checkout() {
 
               <div className={`${styles.row} ${styles.saved}`}>
                 <span>{t("sum.saved")}</span>
-                <span>{won(total)}</span>
+                <span>{price(total)}</span>
               </div>
 
               <div className={`${styles.row} ${styles.grand}`}>

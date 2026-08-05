@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import styles from "./Delivery.module.css";
-import { findProduct, productImage, won } from "../../data/products";
+import { findProduct, productImage } from "../../data/products";
 import { clearOrder, readOrder } from "../../order/orderStorage";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
+import LanguageToggle from "../../components/LanguageToggle";
+import usePrice from "../../lib/usePrice";
 
 /* 지점 이름과 안내 문구는 delivery.json의 steps가 들고, 여기엔 좌표만 남긴다. */
 const DELIVERY_STEPS = [
@@ -82,6 +84,7 @@ const DELIVERY_SECONDS = 25;
 
 export default function Delivery() {
   const { t } = useTranslation(["delivery", "common"]);
+  const price = usePrice();
   const [elapsed, setElapsed] = useState(0);
 
   /* 주문서(Checkout)가 localStorage에 남긴 주문. 첫 렌더에 한 번만 읽는다.
@@ -149,7 +152,11 @@ export default function Delivery() {
         <Link className={styles.brand} to="/">
           {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
-        <p>{t("subtitle")}</p>
+        <div className={styles.headerRight}>
+          <p>{t("subtitle")}</p>
+
+          <LanguageToggle />
+        </div>
       </header>
 
       <main className={styles.main}>
@@ -397,14 +404,14 @@ export default function Delivery() {
                         <span>
                           {t("card.itemLine", {
                             qty: item.qty,
-                            amount: won(item.price * item.qty),
+                            amount: price(item.price * item.qty),
                           })}
                         </span>
                       </div>
                     </article>
                   ))}
                   <p>
-                    {t("card.basket")} <strong>{won(orderTotal)}</strong>
+                    {t("card.basket")} <strong>{price(orderTotal)}</strong>
                   </p>
                 </>
               )}

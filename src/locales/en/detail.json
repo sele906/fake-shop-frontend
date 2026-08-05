@@ -1,0 +1,71 @@
+{
+  "back": "Back",
+  "backToList": "Back to list",
+  "share": "Share",
+  "cartAria_one": "Cart, {{count}} item",
+  "cartAria_other": "Cart, {{count}} items",
+  "crumbsAria": "Breadcrumb",
+  "home": "Home",
+  "galleryAria": "Product images",
+  "shareResult": {
+    "copied": "Link copied",
+    "blocked": "Copying is blocked. Please copy the address bar manually."
+  },
+  "addedToCart_one": "Added {{count}} item to your cart",
+  "addedToCart_other": "Added {{count}} items to your cart",
+  "notFound": {
+    "headerTitle": "Product not found",
+    "title": "This product is gone",
+    "lead": "The URL is wrong, or this one is no longer listed.",
+    "link": "Back to the list"
+  },
+  "tags": {
+    "freeShipping": "Free shipping",
+    "todayShip": "Ships today"
+  },
+  "noReviewsShort": "No reviews yet",
+  "reviewCountLink_one": "{{count}} review",
+  "reviewCountLink_other": "{{count}} reviews",
+  "rows": {
+    "shipping": "Shipping",
+    "shippingValue": "<b>Free</b> · Ships the same day on weekday orders before 2 PM (allegedly)",
+    "eta": "Estimated arrival",
+    "etaValue": "<b>{{date}}</b> — nothing will arrive",
+    "benefit": "Rewards",
+    "benefitValue": "Earn <b>{{points}}P</b> with NOBUY membership (5%)"
+  },
+  "options": {
+    "aria": "Select options",
+    "size": "Size",
+    "qty": "Quantity",
+    "qtyDown": "Decrease quantity",
+    "qtyUp": "Increase quantity",
+    "total": "Total"
+  },
+  "buy": {
+    "cart": "Add to cart",
+    "now": "Buy now"
+  },
+  "tabsAria": "Product details",
+  "tabs": {
+    "info": "Details",
+    "spec": "Specs",
+    "reviews": "Reviews",
+    "reviewsWithCount_one": "Reviews {{count}}",
+    "reviewsWithCount_other": "Reviews {{count}}",
+    "related": "Related"
+  },
+  "imageCredit": "Photo:",
+  "specTitle": "Specs",
+  "reviews": {
+    "title": "Reviews",
+    "loading": "Loading reviews.",
+    "emptyLine1": "No reviews yet.",
+    "emptyLine2": "Still waiting on people who didn't buy it.",
+    "positiveRate": "{{rate}}% rated it 4 stars or higher",
+    "score": "{{score}} stars",
+    "more_one": "Load more reviews ({{count}} left)",
+    "more_other": "Load more reviews ({{count}} left)"
+  },
+  "relatedTitle": "People also looked at"
+}

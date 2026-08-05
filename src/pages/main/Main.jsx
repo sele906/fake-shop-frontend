@@ -2,24 +2,22 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Main.module.css";
-import {
-  PRODUCTS,
-  SORTS,
-  productImage,
-  sortProducts,
-  won,
-} from "../../data/products";
+import { getProducts, productImage, sortProducts } from "../../data/products";
 import SortDropdown from "../../components/SortDropdown";
+import usePrice from "../../lib/usePrice";
+import useSortOptions from "../../lib/useSortOptions";
 
 /* 상품이 1400개가 넘어서 메인에는 정렬한 앞쪽만 조금 깐다. */
 const FEATURED_COUNT = 24;
 
 export default function Main() {
   const { t } = useTranslation("main");
-  const [sortKey, setSortKey] = useState(SORTS[0].key);
+  const price = usePrice();
+  const sorts = useSortOptions();
+  const [sortKey, setSortKey] = useState(sorts[0].key);
 
   const featured = useMemo(
-    () => sortProducts(PRODUCTS, sortKey).slice(0, FEATURED_COUNT),
+    () => sortProducts(getProducts(), sortKey).slice(0, FEATURED_COUNT),
     [sortKey]
   );
 
@@ -49,11 +47,11 @@ export default function Main() {
       <div className={styles.toolbar}>
         <h2>
           {t("toolbar.title")}{" "}
-          <small>{t("toolbar.tempting", { count: PRODUCTS.length })}</small>
+          <small>{t("toolbar.tempting", { count: getProducts().length })}</small>
         </h2>
 
         <nav className={styles.sorts} aria-label={t("sortAria")}>
-          {SORTS.map((sort) => (
+          {sorts.map((sort) => (
             <button
               key={sort.key}
               type="button"
@@ -66,7 +64,7 @@ export default function Main() {
         </nav>
 
         {/* 모바일에는 탭을 늘어놓을 자리가 없어 드롭다운으로 고른다. */}
-        <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
+        <SortDropdown options={sorts} value={sortKey} onChange={setSortKey} />
       </div>
 
       <section className={styles.grid} aria-label={t("gridAria")}>
@@ -94,7 +92,7 @@ export default function Main() {
                 {product.name}
               </Link>
 
-              <span className={styles.cardPrice}>{won(product.price)}</span>
+              <span className={styles.cardPrice}>{price(product.price)}</span>
             </div>
           </article>
         ))}

@@ -1,0 +1,74 @@
+{
+  "tabs": {
+    "all": "All coupons",
+    "basic": "Basic",
+    "today": "Today's",
+    "cart": "Cart",
+    "category": "Category",
+    "suspicious": "Suspicious"
+  },
+  "groups": {
+    "basic": "Given by default",
+    "today": "Time and circumstance",
+    "cart": "Cart behavior",
+    "category": "Category",
+    "suspicious": "Absurdly large amounts",
+    "unknown": "Origin unknown"
+  },
+  "msg": {
+    "intro": "Coupons you collect are stored only in this browser.",
+    "already": "“{{name}}” is already in your wallet. It will not become two.",
+    "got": "Got “{{name}}”! Saved to your wallet.",
+    "rain_one": "It's raining coupons. {{count}} landed in your wallet.",
+    "rain_other": "It's raining coupons. {{count}} landed in your wallet.",
+    "rainNone": "You already have all of today's coupons. Only the rain remains.",
+    "removed": "Threw away “{{name}}”. There was nowhere to use it anyway.",
+    "cleared_one": "Cleared all {{count}}. The regret starts now.",
+    "cleared_other": "Cleared all {{count}}. The regret starts now."
+  },
+  "hero": {
+    "eyebrow": "COUPON WAREHOUSE",
+    "title": "Coupon wallet",
+    "owned": "Coupons held",
+    "ownedCount_one": "{{count}}",
+    "ownedCount_other": "{{count}}",
+    "maxDiscount": "Estimated max discount",
+    "maxDiscountValue": "438%",
+    "leadLine1": "You didn't buy anything today, so you've already saved 100%.",
+    "leadLine2": "Coupons are a separate matter, though. Take some anyway.",
+    "getToday": "Take all of today's coupons"
+  },
+  "tabsAria": "Coupon categories",
+  "catalog": {
+    "eyebrow": "COUPON COLLECTION",
+    "title": "The more coupons the better, and the freer the stacking the better.",
+    "onDisplay_one": "{{count}} coupon on display.",
+    "onDisplay_other": "{{count}} coupons on display.",
+    "stackable": "Stackable",
+    "noCondition": "No conditions",
+    "minOrder": "Minimum order",
+    "minOrderValue": "No such thing",
+    "validUntil": "Valid until",
+    "validUntilValue": "Until the feeling passes",
+    "saved": "In your wallet",
+    "receive": "Get coupon"
+  },
+  "achievements": {
+    "eyebrow": "SECRET ACHIEVEMENTS",
+    "title": "Hidden achievement coupons",
+    "lead": "Try doing something pointlessly diligent around the site. You've found {{found}} of {{total}}.",
+    "unlocked": "UNLOCKED",
+    "locked": "LOCKED"
+  },
+  "wallet": {
+    "eyebrow": "MY COUPON STORAGE",
+    "title": "My wallet",
+    "lead_one": "This browser remembers {{count}} coupon.",
+    "lead_other": "This browser remembers {{count}} coupons.",
+    "empty": "Your wallet is empty. Grab anything from above. There's nowhere to spend it, but it will definitely be saved.",
+    "removeAria": "Remove {{name}}",
+    "remove": "Remove",
+    "goToCart": "Check it in the cart",
+    "clearAll": "Clear all"
+  }
+}

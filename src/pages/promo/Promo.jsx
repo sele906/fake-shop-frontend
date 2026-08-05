@@ -1,7 +1,8 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Promo.module.css";
-import { PRODUCTS, productImage, won } from "../../data/products";
+import { getProducts, productImage } from "../../data/products";
+import usePrice from "../../lib/usePrice";
 
 /* 문구는 promo.json이 들고, 여기엔 목록에서 어디부터 자를지만 남긴다. */
 const PROMOTIONS = [
@@ -14,13 +15,14 @@ const PRODUCT_COUNT = 12;
 
 export default function Promo() {
   const { t } = useTranslation("promo");
+  const price = usePrice();
   const navigate = useNavigate();
   const { promoId } = useParams();
   const activePromo =
     PROMOTIONS.find((promotion) => promotion.id === promoId) ?? PROMOTIONS[2];
   const activeId = activePromo.id;
 
-  const featuredProducts = PRODUCTS.slice(
+  const featuredProducts = getProducts().slice(
     activePromo.start,
     activePromo.start + PRODUCT_COUNT
   );
@@ -100,7 +102,7 @@ export default function Promo() {
               <div className={styles.cardMeta}>
                 <small>{product.brand}</small>
                 <Link to={`/product/${product.id}`}>{product.name}</Link>
-                <strong>{won(product.price)}</strong>
+                <strong>{price(product.price)}</strong>
               </div>
             </article>
           ))}

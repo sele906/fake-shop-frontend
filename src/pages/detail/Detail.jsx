@@ -8,7 +8,7 @@ import {
   pexelsPhotoUrl,
   productImage,
   relatedProducts,
-  won,
+  sizeOptions,
 } from "../../data/products";
 import { loadProductReviews } from "../../data/reviews";
 import { getCategoryPath } from "../../data/categories";
@@ -16,6 +16,8 @@ import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { copyText } from "../../lib/clipboard";
 import useGoBack from "../../hooks/useGoBack";
+import LanguageToggle from "../../components/LanguageToggle";
+import usePrice from "../../lib/usePrice";
 
 import {
   BiCart,
@@ -35,7 +37,9 @@ function stars(rating) {
 }
 
 export default function Detail() {
-  const { t } = useTranslation(["detail", "common"]);
+  const { t, i18n } = useTranslation(["detail", "common"]);
+  const lang = i18n.resolvedLanguage;
+  const price = usePrice();
   const { productId } = useParams();
   const goBack = useGoBack();
   const navigate = useNavigate();
@@ -83,17 +87,9 @@ export default function Detail() {
     [product]
   );
 
-  /* 스펙에 "사이즈" 항목이 있는 상품만 사이즈 칩을 만든다. (1630개 중 415개)
-     여기서 찾는 "사이즈"는 products.json에 든 스펙 항목 이름이라 번역 대상이 아니다. */
-  const sizes = useMemo(() => {
-    const row = product?.detail?.spec?.find((item) => item.label === "사이즈");
-    if (!row) return [];
-
-    return row.value
-      .split("/")
-      .map((size) => size.trim())
-      .filter(Boolean);
-  }, [product]);
+  /* 스펙에 사이즈 항목이 있는 상품만 사이즈 칩을 만든다. (1446개 중 325개)
+     스펙 항목 이름은 언어를 타므로 어느 이름을 찾을지는 products.js가 안다. */
+  const sizes = useMemo(() => sizeOptions(product, lang), [product, lang]);
 
   const reviews = reviewData?.reviews ?? [];
   const reviewCount = reviewData?.reviewCount ?? 0;
@@ -140,7 +136,7 @@ export default function Detail() {
     let alive = true;
     setReviewData(null);
 
-    loadProductReviews(product.id)
+    loadProductReviews(product.id, lang)
       .then((data) => {
         if (alive) setReviewData(data);
       })
@@ -152,7 +148,7 @@ export default function Detail() {
     return () => {
       alive = false;
     };
-  }, [product?.id]);
+  }, [product?.id, lang]);
 
   /* 스크롤: 헤더 상품명 노출 + 탭 하이라이트 */
   useEffect(() => {
@@ -260,6 +256,8 @@ export default function Detail() {
             <BiChevronLeft size={22} aria-hidden="true" />
           </button>
           <div className={styles.title}>{t("notFound.headerTitle")}</div>
+
+          <LanguageToggle />
         </header>
 
         <div className={styles.missing}>
@@ -298,6 +296,8 @@ export default function Detail() {
         </button>
 
         <div className={styles.title}>{product.name}</div>
+
+        <LanguageToggle />
 
         <button
           type="button"
@@ -393,9 +393,9 @@ export default function Detail() {
                 {discount > 0 && (
                   <span className={styles.off}>{discount}%</span>
                 )}
-                <span className={styles.now}>{won(product.price)}</span>
+                <span className={styles.now}>{price(product.price)}</span>
                 {product.listPrice && (
-                  <span className={styles.was}>{won(product.listPrice)}</span>
+                  <span className={styles.was}>{price(product.listPrice)}</span>
                 )}
               </div>
 
@@ -514,7 +514,7 @@ export default function Detail() {
 
               <div className={styles.total}>
                 <span>{t("options.total")}</span>
-                <strong>{won(total)}</strong>
+                <strong>{price(total)}</strong>
               </div>
             </section>
 
@@ -699,7 +699,7 @@ export default function Detail() {
                     {item.name}
                   </Link>
 
-                  <span className={styles.cardPrice}>{won(item.price)}</span>
+                  <span className={styles.cardPrice}>{price(item.price)}</span>
                 </article>
               ))}
             </div>

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import styles from "./Login.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
+import LanguageToggle from "../../components/LanguageToggle";
 
 import { BiEnvelope, BiHide, BiLockAlt, BiShow } from "react-icons/bi";
 
@@ -140,12 +141,13 @@ export default function Login() {
           {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
 
-        <Link
-          className={styles.help}
-          to="/help"
-        >
-          {t("help")}
-        </Link>
+        <div className={styles.headerRight}>
+          <LanguageToggle />
+
+          <Link className={styles.help} to="/help">
+            {t("help")}
+          </Link>
+        </div>
       </header>
 
       <div className={styles.page}>
