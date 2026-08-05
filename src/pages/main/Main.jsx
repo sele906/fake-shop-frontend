@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Main.module.css";
 import {
   PRODUCTS,
@@ -14,6 +15,7 @@ import SortDropdown from "../../components/SortDropdown";
 const FEATURED_COUNT = 24;
 
 export default function Main() {
+  const { t } = useTranslation("main");
   const [sortKey, setSortKey] = useState(SORTS[0].key);
 
   const featured = useMemo(
@@ -24,32 +26,33 @@ export default function Main() {
   return (
     <>
       <section className={styles.hero}>
-        <span className={styles.heroKicker}>여긴 안 사는 쇼핑몰입니다</span>
+        <span className={styles.heroKicker}>{t("hero.kicker")}</span>
 
         <h1>
-          마음껏 담고
+          {t("hero.titleLine1")}
           <br />
-          끝까지 구경하세요
+          {t("hero.titleLine2")}
         </h1>
 
-        <p>하지만 실제 결제도, 실제 배송도 없습니다.</p>
+        <p>{t("hero.lead")}</p>
 
         <div className={styles.heroCta}>
           <Link className={styles.btn} to="/promo/weekly">
-            일단 담으러 가기
+            {t("hero.ctaPrimary")}
           </Link>
           <Link className={`${styles.btn} ${styles.btnGhost}`} to="/coupon">
-            쿠폰 있는 것처럼 굴기
+            {t("hero.ctaSecondary")}
           </Link>
         </div>
       </section>
 
       <div className={styles.toolbar}>
         <h2>
-          다들 괜히 보고 있음 <small>{PRODUCTS.length}개가 유혹 중</small>
+          {t("toolbar.title")}{" "}
+          <small>{t("toolbar.tempting", { count: PRODUCTS.length })}</small>
         </h2>
 
-        <nav className={styles.sorts} aria-label="정렬">
+        <nav className={styles.sorts} aria-label={t("sortAria")}>
           {SORTS.map((sort) => (
             <button
               key={sort.key}
@@ -66,7 +69,7 @@ export default function Main() {
         <SortDropdown options={SORTS} value={sortKey} onChange={setSortKey} />
       </div>
 
-      <section className={styles.grid} aria-label="상품 목록">
+      <section className={styles.grid} aria-label={t("gridAria")}>
         {featured.map((product) => (
           <article className={styles.card} key={product.id}>
             <Link

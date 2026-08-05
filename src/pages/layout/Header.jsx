@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Layout.module.css";
 import { useCart } from "../../cart/CartProvider";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
@@ -12,6 +13,7 @@ const LOGO_GAP_MS = 1200;
 const LOGO_HITS = 5;
 
 export default function Header({ isNavOpen, onToggleNav }) {
+  const { t } = useTranslation(["layout", "common"]);
   const { count } = useCart();
   const { unlock } = useHiddenCoupon();
 
@@ -38,7 +40,7 @@ export default function Header({ isNavOpen, onToggleNav }) {
         <button
           type="button"
           className={styles.hamburger}
-          aria-label="카테고리 열기"
+          aria-label={t("header.openCategories")}
           aria-expanded={isNavOpen}
           aria-controls="sidebar"
           onClick={onToggleNav}
@@ -47,23 +49,23 @@ export default function Header({ isNavOpen, onToggleNav }) {
         </button>
 
         <Link className={styles.brand} to="/" onClick={handleBrandClick}>
-          안삼 <span>STORE</span>
+          {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
       </div>
 
       <Link
         className={styles.iconBtn}
         to="/cart"
-        aria-label={`장바구니 ${count}개`}
+        aria-label={t("header.cartAria", { count })}
       >
         <BiCart size={20} aria-hidden="true" />
         {count > 0 && <span className={styles.badge}>{count}</span>}
       </Link>
 
-      <nav className={styles.utils} aria-label="사용자 메뉴">
-        <Link to="/login">로그인하는 척</Link>
+      <nav className={styles.utils} aria-label={t("header.userMenu")}>
+        <Link to="/login">{t("header.login")}</Link>
         <Link to="/cart" className={styles.cart}>
-          안 살 것들
+          {t("header.cart")}
           {count > 0 && <span className={styles.badge}>{count}</span>}
         </Link>
       </nav>

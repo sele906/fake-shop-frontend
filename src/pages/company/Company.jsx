@@ -1,60 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import styles from "./Company.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
-const VALUES = [
-  {
-    number: "01",
-    title: "결제보다 구경",
-    description:
-      "구매를 재촉하는 대신 충분히 둘러보고 마음껏 담는 경험을 먼저 생각합니다.",
-  },
-  {
-    number: "02",
-    title: "배송보다 상상",
-    description:
-      "실제로 도착하는 상자보다 물건을 고르는 동안 생기는 재미를 중요하게 여깁니다.",
-  },
-  {
-    number: "03",
-    title: "소유보다 취향",
-    description:
-      "무엇을 샀는지보다 무엇에 눈길이 머물렀는지를 기록하는 쇼핑몰을 만듭니다.",
-  },
-];
-
-const PARTNER_STEPS = [
-  {
-    title: "문의만 보내기",
-    description: "내용은 전송되지 않지만 작성의 기분은 제공합니다.",
-  },
-  {
-    title: "검토하는 척 기다리기",
-    description: "담당자가 진지한 표정으로 아무것도 하지 않습니다.",
-  },
-  {
-    title: "정중하게 반려되기",
-    description: "어떤 브랜드든 공평하게 입점하지 못합니다.",
-  },
-];
-
-const rejectionReasons = [
-  "브랜드가 너무 실제로 존재하는 것 같아 안삼의 운영 방향과 맞지 않습니다.",
-  "상품성이 충분하여 저희가 감당하기 어렵습니다.",
-  "판매 가능성이 발견되어 내부 규정에 따라 반려되었습니다.",
-  "담당자가 긍정적으로 검토하려다 정신을 차렸습니다.",
-  "입점할 경우 실제 쇼핑몰처럼 보일 위험이 있습니다.",
-  "브랜드 소개가 지나치게 설득력 있어 경계 대상이 되었습니다.",
-  "판매할 상품이 있다는 점이 당사의 핵심 가치와 충돌합니다.",
-  "상품보다 고객님의 열정이 더 부담스러워 반려되었습니다.",
-  "검토 결과, 다른 정상적인 쇼핑몰에 입점하는 편이 낫겠습니다.",
-  "서류는 완벽하지만 저희에게는 물류센터가 없습니다.",
+/* select의 value로 나가는 값이라 언어를 타지 않는다. 표시할 이름만 company.json에 있다. */
+const CATEGORY_IDS = [
+  "fashion",
+  "beauty",
+  "food",
+  "living",
+  "digital",
+  "etc",
 ];
 
 export default function Company() {
+  const { t } = useTranslation("company");
   const { section } = useParams();
   const [brandName, setBrandName] = useState("");
   const [email, setEmail] = useState("");
@@ -88,23 +51,24 @@ export default function Company() {
     if (!hasContent) {
       toast(
         <>
-          <strong>입점 심사 결과: 반려</strong>
+          <strong>{t("toast.rejectedTitle")}</strong>
           <br />
-          검토할 내용이 없어 놀라울 정도로 빠르게 반려되었습니다.
+          {t("toast.emptyReason")}
         </>
       );
       return;
     }
 
-    /* 숨은 쿠폰: 브랜드명에 '안삼'을 넣은 사람. 쿠폰이 나오면 반려는 미뤄둔다. */
+    /* 숨은 쿠폰: 브랜드명에 '안삼'을 넣은 사람. 쿠폰이 나오면 반려는 미뤄둔다.
+       사용자가 입력하는 값과 비교하는 자리라 번역하지 않는다. */
     if (brandName.includes("안삼") && unlock(MISSION.PARTNER_BRAND)) return;
 
-    const reason =
-      rejectionReasons[Math.floor(Math.random() * rejectionReasons.length)];
+    const reasons = t("rejectionReasons", { returnObjects: true });
+    const reason = reasons[Math.floor(Math.random() * reasons.length)];
 
     toast(
       <>
-        <strong>입점 심사 결과: 반려</strong>
+        <strong>{t("toast.rejectedTitle")}</strong>
         <br />
         {reason}
       </>
@@ -114,20 +78,20 @@ export default function Company() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>ABOUT ANSAM STORE</span>
+        <span className={styles.eyebrow}>{t("hero.eyebrow")}</span>
         <h1>
-          아무것도 팔지 않지만
+          {t("hero.titleLine1")}
           <br />
-          취향은 진지하게 다룹니다
+          {t("hero.titleLine2")}
         </h1>
-        <p>
-          안삼 STORE는 사고 싶은 마음을 안전하게 구경하고, 결제 직전의
-          설렘만 오래 즐기기 위해 만든 가짜 쇼핑몰입니다.
-        </p>
+        <p>{t("hero.lead")}</p>
 
-        <nav className={styles.quickLinks} aria-label="회사 정보 바로가기">
-          <Link to="/company/about">회사 소개</Link>
-          <Link to="/company/partner">입점 문의</Link>
+        <nav
+          className={styles.quickLinks}
+          aria-label={t("hero.quickLinksAria")}
+        >
+          <Link to="/company/about">{t("hero.aboutLink")}</Link>
+          <Link to="/company/partner">{t("hero.partnerLink")}</Link>
         </nav>
       </header>
 
@@ -139,49 +103,41 @@ export default function Company() {
         <div className={styles.sectionHead}>
           <span>01</span>
           <div>
-            <h2 id="about-title">제법 그럴듯한 회사 소개</h2>
-            <p>안 사는 경험도 좋은 쇼핑 경험이 될 수 있다고 믿습니다.</p>
+            <h2 id="about-title">{t("about.title")}</h2>
+            <p>{t("about.lead")}</p>
           </div>
         </div>
 
         <div className={styles.story}>
           <strong>
-            필요한 건 줄이고
+            {t("about.sloganLine1")}
             <br />
-            보고 싶은 건 늘립니다.
+            {t("about.sloganLine2")}
           </strong>
 
           <div>
-            <p>
-              안삼 STORE는 상품을 소유하지 않아도 취향을 발견할 수 있는 공간을
-              상상하며 시작했습니다. 가격을 비교하고 장바구니에 담는 익숙한
-              과정은 그대로지만 마지막 결제만 정중히 생략합니다.
-            </p>
-            <p>
-              실제 주문과 배송은 없지만 상품을 고르는 시간만큼은 꽤
-              진지합니다. 필요하지 않은 물건을 사지 않고도 충분히 즐거운
-              쇼핑몰을 만드는 것이 우리의 그럴듯한 목표입니다.
-            </p>
+            <p>{t("about.paragraph1")}</p>
+            <p>{t("about.paragraph2")}</p>
           </div>
         </div>
 
         <dl className={styles.facts}>
           <div>
-            <dt>실제 결제</dt>
-            <dd>0건</dd>
+            <dt>{t("facts.paymentsTerm")}</dt>
+            <dd>{t("facts.paymentsValue")}</dd>
           </div>
           <div>
-            <dt>실제 배송</dt>
-            <dd>0건</dd>
+            <dt>{t("facts.shipmentsTerm")}</dt>
+            <dd>{t("facts.shipmentsValue")}</dd>
           </div>
           <div>
-            <dt>마음속 장바구니</dt>
-            <dd>무제한</dd>
+            <dt>{t("facts.cartTerm")}</dt>
+            <dd>{t("facts.cartValue")}</dd>
           </div>
         </dl>
 
         <div className={styles.values}>
-          {VALUES.map((value) => (
+          {t("values", { returnObjects: true }).map((value) => (
             <article key={value.number}>
               <span>{value.number}</span>
               <h3>{value.title}</h3>
@@ -199,14 +155,14 @@ export default function Company() {
         <div className={styles.sectionHead}>
           <span>02</span>
           <div>
-            <h2 id="partner-title">입점 문의만 받아보기</h2>
-            <p>실제로 입점되지는 않지만 문의하는 기분은 충분히 제공합니다.</p>
+            <h2 id="partner-title">{t("partner.title")}</h2>
+            <p>{t("partner.lead")}</p>
           </div>
         </div>
 
         <ol className={styles.process}>
-          {PARTNER_STEPS.map((step, index) => (
-            <li key={step.title}>
+          {t("partnerSteps", { returnObjects: true }).map((step, index) => (
+            <li key={index}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <h3>{step.title}</h3>
@@ -222,50 +178,47 @@ export default function Company() {
         >
           <div className={styles.formHead}>
             <div>
-              <span>PARTNERSHIP FORM</span>
-              <h3>브랜드 이야기를 일단 들어드립니다</h3>
+              <span>{t("partner.formEyebrow")}</span>
+              <h3>{t("partner.formTitle")}</h3>
             </div>
-            <p>
-              입력한 내용은 어디에도 전송되지 않습니다. 안심하고 입점하는 척만 해주세요.
-            </p>
+            <p>{t("partner.formLead")}</p>
           </div>
 
           <div className={styles.fields}>
             <label>
-              브랜드라고 부르는 것
-              <input value={brandName} onChange={(event) => setBrandName(event.target.value)} placeholder="제법 그럴듯한 브랜드명" />
+              {t("partner.brandLabel")}
+              <input value={brandName} onChange={(event) => setBrandName(event.target.value)} placeholder={t("partner.brandPlaceholder")} />
             </label>
 
             <label>
-              답장을 기다릴 이메일
-              <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="답장은 오지않습니다" />
+              {t("partner.emailLabel")}
+              <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder={t("partner.emailPlaceholder")} />
             </label>
 
             <label>
-              상품 분야
+              {t("partner.categoryLabel")}
               <select value={category} onChange={(event) => setCategory(event.target.value)}>
                 <option value="" disabled>
-                  가장 덜 어색한 분야를 골라주세요
+                  {t("partner.categoryPlaceholder")}
                 </option>
-                <option value="fashion">입을 수 있는 것</option>
-                <option value="beauty">바를 수 있는 것</option>
-                <option value="food">먹을 수 있을 것 같은 것</option>
-                <option value="living">집에 두면 그럴듯한 것</option>
-                <option value="digital">충전이 필요할 것 같은 것</option>
-                <option value="etc">분류를 포기한 것</option>
+                {CATEGORY_IDS.map((categoryId) => (
+                  <option key={categoryId} value={categoryId}>
+                    {t(`partner.categories.${categoryId}`)}
+                  </option>
+                ))}
               </select>
             </label>
 
             <label>
-              존재를 주장하는 링크
-              <input value={website} onChange={(event) => setWebsite(event.target.value)} placeholder="https://정말로-있다면" />
+              {t("partner.websiteLabel")}
+              <input value={website} onChange={(event) => setWebsite(event.target.value)} placeholder={t("partner.websitePlaceholder")} />
             </label>
 
             <label className={styles.message}>
-              굳이 입점해야 하는 이유
+              {t("partner.storyLabel")}
               <textarea
                 rows="6"
-                placeholder="팔 수 없다는 사실을 감수하고 소개해주세요."
+                placeholder={t("partner.storyPlaceholder")}
                 value={story}
                 onChange={(event) => setStory(event.target.value)}
               />
@@ -273,8 +226,8 @@ export default function Company() {
           </div>
 
           <div className={styles.formAction}>
-            <p>제출해도 문의는 접수되지 않습니다. 반려만큼은 신속하게 처리해드립니다.</p>
-            <button type="submit">입점 심사받는 척하기</button>
+            <p>{t("partner.actionNote")}</p>
+            <button type="submit">{t("partner.submit")}</button>
           </div>
         </form>
       </section>

@@ -1,40 +1,19 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Promo.module.css";
 import { PRODUCTS, productImage, won } from "../../data/products";
 
+/* 문구는 promo.json이 들고, 여기엔 목록에서 어디부터 자를지만 남긴다. */
 const PROMOTIONS = [
-  {
-    id: "weekly",
-    label: "이번 주도 안 살 것들",
-    kicker: "WEEKLY NOT-SHOPPING",
-    title: "이번 주도\n눈으로만 골랐습니다",
-    description:
-      "사도 그만, 안 사도 그만인 물건을 이번 주의 핑계와 함께 모았습니다.",
-    start: 0,
-  },
-  {
-    id: "new",
-    label: "방금 들어온 척",
-    kicker: "JUST PRETENDING TO BE NEW",
-    title: "처음 본 것처럼\n천천히 둘러보세요",
-    description:
-      "어디선가 본 듯하지만 방금 들어온듯이 진열된 상품들입니다.",
-    start: 12,
-  },
-  {
-    id: "picked",
-    label: "안삼이 괜히 골라봄",
-    kicker: "ANSAM'S USELESS PICKS",
-    title: "안삼이 괜히\n마음에 담아봤습니다",
-    description:
-      "꼭 필요하지는 않지만 한 번 더 보고 싶은 것만 주관적으로 골랐습니다.",
-    start: 24,
-  },
+  { id: "weekly", start: 0 },
+  { id: "new", start: 12 },
+  { id: "picked", start: 24 },
 ];
 
 const PRODUCT_COUNT = 12;
 
 export default function Promo() {
+  const { t } = useTranslation("promo");
   const navigate = useNavigate();
   const { promoId } = useParams();
   const activePromo =
@@ -49,6 +28,7 @@ export default function Promo() {
 
   return (
     <div className={styles.page}>
+      {/* 주석으로 남겨둔 초안. 살릴 때 문구는 promo.json으로 옮겨야 한다. */}
       {/* <header className={styles.heading}>
         <span>기획전</span>
         <h1>살 필요 없는 이유까지 준비했습니다</h1>
@@ -61,14 +41,16 @@ export default function Promo() {
         aria-labelledby="promo-title"
       >
         <div className={styles.featureCopy}>
-          <span className={styles.kicker}>{activePromo.kicker}</span>
+          <span className={styles.kicker}>{t(`${activeId}.kicker`)}</span>
           <h2 id="promo-title">
-            {activePromo.title.split("\n").map((line) => (
-              <span key={line}>{line}</span>
-            ))}
+            {t(`${activeId}.title`)
+              .split("\n")
+              .map((line) => (
+                <span key={line}>{line}</span>
+              ))}
           </h2>
-          <p>{activePromo.description}</p>
-          <a href="#promo-products">괜히 골라보기</a>
+          <p>{t(`${activeId}.description`)}</p>
+          <a href="#promo-products">{t("jumpToProducts")}</a>
         </div>
 
         {coverProduct && (
@@ -77,12 +59,12 @@ export default function Promo() {
               src={productImage(coverProduct.image, 900)}
               alt={coverProduct.image.alt || coverProduct.name}
             />
-            <span>{activePromo.label}</span>
+            <span>{t(`${activeId}.label`)}</span>
           </div>
         )}
       </section>
 
-      <nav className={styles.tabs} aria-label="기획전 선택">
+      <nav className={styles.tabs} aria-label={t("tabsAria")}>
         {PROMOTIONS.map((promotion) => (
           <button
             key={promotion.id}
@@ -90,7 +72,7 @@ export default function Promo() {
             aria-pressed={activeId === promotion.id}
             onClick={() => navigate(`/promo/${promotion.id}`)}
           >
-            {promotion.label}
+            {t(`${promotion.id}.label`)}
           </button>
         ))}
       </nav>
@@ -99,8 +81,8 @@ export default function Promo() {
 
       <section id="promo-products" className={styles.products}>
         <div className={styles.productHeading}>
-          <h2>{activePromo.label}</h2>
-          <p>{featuredProducts.length}개를 골랐지만 하나도 사지 않아도 됩니다.</p>
+          <h2>{t(`${activeId}.label`)}</h2>
+          <p>{t("pickedCount", { count: featuredProducts.length })}</p>
         </div>
 
         <div className={styles.grid}>

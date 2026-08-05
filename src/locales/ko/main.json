@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "kicker": "여긴 안 사는 쇼핑몰입니다",
+    "titleLine1": "마음껏 담고",
+    "titleLine2": "끝까지 구경하세요",
+    "lead": "하지만 실제 결제도, 실제 배송도 없습니다.",
+    "ctaPrimary": "일단 담으러 가기",
+    "ctaSecondary": "쿠폰 있는 것처럼 굴기"
+  },
+  "toolbar": {
+    "title": "다들 괜히 보고 있음",
+    "tempting_other": "{{count}}개가 유혹 중"
+  },
+  "sortAria": "정렬",
+  "gridAria": "상품 목록"
+}

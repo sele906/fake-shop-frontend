@@ -1,0 +1,27 @@
+{
+  "broken": {
+    "title": "읽을 수 없는 영수증입니다",
+    "leadLine1": "링크가 중간에 잘렸거나, 영수증이 아닌 주소입니다.",
+    "leadLine2": "직접 안 사고 새로 만드는 편이 빠릅니다.",
+    "cta": "안 사러 가기"
+  },
+  "stamp": "안 삼 완료",
+  "titleLine1": "이 사람은 오늘",
+  "titleLine2": "아무것도 사지 않았습니다",
+  "leadLine1": "자랑을 받으셨습니다.",
+  "leadLine2": "금액은 전부 통장에 그대로 남아 있습니다.",
+  "ctaPrimary": "나도 안 사러 가기",
+  "ctaSecondary": "장바구니만 채워보기",
+  "tiny": "이 영수증은 링크 안에만 존재합니다. 저장된 곳은 어디에도 없습니다.",
+  "card": {
+    "title": "절약 영수증",
+    "notBought": "안 삼",
+    "others": "그 외",
+    "othersCount_other": "{{count}}개 더 안 삼",
+    "payMethod": "결제수단",
+    "restraintStyle": "절제 방식",
+    "saved": "오늘 아낀 금액",
+    "badgeNoPay": "🏅 이번에도 결제 안 함",
+    "badgeDefended": "잔고 방어 +{{amount}}"
+  }
+}

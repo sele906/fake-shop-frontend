@@ -1,36 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useMatch } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Layout.module.css";
 import { CATEGORIES, getCategoryPath } from "../../data/categories";
 import { productsInCategory } from "../../data/products";
 
 import { BiCaretDown, BiCaretRight, BiX } from "react-icons/bi";
 
-const PROMOS = [
-  "이번 주도 안 살 것들",
-  "방금 들어온 척",
-  "안삼이 괜히 골라봄",
-];
-
-const PROMO_PATHS = {
-  "이번 주도 안 살 것들": "/promo/weekly",
-  "방금 들어온 척": "/promo/new",
-  "안삼이 괜히 골라봄": "/promo/picked",
-};
+/* 주소의 :promoId와 그대로 맞물린다. 표시할 이름은 layout.json의 sidebar.promo에서 읽는다. */
+const PROMO_IDS = ["weekly", "new", "picked"];
 
 /* 카테고리 화면이 아닐 때(메인 등)는 첫 대분류를 펼쳐 둔다. */
 const FIRST_CODE = CATEGORIES[0]?.code ?? null;
 
 export default function Sidebar({ isOpen, onClose, onNavigate }) {
+  const { t } = useTranslation("layout");
+
   /* 어느 칸을 보고 있는지는 주소에서 읽는다. 대분류·소분류 어느 쪽이든 받는다. */
   const match = useMatch("/category/:categoryCode");
   const promoMatch = useMatch("/promo/:promoId");
   const path = getCategoryPath(match?.params.categoryCode);
   const topCode = path[0]?.code ?? null;
   const subCode = path[1]?.code ?? null;
-  const activePromo = PROMOS.find(
-    (promo) => PROMO_PATHS[promo] === `/promo/${promoMatch?.params.promoId}`
-  );
+  const activePromoId = promoMatch?.params.promoId ?? null;
 
   const [expandedCode, setExpandedCode] = useState(topCode ?? FIRST_CODE);
 
@@ -45,11 +37,11 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
       className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}
     >
       <div className={styles.drawerHead}>
-        <span className={styles.eyebrow}>카테고리</span>
+        <span className={styles.eyebrow}>{t("sidebar.categories")}</span>
         <button
           type="button"
           className={styles.drawerClose}
-          aria-label="닫기"
+          aria-label={t("sidebar.close")}
           onClick={onClose}
         >
           <BiX size={24} aria-hidden="true" />
@@ -57,8 +49,10 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
       </div>
 
       {/* 대분류는 여닫기만 하고, 이동은 그 아래 "전체"와 소분류가 맡는다. */}
-      <nav className={styles.catList} aria-label="카테고리">
-        <div className={`${styles.eyebrow} ${styles.catHead}`}>카테고리</div>
+      <nav className={styles.catList} aria-label={t("sidebar.categories")}>
+        <div className={`${styles.eyebrow} ${styles.catHead}`}>
+          {t("sidebar.categories")}
+        </div>
 
         {CATEGORIES.map((category) => {
           const isExpanded = expandedCode === category.code;
@@ -97,7 +91,8 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
                     }
                     onClick={onNavigate}
                   >
-                    전체 <em>{productsInCategory(category.code).length}</em>
+                    {t("sidebar.all")}{" "}
+                    <em>{productsInCategory(category.code).length}</em>
                   </Link>
 
                   {category.children.map((child) => (
@@ -119,26 +114,26 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
         })}
       </nav>
 
-      <nav className={styles.promo} aria-label="기획">
-        <span className={styles.eyebrow}>기획</span>
+      <nav className={styles.promo} aria-label={t("sidebar.promoTitle")}>
+        <span className={styles.eyebrow}>{t("sidebar.promoTitle")}</span>
 
-        {PROMOS.map((promo) => (
+        {PROMO_IDS.map((promoId) => (
           <Link
-            key={promo}
-            to={PROMO_PATHS[promo]}
-            className={activePromo === promo ? styles.sel : undefined}
+            key={promoId}
+            to={`/promo/${promoId}`}
+            className={activePromoId === promoId ? styles.sel : undefined}
             onClick={() => {
               onNavigate();
             }}
           >
-            {promo}
+            {t(`sidebar.promo.${promoId}`)}
           </Link>
         ))}
       </nav>
 
       <div className={styles.drawerFoot}>
         <Link className={styles.btn} to="/login" onClick={onNavigate}>
-          로그인 척하기
+          {t("sidebar.login")}
         </Link>
       </div>
     </aside>

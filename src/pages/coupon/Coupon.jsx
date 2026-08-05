@@ -1,44 +1,37 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Coupon.module.css";
 import couponData from "../../data/coupon.json";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 
-const COUPON_TABS = [
-  { id: "all", label: "전체 쿠폰" },
-  { id: "basic", label: "기본 쿠폰" },
-  { id: "today", label: "오늘의 쿠폰" },
-  { id: "cart", label: "장바구니 쿠폰" },
-  { id: "category", label: "카테고리 쿠폰" },
-  { id: "suspicious", label: "수상한 쿠폰" },
-];
+const TAB_IDS = ["all", "basic", "today", "cart", "category", "suspicious"];
 
-const GROUP_LABELS = {
-  basic: "기본 지급",
-  today: "시간대·상황",
-  cart: "장바구니 행동",
-  category: "카테고리",
-  suspicious: "말도 안 되는 고액",
-};
-
-/* 저장된 쿠폰은 손으로 고칠 수 있어서 모르는 group이 들어올 수 있다. */
-function groupLabel(group) {
-  return GROUP_LABELS[group] ?? "출처 불명";
-}
+/* coupon.json의 group 값. 이 밖의 값은 "출처 불명"으로 떨어진다. */
+const KNOWN_GROUPS = ["basic", "today", "cart", "category", "suspicious"];
 
 /* 숨은 쿠폰은 목록에 깔지 않는다. 미션을 깨야 쿠폰함에 들어온다. */
 const COUPONS = couponData.filter((coupon) => coupon.group !== "hidden");
 
 export default function Coupon() {
+  const { t } = useTranslation("coupon");
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [savedCoupons, setSavedCoupons] = useSavedCoupons();
   const { hiddenCoupons, unlockedCount, isUnlocked } = useHiddenCoupon();
   const [rainRun, setRainRun] = useState(0);
-  const [message, setMessage] = useState(
-    "받은 쿠폰은 이 브라우저에만 저장됩니다."
-  );
+
+  /* 문장이 아니라 무엇을 알릴지만 들고 있는다. 문장을 상태에 넣어 두면
+     언어를 바꿨을 때 옛 언어의 안내가 그대로 남는다. */
+  const [message, setMessage] = useState({ key: "msg.intro" });
+
+  /* 저장된 쿠폰은 손으로 고칠 수 있어서 모르는 group이 들어올 수 있다. */
+  function groupLabel(group) {
+    return t(
+      KNOWN_GROUPS.includes(group) ? `groups.${group}` : "groups.unknown"
+    );
+  }
 
   const visibleCoupons = useMemo(() => {
     if (activeTab === "all") return COUPONS;
@@ -61,12 +54,12 @@ export default function Coupon() {
 
   function receiveCoupon(coupon) {
     if (savedIds.has(coupon.id)) {
-      setMessage(`“${coupon.name}”은 이미 쿠폰함에 있습니다. 두 장이 되지는 않습니다.`);
+      setMessage({ key: "msg.already", params: { name: coupon.name } });
       return;
     }
 
     saveCoupons([coupon]);
-    setMessage(`“${coupon.name}” 획득! 쿠폰함에 저장했습니다.`);
+    setMessage({ key: "msg.got", params: { name: coupon.name } });
   }
 
   function startCouponRain() {
@@ -76,8 +69,8 @@ export default function Coupon() {
     setRainRun((current) => current + 1);
     setMessage(
       added
-        ? `쿠폰 비가 내립니다. ${added}장이 쿠폰함에 쌓였습니다.`
-        : "오늘의 쿠폰은 이미 다 받으셨습니다. 비만 내립니다."
+        ? { key: "msg.rain", params: { count: added } }
+        : { key: "msg.rainNone" }
     );
   }
 
@@ -85,14 +78,14 @@ export default function Coupon() {
     setSavedCoupons((current) =>
       current.filter((saved) => saved.id !== coupon.id)
     );
-    setMessage(`“${coupon.name}”을 버렸습니다. 어차피 쓸 데도 없었습니다.`);
+    setMessage({ key: "msg.removed", params: { name: coupon.name } });
   }
 
   function clearWallet() {
     const count = savedCoupons.length;
 
     setSavedCoupons([]);
-    setMessage(`${count}장을 전부 비웠습니다. 후회는 지금부터입니다.`);
+    setMessage({ key: "msg.cleared", params: { count } });
   }
 
   function goToCart() {
@@ -117,46 +110,48 @@ export default function Coupon() {
       )}
 
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>COUPON WAREHOUSE</span>
-        <h1>쿠폰 보관함</h1>
+        <span className={styles.eyebrow}>{t("hero.eyebrow")}</span>
+        <h1>{t("hero.title")}</h1>
 
         <div className={styles.heroStats}>
           <div>
-            <span>보유 쿠폰</span>
-            <strong>{savedCoupons.length}장</strong>
+            <span>{t("hero.owned")}</span>
+            <strong>
+              {t("hero.ownedCount", { count: savedCoupons.length })}
+            </strong>
           </div>
           <div>
-            <span>예상 최대 할인율</span>
-            <strong>438%</strong>
+            <span>{t("hero.maxDiscount")}</span>
+            <strong>{t("hero.maxDiscountValue")}</strong>
           </div>
         </div>
 
         <p>
-          오늘도 안 샀으니 이미 100% 절약하셨습니다.
+          {t("hero.leadLine1")}
           <br />
-          하지만 쿠폰은 별개니까 일단 받아두세요.
+          {t("hero.leadLine2")}
         </p>
 
         <div className={styles.heroActions}>
           <button type="button" onClick={startCouponRain}>
-            오늘의 쿠폰 전부 받기
+            {t("hero.getToday")}
           </button>
         </div>
       </header>
 
       <p className={styles.status} role="status" aria-live="polite">
-        {message}
+        {t(message.key, message.params)}
       </p>
 
-      <nav className={styles.tabs} aria-label="쿠폰 분류">
-        {COUPON_TABS.map((tab) => (
+      <nav className={styles.tabs} aria-label={t("tabsAria")}>
+        {TAB_IDS.map((tabId) => (
           <button
-            key={tab.id}
+            key={tabId}
             type="button"
-            aria-pressed={activeTab === tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            aria-pressed={activeTab === tabId}
+            onClick={() => setActiveTab(tabId)}
           >
-            {tab.label}
+            {t(`tabs.${tabId}`)}
           </button>
         ))}
       </nav>
@@ -164,12 +159,10 @@ export default function Coupon() {
       <section className={styles.catalog} aria-labelledby="catalog-title">
         <div className={styles.sectionHead}>
           <div>
-            <span>COUPON COLLECTION</span>
-            <h2 id="catalog-title">
-              쿠폰은 많을수록 좋고, 중복은 자유로울수록 좋습니다.
-            </h2>
+            <span>{t("catalog.eyebrow")}</span>
+            <h2 id="catalog-title">{t("catalog.title")}</h2>
           </div>
-          <p>{visibleCoupons.length}장의 쿠폰을 전시 중입니다.</p>
+          <p>{t("catalog.onDisplay", { count: visibleCoupons.length })}</p>
         </div>
 
         <div className={styles.couponGrid}>
@@ -179,8 +172,8 @@ export default function Coupon() {
             return (
               <article className={styles.couponCard} key={coupon.id}>
                 <div className={styles.badges}>
-                  <strong>중복 가능</strong>
-                  <span>조건 없음</span>
+                  <strong>{t("catalog.stackable")}</strong>
+                  <span>{t("catalog.noCondition")}</span>
                 </div>
                 <small>{groupLabel(coupon.group)}</small>
                 <b>{coupon.benefit}</b>
@@ -188,12 +181,12 @@ export default function Coupon() {
                 <p>{coupon.description}</p>
                 <dl>
                   <div>
-                    <dt>최소 주문 금액</dt>
-                    <dd>그런 거 없음</dd>
+                    <dt>{t("catalog.minOrder")}</dt>
+                    <dd>{t("catalog.minOrderValue")}</dd>
                   </div>
                   <div>
-                    <dt>유효기간</dt>
-                    <dd>마음이 식을 때까지</dd>
+                    <dt>{t("catalog.validUntil")}</dt>
+                    <dd>{t("catalog.validUntilValue")}</dd>
                   </div>
                 </dl>
                 <button
@@ -201,7 +194,7 @@ export default function Coupon() {
                   disabled={isSaved}
                   onClick={() => receiveCoupon(coupon)}
                 >
-                  {isSaved ? "쿠폰함에 있음" : "쿠폰 받기"}
+                  {isSaved ? t("catalog.saved") : t("catalog.receive")}
                 </button>
               </article>
             );
@@ -212,12 +205,14 @@ export default function Coupon() {
       <section className={styles.achievements}>
         <div className={styles.sectionHead}>
           <div>
-            <span>SECRET ACHIEVEMENTS</span>
-            <h2>숨겨진 업적 쿠폰</h2>
+            <span>{t("achievements.eyebrow")}</span>
+            <h2>{t("achievements.title")}</h2>
           </div>
           <p>
-            사이트 곳곳에서 쓸데없이 성실한 행동을 해보세요. {hiddenCoupons.length}개 중{" "}
-            {unlockedCount}개를 찾으셨습니다.
+            {t("achievements.lead", {
+              total: hiddenCoupons.length,
+              found: unlockedCount,
+            })}
           </p>
         </div>
 
@@ -229,7 +224,8 @@ export default function Coupon() {
             return (
               <article key={coupon.id} className={done ? styles.unlocked : undefined}>
                 <span>
-                  {done ? "UNLOCKED" : "LOCKED"} {order}
+                  {done ? t("achievements.unlocked") : t("achievements.locked")}{" "}
+                  {order}
                 </span>
                 <h3>{coupon.mission ?? coupon.description}</h3>
                 <p>
@@ -244,17 +240,14 @@ export default function Coupon() {
       <section className={styles.wallet} aria-labelledby="wallet-title">
         <div className={styles.sectionHead}>
           <div>
-            <span>MY COUPON STORAGE</span>
-            <h2 id="wallet-title">내 쿠폰함</h2>
+            <span>{t("wallet.eyebrow")}</span>
+            <h2 id="wallet-title">{t("wallet.title")}</h2>
           </div>
-          <p>이 브라우저가 쿠폰 {savedCoupons.length}장을 기억하고 있습니다.</p>
+          <p>{t("wallet.lead", { count: savedCoupons.length })}</p>
         </div>
 
         {savedCoupons.length === 0 ? (
-          <p className={styles.walletEmpty}>
-            쿠폰함이 비었습니다. 위에서 아무거나 받아두세요. 어차피 쓸 곳은
-            없지만 저장은 확실히 됩니다.
-          </p>
+          <p className={styles.walletEmpty}>{t("wallet.empty")}</p>
         ) : (
           <>
             <ul className={styles.walletList}>
@@ -267,9 +260,9 @@ export default function Coupon() {
                   <button
                     type="button"
                     onClick={() => removeCoupon(coupon)}
-                    aria-label={`${coupon.name} 삭제`}
+                    aria-label={t("wallet.removeAria", { name: coupon.name })}
                   >
-                    삭제
+                    {t("wallet.remove")}
                   </button>
                 </li>
               ))}
@@ -277,10 +270,10 @@ export default function Coupon() {
 
             <div className={styles.walletActions}>
               <button type="button" onClick={goToCart}>
-                장바구니에서 확인하기
+                {t("wallet.goToCart")}
               </button>
               <button type="button" onClick={clearWallet}>
-                전체 비우기
+                {t("wallet.clearAll")}
               </button>
             </div>
           </>

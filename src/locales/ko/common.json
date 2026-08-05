@@ -1,0 +1,14 @@
+{
+  "brand": {
+    "name": "안삼",
+    "suffix": "STORE",
+    "full": "안삼 STORE"
+  },
+  "sortLabel": "정렬 기준",
+  "intlLocale": "ko-KR",
+  "defaultOption": "단일 옵션",
+  "hiddenCoupon": {
+    "eyebrow": "SECRET COUPON UNLOCKED",
+    "saved": "쿠폰함에 저장했습니다"
+  }
+}

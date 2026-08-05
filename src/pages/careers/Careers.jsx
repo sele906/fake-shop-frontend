@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import styles from "./Careers.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
@@ -8,19 +9,11 @@ import { copyText } from "../../lib/clipboard";
 const GITHUB_URL = "https://github.com/sele906";
 const EMAIL = "seunga906@gmail.com";
 
+/* 설명 · 링크 이름은 careers.json의 projects가 들고,
+   여기엔 주소와 기술 이름처럼 언어를 타지 않는 것만 남긴다. */
 const PROJECTS = [
   {
-    name: "Beluo",
-    period: "2025.12 ~ 2026.04",
-    role: "1인 개발 · 기획부터 배포까지",
-    summary:
-      "사용자가 직접 AI 캐릭터를 만들고, 원하는 모델을 골라 대화하는 AI 캐릭터 채팅 서비스입니다.",
-    points: [
-      "메시지 112만 건이 쌓인 환경에서 채팅방 조회가 컬렉션 전체를 훑고 있어, 조회·정렬 패턴에 맞춘 복합 인덱스를 설계해 단일 조회 2,794ms를 1ms로 줄였습니다. 동시 30명 부하에서 p95 30ms · 실패율 0%.",
-      "AI 응답 뒤 FCM 푸시를 동기로 보내다 스레드 풀이 고갈되던 구간을 RabbitMQ 비동기 발송으로 분리해 처리량 111 TPS를 1,892 TPS로, 응답 시간 336ms를 19ms로 개선했습니다.",
-      "결제 웹훅 서명 검증 실패로 크레딧이 지급되지 않던 문제를 환경별 Secret 분리와 raw body 검증 순서 정리로 해결했습니다.",
-      "JWT · Google OAuth2 인증, OpenAI · Claude · Groq 모델 선택, 장기 대화 자동 요약, 크레딧 차감 구조를 구현했습니다.",
-    ],
+    id: "beluo",
     stack: [
       "Spring Boot",
       "Spring Security",
@@ -31,27 +24,14 @@ const PROJECTS = [
       "Render",
     ],
     links: [
-      { label: "서비스 바로가기", href: "https://beluo.site" },
-      {
-        label: "GitHub 바로가기",
-        href: "https://github.com/sele906/beluo-backend",
-      },
+      { id: "service", href: "https://beluo.site" },
+      { id: "github", href: "https://github.com/sele906/beluo-backend" },
     ],
   },
   {
-    name: "도서관리 시스템",
-    period: "2024.10 ~ 2024.11",
-    role: "개인 프로젝트",
-    summary:
-      "도서 대출과 좌석 예약을 다루는 도서관 관리 웹 서비스입니다. 문헌정보학 전공에서 배운 분류·검색 방식을 실제 데이터 구조로 옮겨본 프로젝트입니다.",
-    points: [
-      "Java · Spring Framework로 도서 · 회원 · 대출 도메인을 구현했습니다.",
-      "MyBatis · PostgreSQL로 대출 이력과 좌석 예약 데이터를 관리했습니다.",
-      "JSP · jQuery · Bootstrap으로 이용자 화면과 관리자 화면을 나눠 구성했습니다.",
-      "AWS EC2 · Nginx · DuckDNS로 외부에서 접속 가능한 배포 환경을 만들었습니다.",
-    ],
+    id: "library",
     stack: ["Java", "Spring", "MyBatis", "PostgreSQL", "AWS EC2", "Nginx"],
-    links: [{ label: "사이트 바로가기", href: "https://liblio.duckdns.org" }],
+    links: [{ id: "site", href: "https://liblio.duckdns.org" }],
   },
 ];
 
@@ -81,6 +61,7 @@ const STACK = [
 ];
 
 export default function Careers() {
+  const { t } = useTranslation("careers");
   const { unlock } = useHiddenCoupon();
 
   /* 웹메일만 쓰면 mailto가 아무 반응이 없어서 복사도 함께 열어 둔다. */
@@ -90,9 +71,9 @@ export default function Careers() {
     if (!copied) {
       toast(
         <>
-          <strong>복사에 실패했습니다</strong>
+          <strong>{t("toast.copyFailedTitle")}</strong>
           <br />
-          {EMAIL} 을 직접 옮겨 적어주세요.
+          {t("toast.copyFailedLead", { email: EMAIL })}
         </>
       );
       return;
@@ -107,9 +88,9 @@ export default function Careers() {
 
     toast(
       <>
-        <strong>주소를 복사했습니다</strong>
+        <strong>{t("toast.copiedTitle")}</strong>
         <br />
-        이 쇼핑몰에서 유일하게 실제로 작동하는 기능입니다.
+        {t("toast.copiedLead")}
       </>
     );
   };
@@ -117,22 +98,19 @@ export default function Careers() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>WE ARE NOT HIRING</span>
+        <span className={styles.eyebrow}>{t("hero.eyebrow")}</span>
 
         <h1>
-          저희는 채용하지 않습니다
+          {t("hero.titleLine1")}
           <br />
-          대신 제가 지원합니다
+          {t("hero.titleLine2")}
         </h1>
 
-        <p>
-          안삼 STORE에서 유일하게 진짜인 항목입니다. 이 아래는 농담이 아니라
-          이력입니다.
-        </p>
+        <p>{t("hero.lead")}</p>
 
-        <nav className={styles.quickLinks} aria-label="연락처">
+        <nav className={styles.quickLinks} aria-label={t("hero.contactAria")}>
           <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-            GitHub 둘러보기
+            {t("hero.github")}
           </a>
         </nav>
       </header>
@@ -141,31 +119,21 @@ export default function Careers() {
         <div className={styles.sectionHead}>
           <span>01</span>
           <div>
-            <h2 id="intro-title">이 쇼핑몰을 만든 백엔드 개발자</h2>
-            <p>여기서부터는 진지합니다.</p>
+            <h2 id="intro-title">{t("intro.title")}</h2>
+            <p>{t("intro.lead")}</p>
           </div>
         </div>
 
         <div className={styles.intro}>
           <strong>
-            한 번 어긋나면
+            {t("intro.sloganLine1")}
             <br />
-            사용자가 먼저 아는 구간을 맡습니다.
+            {t("intro.sloganLine2")}
           </strong>
 
           <div>
-            <p>
-              Spring Boot로 API 서버를 만드는 백엔드 개발자입니다. 인증, 외부 API
-              연동, 결제처럼 조용히 실패하면 안 되는 기능을 주로 다뤘고, 문제를
-              추측으로 넘기지 않고 로그와 수치로 확인한 뒤 고치는 방식을
-              선호합니다.
-            </p>
-            <p>
-              AI 캐릭터 채팅 서비스 Beluo를 기획부터 배포까지 혼자 만들면서
-              느려진 조회, 밀리는 알림, 검증에 실패하는 결제 웹훅을 차례로
-              수정했습니다. 이 쇼핑몰은 백엔드만 보던 시야를 넓혀보려고 만든
-              프론트엔드 연습이고, 그래서 팔 물건이 하나도 없습니다.
-            </p>
+            <p>{t("intro.paragraph1")}</p>
+            <p>{t("intro.paragraph2")}</p>
           </div>
         </div>
       </section>
@@ -177,25 +145,31 @@ export default function Careers() {
         <div className={styles.sectionHead}>
           <span>02</span>
           <div>
-            <h2 id="project-title">대표 프로젝트</h2>
-            <p>실제로 배포되어 있고, 실제로 결제도 됩니다.</p>
+            <h2 id="project-title">{t("projectSection.title")}</h2>
+            <p>{t("projectSection.lead")}</p>
           </div>
         </div>
 
         <div className={styles.projects}>
           {PROJECTS.map((project) => (
-            <article key={project.name}>
+            <article key={project.id}>
               <div className={styles.projectHead}>
-                <h3>{project.name}</h3>
-                <span>{project.period}</span>
+                <h3>{t(`projects.${project.id}.name`)}</h3>
+                <span>{t(`projects.${project.id}.period`)}</span>
               </div>
 
-              <span className={styles.role}>{project.role}</span>
-              <p className={styles.summary}>{project.summary}</p>
+              <span className={styles.role}>
+                {t(`projects.${project.id}.role`)}
+              </span>
+              <p className={styles.summary}>
+                {t(`projects.${project.id}.summary`)}
+              </p>
 
               <ul className={styles.points}>
-                {project.points.map((point) => (
-                  <li key={point}>{point}</li>
+                {t(`projects.${project.id}.points`, {
+                  returnObjects: true,
+                }).map((point, index) => (
+                  <li key={index}>{point}</li>
                 ))}
               </ul>
 
@@ -213,7 +187,7 @@ export default function Careers() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {link.label}
+                    {t(`projects.${project.id}.links.${link.id}`)}
                   </a>
                 ))}
               </div>
@@ -226,8 +200,8 @@ export default function Careers() {
         <div className={styles.sectionHead}>
           <span>03</span>
           <div>
-            <h2 id="stack-title">기술 스택</h2>
-            <p>실제로 프로젝트에 써 본 것만 적었습니다.</p>
+            <h2 id="stack-title">{t("stackSection.title")}</h2>
+            <p>{t("stackSection.lead")}</p>
           </div>
         </div>
 
@@ -252,35 +226,33 @@ export default function Careers() {
         <div className={styles.sectionHead}>
           <span>04</span>
           <div>
-            <h2 id="contact-title">연락하기</h2>
-            <p>입점 문의는 반려되지만 면접 제안에는 성실히 답장합니다.</p>
+            <h2 id="contact-title">{t("contact.title")}</h2>
+            <p>{t("contact.lead")}</p>
           </div>
         </div>
 
         <div className={styles.contactCard}>
           <div>
-            <span className={styles.contactLabel}>EMAIL</span>
+            <span className={styles.contactLabel}>{t("contact.label")}</span>
             <strong className={styles.contactMail}>{EMAIL}</strong>
 
-            <p>
-              채용 제안, 과제 전형, 프로젝트 이야기 모두 환영합니다.
-            </p>
+            <p>{t("contact.note")}</p>
           </div>
 
           <div className={styles.contactActions}>
             <a className={styles.goBtn} href={`mailto:${EMAIL}`}>
-              이메일 보내기
+              {t("contact.send")}
             </a>
 
             <button className={styles.goBtn} type="button" onClick={handleCopy}>
-              이메일 복사
+              {t("contact.copy")}
             </button>
           </div>
         </div>
 
         <p className={styles.outro}>
-          여기까지 읽으셨다면 이미 이 쇼핑몰에서 제일 오래 머무신 겁니다.{" "}
-          <Link to="/">돌아가서 마저 구경하기</Link>
+          {t("outro.text")}{" "}
+          <Link to="/">{t("outro.link")}</Link>
         </p>
       </section>
     </div>

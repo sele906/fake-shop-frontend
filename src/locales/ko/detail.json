@@ -1,0 +1,66 @@
+{
+  "back": "뒤로",
+  "backToList": "목록으로",
+  "share": "공유",
+  "cartAria_other": "장바구니 {{count}}개",
+  "crumbsAria": "경로",
+  "home": "홈",
+  "galleryAria": "상품 이미지",
+  "shareResult": {
+    "copied": "주소를 복사했습니다",
+    "blocked": "복사가 막혀 있습니다. 주소창에서 직접 복사해 주세요"
+  },
+  "addedToCart_other": "장바구니에 {{count}}개 담았습니다",
+  "notFound": {
+    "headerTitle": "상품을 찾을 수 없습니다",
+    "title": "사라진 상품입니다",
+    "lead": "주소가 잘못됐거나, 판매가 끝난 상품이에요.",
+    "link": "목록으로 돌아가기"
+  },
+  "tags": {
+    "freeShipping": "무료배송",
+    "todayShip": "오늘출발"
+  },
+  "noReviewsShort": "아직 리뷰가 없습니다",
+  "reviewCountLink_other": "리뷰 {{count}}개",
+  "rows": {
+    "shipping": "배송",
+    "shippingValue": "<b>무료</b> · 평일 14시 이전 주문 시 당일 출고(하는 척)",
+    "eta": "도착 예정",
+    "etaValue": "<b>{{date}}</b> 도착 예정 없음",
+    "benefit": "혜택",
+    "benefitValue": "안삼 멤버십 <b>{{points}}P</b> 적립 (5%)"
+  },
+  "options": {
+    "aria": "옵션 선택",
+    "size": "사이즈",
+    "qty": "수량",
+    "qtyDown": "수량 줄이기",
+    "qtyUp": "수량 늘리기",
+    "total": "총 결제금액"
+  },
+  "buy": {
+    "cart": "장바구니",
+    "now": "바로 구매"
+  },
+  "tabsAria": "상세 정보",
+  "tabs": {
+    "info": "상품정보",
+    "spec": "상세스펙",
+    "reviews": "리뷰",
+    "reviewsWithCount_other": "리뷰 {{count}}",
+    "related": "함께 보기"
+  },
+  "imageCredit": "이미지 출처:",
+  "specTitle": "상세스펙",
+  "reviews": {
+    "title": "리뷰",
+    "loading": "리뷰를 불러오는 중입니다.",
+    "emptyLine1": "아직 리뷰가 없습니다.",
+    "emptyLine2": "사지 않은 사람의 후기를 기다리는 중입니다.",
+    "positiveRate": "{{rate}}%가 4점 이상을 남겼습니다",
+    "score": "{{score}}점",
+    "more_other": "리뷰 더 보기 ({{count}}개 남음)"
+  },
+  "relatedTitle": "함께 보는 상품"
+}

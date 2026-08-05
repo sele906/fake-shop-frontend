@@ -1,48 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import styles from "./Delivery.module.css";
 import { findProduct, productImage, won } from "../../data/products";
 import { clearOrder, readOrder } from "../../order/orderStorage";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
+/* 지점 이름과 안내 문구는 delivery.json의 steps가 들고, 여기엔 좌표만 남긴다. */
 const DELIVERY_STEPS = [
-  {
-    place: "결제완료동",
-    message: "주문한 척이 접수되었습니다.",
-    x: 86,
-    y: 332,
-  },
-  {
-    place: "없는 상품 보관소",
-    message: "창고에 없는 상품을 찾고 있습니다.",
-    x: 192,
-    y: 232,
-  },
-  {
-    place: "빈 상자 포장센터",
-    message: "빈 상자를 정성스럽게 포장했습니다.",
-    x: 310,
-    y: 150,
-  },
-  {
-    place: "굳이 들른 중간 허브",
-    message: "최단 경로를 두고 굳이 돌아갑니다.",
-    x: 450,
-    y: 305,
-  },
-  {
-    place: "고객님 근처인 척",
-    message: "제법 가까워 보이지만 그렇지 않습니다.",
-    x: 570,
-    y: 230,
-  },
-  {
-    place: "마음속 현관문",
-    message: "고객님의 마음속에 배송되었습니다.",
-    x: 732,
-    y: 84,
-  },
+  { id: "paid", x: 86, y: 332 },
+  { id: "warehouse", x: 192, y: 232 },
+  { id: "packing", x: 310, y: 150 },
+  { id: "hub", x: 450, y: 305 },
+  { id: "nearby", x: 570, y: 230 },
+  { id: "door", x: 732, y: 84 },
 ];
 
 const ROUTE_PATH = `M86 332 C145 292, 160 250, 192 232
@@ -75,12 +47,13 @@ const MINOR_ROADS = [
   "M628 0 V420",
 ];
 
+/* 지명은 delivery.json의 areas가 들고, 여기엔 놓일 자리만 남긴다. */
 const AREA_LABELS = [
-  { x: 62, y: 200, text: "장바구니구", rotate: -4 },
-  { x: 300, y: 214, text: "합리화대로", rotate: -3 },
-  { x: 470, y: 118, text: "쿠폰 57장 교차로", rotate: -2 },
-  { x: 452, y: 372, text: "충동구매로", rotate: -3 },
-  { x: 700, y: 268, text: "아무것도 오지 않는 집", rotate: -3 },
+  { id: "cart", x: 62, y: 200, rotate: -4 },
+  { id: "rationalize", x: 300, y: 214, rotate: -3 },
+  { id: "coupon", x: 470, y: 118, rotate: -2 },
+  { id: "impulse", x: 452, y: 372, rotate: -3 },
+  { id: "home", x: 700, y: 268, rotate: -3 },
 ];
 
 const CONFETTI_PIECES = Array.from({ length: 72 }, (_, index) => ({
@@ -96,9 +69,10 @@ const CONFETTI_PIECES = Array.from({ length: 72 }, (_, index) => ({
 }));
 
 /* 주문 없이 /delivery로 바로 들어온 경우. 푸터의 "없는 제품 배송 조회"로도
-   들어올 수 있으니 배송 연출은 그대로 두고, 상품 목록만 비운다. */
+   들어올 수 있으니 배송 연출은 그대로 두고, 상품 목록만 비운다.
+   주문번호는 화면에 보이는 문구라 그릴 때 delivery.json에서 가져온다. */
 const SAMPLE_ORDER = {
-  orderNumber: "ANSAM-아까있었음",
+  orderNumber: null,
   payName: "",
   total: 0,
   items: [],
@@ -107,6 +81,7 @@ const SAMPLE_ORDER = {
 const DELIVERY_SECONDS = 25;
 
 export default function Delivery() {
+  const { t } = useTranslation(["delivery", "common"]);
   const [elapsed, setElapsed] = useState(0);
 
   /* 주문서(Checkout)가 localStorage에 남긴 주문. 첫 렌더에 한 번만 읽는다.
@@ -172,34 +147,33 @@ export default function Delivery() {
     <div className={styles.page}>
       <header className={styles.pageHeader}>
         <Link className={styles.brand} to="/">
-          안삼 <span>STORE</span>
+          {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
-        <p>실시간인 척 배송 조회</p>
+        <p>{t("subtitle")}</p>
       </header>
 
       <main className={styles.main}>
         <section className={styles.intro}>
-          <span>IMAGINARY TRACKING SERVICE</span>
+          <span>{t("intro.eyebrow")}</span>
           <h1>
-            고객님의 기대와
+            {t("intro.titleLine1")}
             <br />
-            현실 사이
+            {t("intro.titleLine2")}
           </h1>
-          <p>
-            위치 권한도, 지도 API도 사용하지 않습니다. 없는 상품이 마음속
-            현관문까지 가는 25초를 함께 지켜봐 주세요.
-          </p>
+          <p>{t("intro.lead")}</p>
         </section>
 
         <div className={styles.trackingLayout}>
           <section className={styles.mapPanel} aria-labelledby="map-title">
             <div className={styles.mapHead}>
               <div>
-                <span>FAKE DELIVERY MAP</span>
-                <h2 id="map-title">가짜 배송 세계지도</h2>
+                <span>{t("map.eyebrow")}</span>
+                <h2 id="map-title">{t("map.title")}</h2>
               </div>
               <strong className={isDelivered ? styles.etaDone : undefined}>
-                {isDelivered ? "상상 배송 완료" : `${remaining}초 후 배송 완료`}
+                {isDelivered
+                  ? t("map.etaDone")
+                  : t("map.etaRemaining", { seconds: remaining })}
               </strong>
             </div>
 
@@ -207,7 +181,7 @@ export default function Delivery() {
               <svg
                 viewBox="0 0 820 420"
                 role="img"
-                aria-label="존재하지 않는 상품의 상상 배송 경로"
+                aria-label={t("map.svgAria")}
               >
                 <g aria-hidden="true">
                   <path
@@ -260,13 +234,13 @@ export default function Delivery() {
                   <g className={styles.areaLabels}>
                     {AREA_LABELS.map((label) => (
                       <text
-                        key={label.text}
+                        key={label.id}
                         x={label.x}
                         y={label.y}
                         textAnchor="middle"
                         transform={`rotate(${label.rotate} ${label.x} ${label.y})`}
                       >
-                        {label.text}
+                        {t(`areas.${label.id}`)}
                       </text>
                     ))}
                   </g>
@@ -286,7 +260,7 @@ export default function Delivery() {
                     className={`${styles.point} ${
                       index <= stepIndex ? styles.pointPassed : ""
                     }`}
-                    key={step.place}
+                    key={step.id}
                   >
                     <circle cx={step.x} cy={step.y} r="7" />
                     <text
@@ -294,7 +268,7 @@ export default function Delivery() {
                       y={step.y + (index % 2 === 0 ? 26 : -18)}
                       textAnchor="middle"
                     >
-                      {step.place}
+                      {t(`steps.${step.id}.place`)}
                     </text>
                   </g>
                 ))}
@@ -324,19 +298,16 @@ export default function Delivery() {
 
               {isRerouting && (
                 <p className={styles.mapToast} role="status">
-                  <strong>배송 경로를 재탐색했습니다.</strong>
-                  애초에 목적지가 없었기 때문입니다.
+                  <strong>{t("map.rerouteStrong")}</strong>
+                  {t("map.rerouteRest")}
                 </p>
               )}
 
               <div className={styles.mapCaption}>
-                <p>
-                  본 지도는 실제 위치와 관련이 없으며, 배송 기사님도 존재하지
-                  않습니다.
-                </p>
+                <p>{t("map.caption")}</p>
                 <span className={styles.scaleBar} aria-hidden="true">
                   <i />
-                  상상 500m
+                  {t("map.scale")}
                 </span>
               </div>
             </div>
@@ -344,20 +315,31 @@ export default function Delivery() {
 
           <aside className={styles.deliveryCard} aria-live="polite">
             <div className={styles.statusHead}>
-              <span>{isDelivered ? "배송 완료" : "상상 배송 중"}</span>
-              <strong>{isDelivered ? "도착" : `${remaining}초`}</strong>
+              <span>
+                {isDelivered ? t("status.delivered") : t("status.inTransit")}
+              </span>
+              <strong>
+                {isDelivered
+                  ? t("status.arrived")
+                  : t("status.seconds", { seconds: remaining })}
+              </strong>
             </div>
 
             <h2>
-              고객님의 상품이
-              <br />
-              {currentStep.place}에 도착했습니다.
+              <Trans
+                ns="delivery"
+                i18nKey="card.title"
+                values={{ place: t(`steps.${currentStep.id}.place`) }}
+                components={{ br: <br /> }}
+              />
             </h2>
 
-            <p className={styles.currentMessage}>{currentStep.message}</p>
+            <p className={styles.currentMessage}>
+              {t(`steps.${currentStep.id}.message`)}
+            </p>
 
             <div className={styles.progressRow}>
-              <span>배송 진행</span>
+              <span>{t("card.progress")}</span>
               <strong>{Math.round(progress)}%</strong>
             </div>
             <div className={styles.progress}>
@@ -366,33 +348,39 @@ export default function Delivery() {
 
             <dl className={styles.summary}>
               <div>
-                <dt>다음 목적지</dt>
-                <dd>{nextStep?.place ?? "더 이상 없음"}</dd>
+                <dt>{t("card.nextStop")}</dt>
+                <dd>
+                  {nextStep
+                    ? t(`steps.${nextStep.id}.place`)
+                    : t("card.noMore")}
+                </dd>
               </div>
               <div>
-                <dt>남은 배송 시간</dt>
-                <dd>{isDelivered ? "0초" : `약 ${remaining}초`}</dd>
+                <dt>{t("card.timeLeft")}</dt>
+                <dd>
+                  {isDelivered
+                    ? t("card.zeroSeconds")
+                    : t("card.aboutSeconds", { seconds: remaining })}
+                </dd>
               </div>
               <div>
-                <dt>주문번호</dt>
-                <dd>{order.orderNumber}</dd>
+                <dt>{t("card.orderNumber")}</dt>
+                <dd>{order.orderNumber ?? t("sampleOrderNumber")}</dd>
               </div>
               {order.payName && (
                 <div>
-                  <dt>결제수단</dt>
+                  <dt>{t("card.payMethod")}</dt>
                   <dd>{order.payName}</dd>
                 </div>
               )}
             </dl>
 
             <div className={styles.orderItems}>
-              <h3>주문한 척한 상품</h3>
+              <h3>{t("card.itemsTitle")}</h3>
 
               {/* 담은 것이 없으면 빈 목록 대신 안내 문구 한 줄만 남긴다. */}
               {orderItems.length === 0 ? (
-                <p className={styles.sampleNote}>
-                  주문한 상품이 없습니다. 이주의 특가부터 둘러보세요.
-                </p>
+                <p className={styles.sampleNote}>{t("card.emptyNote")}</p>
               ) : (
                 <>
                   {orderItems.map((item, index) => (
@@ -407,51 +395,55 @@ export default function Delivery() {
                         <small>{item.brand}</small>
                         <strong>{item.name}</strong>
                         <span>
-                          {item.qty}개 · {won(item.price * item.qty)}
+                          {t("card.itemLine", {
+                            qty: item.qty,
+                            amount: won(item.price * item.qty),
+                          })}
                         </span>
                       </div>
                     </article>
                   ))}
                   <p>
-                    담았던 금액 <strong>{won(orderTotal)}</strong>
+                    {t("card.basket")} <strong>{won(orderTotal)}</strong>
                   </p>
                 </>
               )}
             </div>
 
             <button type="button" onClick={restartDelivery}>
-              배송 기록 다시 만들어보기
+              {t("card.restart")}
             </button>
           </aside>
         </div>
 
         <section className={styles.timeline} aria-labelledby="timeline-title">
           <div>
-            <span>25 SECOND JOURNEY</span>
-            <h2 id="timeline-title">배송 단계</h2>
+            <span>{t("timeline.eyebrow")}</span>
+            <h2 id="timeline-title">{t("timeline.title")}</h2>
           </div>
 
           <ol>
             {DELIVERY_STEPS.map((step, index) => (
               <li
-                key={step.place}
+                key={step.id}
                 aria-current={index === stepIndex ? "step" : undefined}
                 className={index < stepIndex ? styles.completed : undefined}
               >
-                <span>{String(index * 5).padStart(2, "0")}초</span>
+                <span>
+                  {t("timeline.second", {
+                    second: String(index * 5).padStart(2, "0"),
+                  })}
+                </span>
                 <div>
-                  <strong>{step.place}</strong>
-                  <p>{step.message}</p>
+                  <strong>{t(`steps.${step.id}.place`)}</strong>
+                  <p>{t(`steps.${step.id}.message`)}</p>
                 </div>
               </li>
             ))}
           </ol>
         </section>
 
-        <p className={styles.disclaimer}>
-          안삼의 배송 조회는 실제 주문, 위치 정보, 택배사 API와 연결되어 있지
-          않습니다. 개인정보도 받지 않고 상품도 보내지 않습니다.
-        </p>
+        <p className={styles.disclaimer}>{t("disclaimer")}</p>
 
         {isDelivered && (
           <div className={styles.confetti} aria-live="polite">
@@ -471,9 +463,9 @@ export default function Delivery() {
               ))}
             </div>
             <div className={styles.celebration}>
-              <span>DELIVERY COMPLETE!</span>
-              <strong>마음속 배송 완료!</strong>
-              <p>상품을 마음속 공동현관 앞에 안전하게 두었습니다.</p>
+              <span>{t("done.eyebrow")}</span>
+              <strong>{t("done.title")}</strong>
+              <p>{t("done.lead")}</p>
             </div>
           </div>
         )}

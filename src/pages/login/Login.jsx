@@ -1,102 +1,40 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import styles from "./Login.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
 import { BiEnvelope, BiHide, BiLockAlt, BiShow } from "react-icons/bi";
 
-/* 두 가지 로그인 "척" 방식. 탭을 바꾸면 아래 문구가 통째로 갈린다. */
+/* 두 가지 로그인 "척" 방식. 탭을 바꾸면 아래 문구가 통째로 갈린다.
+   문구는 login.json의 modes가 들고, 여기엔 입력칸 속성만 남긴다. */
 const MODES = {
-  pw: {
-    tab: "비밀번호인 척",
-    label: "비밀번호",
-    placeholder: "어차피 아무 의미가 없으니까요",
-    autoComplete: "current-password",
-    error: "저희도 확인할 방법이 없지만 빈칸은 곤란합니다.",
-    forgot: "비밀번호를 잊으셨나요?",
-    /* 누를수록 문턱이 낮아진다. 세 번째에는 통과시킨다. */
-    submits: ["로그인한 척하기", "그래도 로그인한 척하기", "통과시켜 주기"],
-    nudges: [
-      "비밀번호가 너무 진지합니다. 조금 더 대충 입력해 주세요.",
-      "인증에 실패했지만 저희는 관대합니다.",
-    ],
-  },
-  code: {
-    tab: "인증번호인 척",
-    label: "인증번호",
-    placeholder: "어차피 아무 의미가 없으니까요",
-    autoComplete: "one-time-code",
-    error: "여섯 자리면 됩니다. 맞고 틀림은 보지 않습니다.",
-    forgot: "인증번호를 못 받으셨나요?",
-    submits: ["인증된 척하기", "그래도 인증된 척하기", "통과시켜 주기"],
-    nudges: [
-      "인증번호가 너무 정확합니다. 조금 더 대충 입력해 주세요.",
-      "인증에 실패했지만 저희는 관대합니다.",
-    ],
-  },
+  pw: { autoComplete: "current-password" },
+  code: { autoComplete: "one-time-code" },
 };
 
+/* login.json의 modes.*.submits · nudges 길이와 맞춰 둔다.
+   누를수록 문턱이 낮아져 세 번째에는 통과시킨다. */
+const SUBMIT_COUNT = 3;
+const NUDGE_COUNT = 2;
+
+/* 아이콘 글자는 로고에서 따온 것이라 언어를 타지 않는다. */
 const SOCIALS = [
-  {
-    mark: "K",
-    name: "카카오",
-    label: "카카오로 대충 시작하기",
-    message: "카카오에는 아무 연락도 하지 않았습니다.",
-  },
-  {
-    mark: "N",
-    name: "네이버",
-    label: "네이버 계정인 척하기",
-    message: "네이버는 이 일을 모릅니다.",
-  },
-  {
-    mark: "G",
-    name: "Google",
-    label: "Google에게 알리지 않고 계속하기",
-    message: "Google 계정과 전혀 연동되지 않았습니다. 안심하세요.",
-  },
-  {
-    mark: "A",
-    name: "Apple",
-    label: "Apple로 신원 감추기",
-    message: "Apple도 고객님이 누군지 모릅니다.",
-  },
+  { id: "kakao", mark: "K" },
+  { id: "naver", mark: "N" },
+  { id: "google", mark: "G" },
+  { id: "apple", mark: "A" },
 ];
 
-const FOOT_LINKS = [
-  { 
-    href: "#copyright", 
-    label: "© 2026 안삼 — 아무것도 판매하지 않습니다", 
-    message: "안삼은 아무것도 판매하지 않습니다. 그런데 저작권은 제법 진지하게 챙깁니다.",
-  },
-  { 
-    href: "#terms", 
-    label: "이용약관", 
-    message: "이용약관에 동의하지 않으셔도 됩니다. 이용 중인 서비스가 딱히 없기 때문입니다.",
-  },
-  { 
-    href: "#privacy", 
-    label: "개인정보 처리방침", 
-    message: "개인정보를 수집하지 않습니다. 저희도 고객님이 누구신지 전혀 모릅니다.", 
-  },
-  {
-    href: "#why",
-    label: "안 사도 되는 이유",
-    message: "이미 집에 비슷한 게 있습니다. 그게 이유입니다.",
-  },
-  {
-    href: "#cs",
-    label: "존재하지 않는 고객센터",
-    message: "고객센터 연결을 시도했습니다. 존재하지 않는 상담원이 친절히 부재중입니다.",
-  },
-];
+const FOOT_LINK_IDS = ["copyright", "terms", "privacy", "why", "cs"];
 
 const ENTER_MS = 1400;
 const USER_KEY = "ansam.user.v1";
 
 export default function Login() {
+  const { t } = useTranslation(["login", "common"]);
   const navigate = useNavigate();
 
   const [mode, setMode] = useState("pw");
@@ -115,8 +53,8 @@ export default function Login() {
 
   const current = MODES[mode];
   const submitLabel = isEntering
-    ? "들여보내는 중…"
-    : current.submits[Math.min(tries, current.submits.length - 1)];
+    ? t("entering")
+    : t(`modes.${mode}.submits.${Math.min(tries, SUBMIT_COUNT - 1)}`);
 
   useEffect(() => () => clearTimeout(enterTimer.current), []);
 
@@ -162,49 +100,51 @@ export default function Login() {
       setIsEmailBad(!id);
       setIsSecretBad(!password);
       setIsWobbling(true);
-      toast("아무거나 좋습니다. 다만 아무것도 아니면 곤란합니다.");
+      toast(t("toast.emptyFields"));
       return;
     }
 
     const attempt = tries + 1;
     setTries(attempt);
 
-    if (attempt <= current.nudges.length) {
+    if (attempt <= NUDGE_COUNT) {
       setIsWobbling(true);
-      toast(current.nudges[attempt - 1]);
+      toast(t(`modes.${mode}.nudges.${attempt - 1}`));
       return;
     }
 
-    const nickname = `${id.split("@")[0] || "익명"} 고객님`;
-    enter(nickname, "self", `${nickname}, 다시 안 사러 오셨군요.`);
+    const nickname = t("nickname", {
+      name: id.split("@")[0] || t("anonymous"),
+    });
+    enter(nickname, "self", t("toast.welcome", { nickname }));
   }
 
   /* 비밀번호 찾기에는 숨은 쿠폰이 걸려 있다. 처음 눌렀을 때만 쿠폰이 온다. */
   function forgetSecret() {
     if (unlock(MISSION.LOGIN_ID)) return;
 
-    toast("아무거나 입력해도 들어갈 수 있습니다.");
+    toast(t("toast.forgotSecret"));
   }
 
   /* 소셜 버튼은 눌리기만 한다. 로그인 흔적도 남기지 않고 어디로 넘어가지도 않는다. */
-  function pretendSocial(social) {
+  function pretendSocial(socialId) {
     if (isEntering) return;
 
-    toast(social.message);
+    toast(t(`socials.${socialId}.message`));
   }
 
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
         <Link className={styles.brand} to="/">
-          안삼 <span>STORE</span>
+          {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
         </Link>
 
         <Link
           className={styles.help}
           to="/help"
         >
-          도움은 드릴 수 없습니다
+          {t("help")}
         </Link>
       </header>
 
@@ -212,33 +152,31 @@ export default function Login() {
         {/* 900px 이상에서만 보이는 왼쪽 패널 */}
         <aside className={styles.aside}>
           <div className={styles.asideTop}>
-            <span className={styles.kicker}>안삼 멤버십</span>
+            <span className={styles.kicker}>{t("aside.kicker")}</span>
 
             <h2>
-              사고 싶은 마음만
+              {t("aside.titleLine1")}
               <br />
-              가지고 오세요
+              {t("aside.titleLine2")}
             </h2>
 
-            <p>
-              실제 구매 능력은 확인하지 않습니다. 카드 한도, 잔고, 신용점수 모두
-              조회하지 않습니다. 조회할 이유가 없습니다.
-            </p>
+            <p>{t("aside.lead")}</p>
           </div>
         </aside>
 
         <div className={styles.pane}>
           <div className={styles.formWrap}>
             <div className={styles.intro}>
-              <h1>안삼에 로그인</h1>
-              <p>
-                사고 싶은 마음만 가지고 오세요. 실제 구매 능력은 확인하지
-                않습니다.
-              </p>
+              <h1>{t("intro.title")}</h1>
+              <p>{t("intro.lead")}</p>
             </div>
 
-            <div className={styles.tabs} role="tablist" aria-label="로그인 방식">
-              {Object.entries(MODES).map(([key, item]) => (
+            <div
+              className={styles.tabs}
+              role="tablist"
+              aria-label={t("tablistAria")}
+            >
+              {Object.keys(MODES).map((key) => (
                 <button
                   key={key}
                   type="button"
@@ -246,14 +184,14 @@ export default function Login() {
                   aria-selected={mode === key}
                   onClick={() => changeMode(key)}
                 >
-                  {item.tab}
+                  {t(`modes.${key}.tab`)}
                 </button>
               ))}
             </div>
 
             <form className={styles.form} onSubmit={submit} noValidate>
               <div className={`${styles.field} ${isEmailBad ? styles.bad : ""}`}>
-                <label htmlFor="email">아이디</label>
+                <label htmlFor="email">{t("idLabel")}</label>
 
                 <div className={styles.control}>
                   <BiEnvelope size={16} aria-hidden="true" />
@@ -261,7 +199,7 @@ export default function Login() {
                     id="email"
                     type="text"
                     value={email}
-                    placeholder="아무거나 입력하세요"
+                    placeholder={t("idPlaceholder")}
                     autoComplete="email"
                     aria-invalid={isEmailBad || undefined}
                     onChange={(event) => {
@@ -271,15 +209,13 @@ export default function Login() {
                   />
                 </div>
 
-                <span className={styles.err}>
-                  형식은 신경 쓰지 않지만 뭐라도 적어주세요.
-                </span>
+                <span className={styles.err}>{t("idError")}</span>
               </div>
 
               <div
                 className={`${styles.field} ${isSecretBad ? styles.bad : ""}`}
               >
-                <label htmlFor="secret">{current.label}</label>
+                <label htmlFor="secret">{t(`modes.${mode}.label`)}</label>
 
                 <div className={styles.control}>
                   <BiLockAlt size={16} aria-hidden="true" />
@@ -289,7 +225,7 @@ export default function Login() {
                     /* 인증번호 모드에서는 가릴 것이 없다. */
                     type={mode === "pw" && !isPeeking ? "password" : "text"}
                     value={secret}
-                    placeholder={current.placeholder}
+                    placeholder={t(`modes.${mode}.placeholder`)}
                     autoComplete={current.autoComplete}
                     aria-invalid={isSecretBad || undefined}
                     onChange={(event) => {
@@ -302,7 +238,7 @@ export default function Login() {
                     <button
                       type="button"
                       aria-label={
-                        isPeeking ? "비밀번호 숨기기" : "비밀번호 표시"
+                        isPeeking ? t("hideSecret") : t("showSecret")
                       }
                       onClick={() => setIsPeeking((peeking) => !peeking)}
                     >
@@ -315,7 +251,7 @@ export default function Login() {
                   )}
                 </div>
 
-                <span className={styles.err}>{current.error}</span>
+                <span className={styles.err}>{t(`modes.${mode}.error`)}</span>
               </div>
 
               <div className={styles.row}>
@@ -325,7 +261,7 @@ export default function Login() {
                     checked={keepSignedIn}
                     onChange={(event) => setKeepSignedIn(event.target.checked)}
                   />
-                  <span>이 브라우저가 나를 기억하는 것을 허락합니다</span>
+                  <span>{t("keepSignedIn")}</span>
                 </label>
               </div>
 
@@ -340,48 +276,42 @@ export default function Login() {
               <div className={`${styles.row} ${styles.links}`}>
                 <a
                   href="#forgot-id"
-                  onClick={() =>
-                    toast("저희도 모릅니다. 새로 만들어 주세요.")
-                  }
+                  onClick={() => toast(t("toast.forgotId"))}
                 >
-                  아이디를 잊으셨나요?
+                  {t("forgotId")}
                 </a>
 
                 <a href="#forgot" onClick={forgetSecret}>
-                  {current.forgot}
+                  {t(`modes.${mode}.forgot`)}
                 </a>
               </div>
             </form>
 
-            <div className={styles.divide}>또는</div>
+            <div className={styles.divide}>{t("divider")}</div>
 
             <div className={styles.socials}>
               {SOCIALS.map((social) => (
                 <button
-                  key={social.name}
+                  key={social.id}
                   type="button"
                   className={styles.social}
-                  onClick={() => pretendSocial(social)}
+                  onClick={() => pretendSocial(social.id)}
                 >
                   <i>{social.mark}</i>
-                  <span>{social.label}</span>
+                  <span>{t(`socials.${social.id}.label`)}</span>
                 </button>
               ))}
             </div>
 
             <p className={styles.footNote}>
-              아직 회원이 아닌가요?{" "}
+              {t("footNote.notMember")}{" "}
               <span className={styles.fakeJoin}
-                onClick={() =>
-                  toast(
-                    "가입 절차는 없습니다. 그냥 처음 보는 사람인 척하시면 됩니다."
-                  )
-                }
+                onClick={() => toast(t("toast.join"))}
               >
-                <b>처음 보는 사람인 척하기</b>
+                <b>{t("footNote.join")}</b>
               </span>
               <br />
-              로그인 시 아무것도 배송하지 않는다는 사실에 동의하게 됩니다.
+              {t("footNote.agree")}
             </p>
           </div>
         </div>
@@ -389,13 +319,13 @@ export default function Login() {
 
       <footer className={styles.footer}>
 
-        {FOOT_LINKS.map((link) => (
+        {FOOT_LINK_IDS.map((linkId) => (
           <a
-            key={link.href}
-            href={link.href}
-            onClick={() => link.message && toast(link.message)}
+            key={linkId}
+            href={`#${linkId}`}
+            onClick={() => toast(t(`footLinks.${linkId}.message`))}
           >
-            {link.label}
+            {t(`footLinks.${linkId}.label`)}
           </a>
         ))}
       </footer>

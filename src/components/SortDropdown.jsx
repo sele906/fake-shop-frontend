@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./SortDropdown.module.css";
 
 import { BiCaretDown, BiCheck } from "react-icons/bi";
@@ -14,8 +15,12 @@ import { BiCaretDown, BiCheck } from "react-icons/bi";
  *
  * options는 [{ key, label }] 모양이다.
  */
-export default function SortDropdown({ options, value, onChange, label = "정렬 기준" }) {
+export default function SortDropdown({ options, value, onChange, label }) {
+  const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
+
+  /* 부르는 쪽이 따로 주지 않으면 공용 문구를 쓴다. */
+  const menuLabel = label ?? t("sortLabel");
 
   const wrapRef = useRef(null);
   const triggerRef = useRef(null);
@@ -88,7 +93,7 @@ export default function SortDropdown({ options, value, onChange, label = "정렬
         ref={triggerRef}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        aria-label={label}
+        aria-label={menuLabel}
         onClick={() => setIsOpen((open) => !open)}
       >
         {current?.label}
@@ -100,7 +105,7 @@ export default function SortDropdown({ options, value, onChange, label = "정렬
           className={styles.list}
           ref={listRef}
           role="menu"
-          aria-label={label}
+          aria-label={menuLabel}
           onKeyDown={handleListKeyDown}
         >
           {options.map((option) => (

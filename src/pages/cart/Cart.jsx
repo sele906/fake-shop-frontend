@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Trans, useTranslation } from "react-i18next";
 import styles from "./Cart.module.css";
 import { PRODUCTS, productImage, won } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
-import { MAX_QTY } from "../../cart/cartStorage";
+import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { couponDiscount } from "../../coupon/couponStorage";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
@@ -16,10 +17,12 @@ import { BiChevronLeft, BiX } from "react-icons/bi";
 const FREE_SHIP = 50000;
 const SHIP_FEE = 3500;
 
-/* 숨은 쿠폰이 걸린 코드. 대소문자가 없는 한글이라 그대로 비교한다. */
+/* 숨은 쿠폰이 걸린 코드. 대소문자가 없는 한글이라 그대로 비교한다.
+   화면에 그리는 문구가 아니라 사용자가 입력해야 하는 값이라 번역하지 않는다. */
 const HIDDEN_CODE = "진짜안삼";
 
 export default function Cart() {
+  const { t } = useTranslation(["cart", "common"]);
   const goBack = useGoBack();
   const navigate = useNavigate();
 
@@ -96,9 +99,15 @@ export default function Cart() {
     return PRODUCTS.filter((product) => !inCart.has(product.id)).slice(0, 4);
   }, [items]);
 
+  /* 사이즈가 없는 상품의 옵션은 저장소가 정한 고정값이라 그릴 때만 번역한다.
+     사용자가 고른 사이즈("M" 같은 값)는 그대로 내보낸다. */
+  function optionLabel(option) {
+    return option === DEFAULT_OPTION ? t("common:defaultOption") : option;
+  }
+
   function removeLine(key) {
     removeItem(key);
-    toast("상품을 삭제했습니다");
+    toast(t("toast.removed"));
   }
 
   function toggleCoupon(couponId) {
@@ -116,7 +125,7 @@ export default function Cart() {
     }
 
     setSelectedCouponIds(ownedCoupons.map((item) => item.id));
-    toast(`${ownedCoupons.length}장을 전부 적용했습니다. 아무도 막지 않습니다.`);
+    toast(t("toast.allCouponsApplied", { count: ownedCoupons.length }));
   }
 
   /* 코드로 받을 수 있는 쿠폰은 숨은 쿠폰 하나뿐이다. 나머지는 전부 반려된다. */
@@ -128,9 +137,9 @@ export default function Cart() {
     if (!code) {
       toast(
         <>
-          사용 가능한 쿠폰 코드가 없습니다.
+          {t("toast.noCodeLine1")}
           <br />
-          예상하셨겠지만요.
+          {t("toast.noCodeLine2")}
         </>
       );
       return;
@@ -144,9 +153,9 @@ export default function Cart() {
 
     toast(
       <>
-        존재하지 않는 쿠폰입니다.
+        {t("toast.badCodeLine1")}
         <br />
-        하지만 입력하는 모습은 제법 그럴듯했습니다.
+        {t("toast.badCodeLine2")}
       </>
     );
   }
@@ -156,7 +165,7 @@ export default function Cart() {
   function goToCheckout() {
     if (selectedCouponIds.length) {
       removeCoupons(selectedCouponIds);
-      toast(`쿠폰 ${selectedCouponIds.length}장을 사용했습니다. 쿠폰함에서 사라집니다.`);
+      toast(t("toast.couponsUsed", { count: selectedCouponIds.length }));
     }
 
     navigate("/checkout");
@@ -164,11 +173,11 @@ export default function Cart() {
 
   function handleRemoveSelected() {
     if (selected.length === 0) {
-      toast("선택된 상품이 없습니다");
+      toast(t("toast.noneSelected"));
       return;
     }
 
-    toast(`${selected.length}개 상품을 삭제했습니다`);
+    toast(t("toast.removedSelected", { count: selected.length }));
     removeSelected();
   }
 
@@ -178,44 +187,48 @@ export default function Cart() {
         <button
           type="button"
           className={styles.iconBtn}
-          aria-label="뒤로"
+          aria-label={t("back")}
           onClick={goBack}
         >
           <BiChevronLeft size={22} aria-hidden="true" />
         </button>
 
         <h1>
-          장바구니 <em>{items.length}</em>
+          {t("title")} <em>{items.length}</em>
         </h1>
 
         <Link className={styles.home} to="/">
-          계속 쇼핑
+          {t("keepShopping")}
         </Link>
       </header>
 
       <div className={`${styles.wrap} ${styles.cols}`}>
         {items.length === 0 ? (
           <div className={styles.empty}>
-            <strong>장바구니가 비어 있어요</strong>
-            <p>담아둔 상품이 없습니다. 이주의 특가부터 둘러보세요.</p>
+            <strong>{t("empty.title")}</strong>
+            <p>{t("empty.lead")}</p>
             <Link className={styles.btn} to="/">
-              쇼핑 계속하기
+              {t("empty.cta")}
             </Link>
           </div>
         ) : (
           <>
             <div className={styles.layout}>
-              <section className={styles.ship} aria-label="무료배송 안내">
+              <section className={styles.ship} aria-label={t("ship.aria")}>
                 <p>
                   {shipLeft > 0 ? (
-                    <>
-                      <b>{won(shipLeft)}</b> 더 담으면 <b>배송비 무료</b>까지
-                      도착해요
-                    </>
+                    <Trans
+                      ns="cart"
+                      i18nKey="ship.remaining"
+                      values={{ amount: won(shipLeft) }}
+                      components={{ b: <b /> }}
+                    />
                   ) : (
-                    <>
-                      <b>배송비 무료</b> 조건을 채웠어요
-                    </>
+                    <Trans
+                      ns="cart"
+                      i18nKey="ship.met"
+                      components={{ b: <b /> }}
+                    />
                   )}
                 </p>
 
@@ -238,7 +251,10 @@ export default function Cart() {
                     onChange={(event) => selectAll(event.target.checked)}
                   />
                   <span>
-                    전체선택 ({selected.length}/{buyable.length})
+                    {t("selbar.selectAll", {
+                      selected: selected.length,
+                      total: buyable.length,
+                    })}
                   </span>
                 </label>
 
@@ -247,14 +263,17 @@ export default function Cart() {
                   className={styles.linkBtn}
                   onClick={handleRemoveSelected}
                 >
-                  선택 삭제
+                  {t("selbar.removeSelected")}
                 </button>
               </div>
 
               {buyable.length > 0 && (
-                <section className={styles.group} aria-label="안삼 직배송">
+                <section
+                  className={styles.group}
+                  aria-label={t("group.directAria")}
+                >
                   <div className={styles.groupHead}>
-                    안삼 직배송 <span>· 무료배송</span>
+                    {t("group.directHead")} <span>{t("group.directNote")}</span>
                   </div>
 
                   {buyable.map(({ key, product, option, qty, selected: isSelected }) => (
@@ -263,7 +282,9 @@ export default function Cart() {
                         <input
                           type="checkbox"
                           checked={isSelected}
-                          aria-label={`${product.name} 선택`}
+                          aria-label={t("item.selectAria", {
+                            name: product.name,
+                          })}
                           onChange={(event) =>
                             toggleSelected(key, event.target.checked)
                           }
@@ -292,7 +313,9 @@ export default function Cart() {
                           {product.name}
                         </Link>
 
-                        <span className={styles.opt}>{option}</span>
+                        <span className={styles.opt}>
+                          {optionLabel(option)}
+                        </span>
 
                         {/* 줄에 따로 저장하지 않고 상품이 달고 있는 태그를 쓴다. */}
                         {product.tag && (
@@ -303,7 +326,7 @@ export default function Cart() {
                           <div className={styles.qty}>
                             <button
                               type="button"
-                              aria-label="수량 줄이기"
+                              aria-label={t("item.qtyDown")}
                               disabled={qty <= 1}
                               onClick={() => changeQty(key, -1)}
                             >
@@ -314,7 +337,7 @@ export default function Cart() {
 
                             <button
                               type="button"
-                              aria-label="수량 늘리기"
+                              aria-label={t("item.qtyUp")}
                               disabled={qty >= MAX_QTY}
                               onClick={() => changeQty(key, 1)}
                             >
@@ -338,7 +361,9 @@ export default function Cart() {
                       <button
                         type="button"
                         className={styles.remove}
-                        aria-label={`${product.name} 삭제`}
+                        aria-label={t("item.removeAria", {
+                          name: product.name,
+                        })}
                         onClick={() => removeLine(key)}
                       >
                         <BiX size={18} aria-hidden="true" />
@@ -349,9 +374,13 @@ export default function Cart() {
               )}
 
               {soldOut.length > 0 && (
-                <section className={styles.group} aria-label="구매 불가 상품">
+                <section
+                  className={styles.group}
+                  aria-label={t("group.soldOutAria")}
+                >
                   <div className={styles.groupHead}>
-                    구매 불가 <span>· 재입고 알림 신청 가능</span>
+                    {t("group.soldOutHead")}{" "}
+                    <span>{t("group.soldOutNote")}</span>
                   </div>
 
                   {soldOut.map(({ key, product }) => (
@@ -360,7 +389,11 @@ export default function Cart() {
                       key={key}
                     >
                       <label className={styles.check}>
-                        <input type="checkbox" disabled aria-label="선택 불가" />
+                        <input
+                          type="checkbox"
+                          disabled
+                          aria-label={t("item.cannotSelect")}
+                        />
                       </label>
 
                       <div className={styles.thumb}>
@@ -382,7 +415,7 @@ export default function Cart() {
                         </Link>
 
                         <span className={`${styles.flag} ${styles.warn}`}>
-                          품절
+                          {t("item.soldOut")}
                         </span>
 
                         <div className={styles.line}>
@@ -395,11 +428,9 @@ export default function Cart() {
                           <button
                             type="button"
                             className={styles.linkBtn}
-                            onClick={() =>
-                              toast("재입고 알림을 신청한 척했습니다")
-                            }
+                            onClick={() => toast(t("toast.restockRequested"))}
                           >
-                            재입고 알림
+                            {t("item.restock")}
                           </button>
                         </div>
                       </div>
@@ -407,7 +438,9 @@ export default function Cart() {
                       <button
                         type="button"
                         className={styles.remove}
-                        aria-label={`${product.name} 삭제`}
+                        aria-label={t("item.removeAria", {
+                          name: product.name,
+                        })}
                         onClick={() => removeLine(key)}
                       >
                         <BiX size={18} aria-hidden="true" />
@@ -421,15 +454,21 @@ export default function Cart() {
             <div className={styles.side}>
               <div className={styles.couponBox}>
                 <div className={styles.couponTitle}>
-                  <strong>쿠폰 할인</strong>
-                  <span>{selectedCouponIds.length}장 선택됨</span>
+                  <strong>{t("coupon.title")}</strong>
+                  <span>
+                    {t("coupon.selectedCount", {
+                      count: selectedCouponIds.length,
+                    })}
+                  </span>
                 </div>
 
                 {ownedCoupons.length === 0 ? (
                   <p className={styles.couponEmpty}>
-                    보유한 쿠폰이 없습니다.{" "}
-                    <Link to="/coupon">쿠폰 보관함</Link>에서 받아오세요. 몇
-                    장이든 중복됩니다.
+                    <Trans
+                      ns="cart"
+                      i18nKey="coupon.empty"
+                      components={{ walletLink: <Link to="/coupon" /> }}
+                    />
                   </p>
                 ) : (
                   <>
@@ -439,8 +478,10 @@ export default function Cart() {
                       onClick={toggleAllCoupons}
                     >
                       {isAllCouponsSelected
-                        ? "전체 해제"
-                        : `${ownedCoupons.length}장 전부 선택`}
+                        ? t("coupon.deselectAll")
+                        : t("coupon.selectAll", {
+                            count: ownedCoupons.length,
+                          })}
                     </button>
 
                     <div className={styles.couponList}>
@@ -462,64 +503,81 @@ export default function Cart() {
 
                 <form
                   className={styles.couponCode}
-                  aria-label="쿠폰 코드 적용"
+                  aria-label={t("coupon.codeFormAria")}
                   onSubmit={applyCouponCode}
                 >
                   <input
                     type="text"
-                    placeholder="수상한 쿠폰 코드 입력"
-                    aria-label="쿠폰 코드"
+                    placeholder={t("coupon.codePlaceholder")}
+                    aria-label={t("coupon.codeAria")}
                     value={coupon}
                     onChange={(event) => setCoupon(event.target.value)}
                   />
 
-                  <button type="submit">적용</button>
+                  <button type="submit">{t("coupon.apply")}</button>
                 </form>
               </div>
 
-              <section className={styles.sum} aria-label="결제 금액">
-                <h2>결제 금액</h2>
+              <section className={styles.sum} aria-label={t("sum.aria")}>
+                <h2>{t("sum.title")}</h2>
 
                 <div className={styles.sumRow}>
-                  <span>상품금액</span>
+                  <span>{t("sum.itemTotal")}</span>
                   <span>{won(listTotal)}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.disc}`}>
-                  <span>상품할인</span>
-                  <span>{discount ? `−${won(discount)}` : "0원"}</span>
+                  <span>{t("sum.itemDiscount")}</span>
+                  <span>{discount ? `−${won(discount)}` : t("sum.zero")}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.disc}`}>
-                  <span>쿠폰할인 {selectedCouponIds.length}장</span>
-                  <span>{couponOff ? `−${won(couponOff)}` : "0원"}</span>
+                  <span>
+                    {t("sum.couponDiscount", {
+                      count: selectedCouponIds.length,
+                    })}
+                  </span>
+                  <span>{couponOff ? `−${won(couponOff)}` : t("sum.zero")}</span>
                 </div>
 
                 <div className={styles.sumRow}>
-                  <span>배송비</span>
-                  <span>{shipFee ? won(shipFee) : "무료"}</span>
+                  <span>{t("sum.shipping")}</span>
+                  <span>{shipFee ? won(shipFee) : t("sum.free")}</span>
                 </div>
 
                 <div className={`${styles.sumRow} ${styles.grand}`}>
-                  <span>총 결제금액</span>
+                  <span>{t("sum.grandTotal")}</span>
                   <strong>{won(grandTotal)}</strong>
                 </div>
 
                 {couponWasted > 0 && (
                   <p className={styles.note}>
-                    쿠폰이 <b>{won(couponWasted)}</b>어치 남았지만 0원이
-                    바닥입니다. 나머지는 그냥 흘러넘칩니다.
+                    <Trans
+                      ns="cart"
+                      i18nKey="sum.wasted"
+                      values={{ amount: won(couponWasted) }}
+                      components={{ b: <b /> }}
+                    />
                   </p>
                 )}
 
                 <p className={styles.note}>
-                  멤버십 적립 예정 <b>{points.toLocaleString("ko-KR")}P</b> · 결제하는 기분만 안전하게 즐겨보세요.
+                  <Trans
+                    ns="cart"
+                    i18nKey="sum.points"
+                    values={{
+                      points: points.toLocaleString(t("common:intlLocale")),
+                    }}
+                    components={{ b: <b /> }}
+                  />
                 </p>
               </section>
 
               <div className={styles.checkout}>
                 <div className={styles.checkoutRow}>
-                  <span>선택 {selected.length}개</span>
+                  <span>
+                    {t("checkout.selectedCount", { count: selected.length })}
+                  </span>
                   <strong>{won(grandTotal)}</strong>
                 </div>
 
@@ -530,16 +588,16 @@ export default function Cart() {
                   onClick={goToCheckout}
                 >
                   {selected.length
-                    ? `${won(grandTotal)} 주문하기`
-                    : "상품을 선택해 주세요"}
+                    ? t("checkout.order", { amount: won(grandTotal) })
+                    : t("checkout.selectFirst")}
                 </button>
               </div>
             </div>
           </>
         )}
 
-        <section className={styles.rec} aria-label="함께 담은 상품">
-          <h2>같이 담으면 좋은 것</h2>
+        <section className={styles.rec} aria-label={t("rec.aria")}>
+          <h2>{t("rec.title")}</h2>
 
           <div className={styles.recGrid}>
             {recommended.map((product) => (
@@ -570,7 +628,7 @@ export default function Cart() {
 
         {/* 이 화면에도 사진이 실리므로 Pexels 출처를 남긴다. (공용 푸터 밖이다) */}
         <p className={styles.credit}>
-          상품 이미지 출처:{" "}
+          {t("imageCredit")}{" "}
           <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
             Pexels
           </a>

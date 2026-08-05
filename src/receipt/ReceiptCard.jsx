@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import styles from "./ReceiptCard.module.css";
 import { won } from "../data/products";
 
@@ -6,8 +7,11 @@ import { won } from "../data/products";
  *
  * receipt는 상품 데이터를 참조하지 않는 스냅샷이다.
  *   { date, total, payName, note, grade, itemCount, items: [{ name, qty }] }
+ *
+ * payName · note · grade는 주문 시점의 언어로 찍힌 값이라 그대로 그린다.
  */
 export default function ReceiptCard({ receipt }) {
+  const { t } = useTranslation(["receipt", "common"]);
   const { date, total, payName, note, grade, itemCount, items } = receipt;
 
   /* 링크로 온 영수증은 상품 줄이 잘려 있을 수 있다. */
@@ -17,7 +21,7 @@ export default function ReceiptCard({ receipt }) {
     <>
       <div className={styles.receipt}>
         <div className={styles.receiptHead}>
-          <b>절약 영수증</b>
+          <b>{t("card.title")}</b>
           <span>{date}</span>
         </div>
 
@@ -27,37 +31,39 @@ export default function ReceiptCard({ receipt }) {
               {name}
               {qty > 1 ? ` ×${qty}` : ""}
             </span>
-            <span>안 삼</span>
+            <span>{t("card.notBought")}</span>
           </div>
         ))}
 
         {hiddenCount > 0 && (
           <div className={styles.receiptRow}>
-            <span>그 외</span>
-            <span>{hiddenCount}개 더 안 삼</span>
+            <span>{t("card.others")}</span>
+            <span>{t("card.othersCount", { count: hiddenCount })}</span>
           </div>
         )}
 
         <div className={styles.receiptRow}>
-          <span>결제수단</span>
+          <span>{t("card.payMethod")}</span>
           <span>{payName}</span>
         </div>
 
         <div className={styles.receiptRow}>
-          <span>절제 방식</span>
+          <span>{t("card.restraintStyle")}</span>
           <span>{note}</span>
         </div>
 
         <div className={styles.receiptTotal}>
-          <span>오늘 아낀 금액</span>
+          <span>{t("card.saved")}</span>
           <b>{won(total)}</b>
         </div>
       </div>
 
       <div className={styles.badges}>
-        <span className={styles.badge}>🏅 이번에도 결제 안 함</span>
+        <span className={styles.badge}>{t("card.badgeNoPay")}</span>
         <span className={styles.badge}>
-          잔고 방어 +{total.toLocaleString("ko-KR")}
+          {t("card.badgeDefended", {
+            amount: total.toLocaleString(t("common:intlLocale")),
+          })}
         </span>
         <span className={styles.badge}>{grade}</span>
       </div>

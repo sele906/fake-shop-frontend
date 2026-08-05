@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./Ctg.module.css";
 import { getCategoryPath } from "../../data/categories";
 import {
@@ -11,25 +12,8 @@ import {
 } from "../../data/products";
 import SortDropdown from "../../components/SortDropdown";
 
-/* 대분류마다 한 줄. 없는 코드는 기본 문구로 넘어간다. */
-const NOTES = {
-  "0100": "옷장은 이미 꽉 찼는데 눈은 계속 이쪽으로 옵니다.",
-  "0200": "성분표는 안 읽고 병 모양만 보고 담습니다.",
-  "0300": "장바구니에선 늘 건강하게 먹습니다.",
-  "0400": "없어도 잘 살았는데 보고 나면 필요해지는 것들.",
-  "0500": "요리는 안 늘고 도구만 늘어납니다.",
-  "0600": "집 구조는 못 바꾸니 장바구니만 바꿉니다.",
-  "0700": "지금 쓰는 것도 멀쩡한데 왠지 느려 보입니다.",
-  "0800": "쓸 데는 없고 모으는 재미만 있습니다.",
-  "0900": "시작은 취미였고 지금은 수납 문제입니다.",
-  "1000": "장비부터 갖추면 절반은 운동한 셈입니다.",
-  "1100": "본인 물건보다 먼저 담기는 칸입니다.",
-  "1200": "조카 준다는 명분이 제일 잘 통하는 칸입니다.",
-};
-
-const DEFAULT_NOTE = "구경만 해도 되는 칸입니다.";
-
 export default function Ctg() {
+  const { t } = useTranslation("ctg");
   const { categoryCode } = useParams();
 
   const [sortKey, setSortKey] = useState(SORTS[0].key);
@@ -69,10 +53,10 @@ export default function Ctg() {
   if (!top) {
     return (
       <div className={styles.missing}>
-        <h1>없는 카테고리입니다</h1>
-        <p>주소를 잘못 누르셨거나, 저희가 아직 안 만든 칸입니다.</p>
+        <h1>{t("missing.title")}</h1>
+        <p>{t("missing.lead")}</p>
         <Link className={styles.btn} to="/">
-          그냥 메인으로 돌아가기
+          {t("missing.cta")}
         </Link>
       </div>
     );
@@ -80,8 +64,8 @@ export default function Ctg() {
 
   return (
     <>
-      <nav className={styles.crumbs} aria-label="경로">
-        <Link to="/">홈</Link>
+      <nav className={styles.crumbs} aria-label={t("crumbsAria")}>
+        <Link to="/">{t("home")}</Link>
         <span aria-hidden="true">/</span>
 
         {sub ? (
@@ -97,18 +81,19 @@ export default function Ctg() {
 
       <section className={styles.catHero}>
         <h1>
-          {top.name} <small>{totalCount}개가 유혹 중</small>
+          {top.name} <small>{t("tempting", { count: totalCount })}</small>
         </h1>
-        <p>{NOTES[top.code] ?? DEFAULT_NOTE}</p>
+        {/* 없는 코드면 기본 문구로 넘어간다. */}
+        <p>{t([`notes.${top.code}`, "notes.default"])}</p>
       </section>
 
       {top.children.length > 0 && (
-        <nav className={styles.subrail} aria-label="하위 카테고리">
+        <nav className={styles.subrail} aria-label={t("subrailAria")}>
           <Link
             to={`/category/${top.code}`}
             aria-current={sub === null || undefined}
           >
-            전체 <em>{totalCount}</em>
+            {t("all")} <em>{totalCount}</em>
           </Link>
 
           {top.children.map((child) => (
@@ -125,10 +110,10 @@ export default function Ctg() {
 
       <div className={styles.toolbar}>
         <h2>
-          {current.name} <small>{products.length}개</small>
+          {current.name} <small>{t("count", { count: products.length })}</small>
         </h2>
 
-        <nav className={styles.sorts} aria-label="정렬">
+        <nav className={styles.sorts} aria-label={t("sortAria")}>
           {SORTS.map((sort) => (
             <button
               key={sort.key}
@@ -147,13 +132,13 @@ export default function Ctg() {
 
       {products.length === 0 ? (
         <p className={styles.empty}>
-          이 칸은 아직 텅 비었습니다.
+          {t("empty.line1")}
           <br />
-          안 사는 건 어느 칸에서나 가능하니 다른 칸도 둘러보세요.
+          {t("empty.line2")}
         </p>
       ) : (
         <>
-          <section className={styles.grid} aria-label="상품 목록">
+          <section className={styles.grid} aria-label={t("gridAria")}>
             {products.map((product) => (
               <article className={styles.card} key={product.id}>
                 <Link
@@ -195,7 +180,7 @@ export default function Ctg() {
               onClick={() => setIsMoreDone(true)}
               disabled={isMoreDone}
             >
-              {isMoreDone ? "여기까지가 전부입니다" : "상품 더 보기"}
+              {isMoreDone ? t("more.done") : t("more.label")}
             </button>
           </div>
         </>

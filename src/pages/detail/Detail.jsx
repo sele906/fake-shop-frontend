@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { Trans, useTranslation } from "react-i18next";
 import styles from "./Detail.module.css";
 import {
   findProduct,
@@ -34,6 +35,7 @@ function stars(rating) {
 }
 
 export default function Detail() {
+  const { t } = useTranslation(["detail", "common"]);
   const { productId } = useParams();
   const goBack = useGoBack();
   const navigate = useNavigate();
@@ -81,7 +83,8 @@ export default function Detail() {
     [product]
   );
 
-  /* 스펙에 "사이즈" 항목이 있는 상품만 사이즈 칩을 만든다. (1630개 중 415개) */
+  /* 스펙에 "사이즈" 항목이 있는 상품만 사이즈 칩을 만든다. (1630개 중 415개)
+     여기서 찾는 "사이즈"는 products.json에 든 스펙 항목 이름이라 번역 대상이 아니다. */
   const sizes = useMemo(() => {
     const row = product?.detail?.spec?.find((item) => item.label === "사이즈");
     if (!row) return [];
@@ -107,13 +110,18 @@ export default function Detail() {
 
   const TABS = useMemo(
     () => [
-      { id: "info", label: "상품정보" },
-      { id: "spec", label: "상세스펙" },
+      { id: "info", label: t("tabs.info") },
+      { id: "spec", label: t("tabs.spec") },
       /* 아직 못 받았으면 숫자 자리를 비워 둔다. */
-      { id: "reviews", label: reviewData ? `리뷰 ${reviewCount}` : "리뷰" },
-      { id: "related", label: "함께 보기" },
+      {
+        id: "reviews",
+        label: reviewData
+          ? t("tabs.reviewsWithCount", { count: reviewCount })
+          : t("tabs.reviews"),
+      },
+      { id: "related", label: t("tabs.related") },
     ],
-    [reviewData, reviewCount]
+    [t, reviewData, reviewCount]
   );
 
   /* 상품이 바뀌면 옵션 · 수량을 초기화한다. */
@@ -209,9 +217,7 @@ export default function Detail() {
     const copied = await copyText(url);
 
     toast(
-      copied
-        ? "주소를 복사했습니다"
-        : "복사가 막혀 있습니다. 주소창에서 직접 복사해 주세요"
+      copied ? t("shareResult.copied") : t("shareResult.blocked")
     );
   }
 
@@ -222,7 +228,7 @@ export default function Detail() {
 
   function addToCart() {
     addItem(product, { option: chosenOption(), qty });
-    toast(`장바구니에 ${qty}개 담았습니다`);
+    toast(t("addedToCart", { count: qty }));
   }
 
   /* 바로 구매는 장바구니를 거치지 않는다. 주문서에 이 한 줄만 들고 간다. */
@@ -234,7 +240,7 @@ export default function Detail() {
     });
   }
 
-  const today = new Intl.DateTimeFormat("ko-KR", {
+  const today = new Intl.DateTimeFormat(t("common:intlLocale"), {
     month: "long",
     day: "numeric",
     weekday: "short",
@@ -248,19 +254,19 @@ export default function Detail() {
           <button
             type="button"
             className={`${styles.iconBtn} ${styles.back}`}
-            aria-label="뒤로"
+            aria-label={t("back")}
             onClick={goBack}
           >
             <BiChevronLeft size={22} aria-hidden="true" />
           </button>
-          <div className={styles.title}>상품을 찾을 수 없습니다</div>
+          <div className={styles.title}>{t("notFound.headerTitle")}</div>
         </header>
 
         <div className={styles.missing}>
-          <strong>사라진 상품입니다</strong>
-          <p>주소가 잘못됐거나, 판매가 끝난 상품이에요.</p>
+          <strong>{t("notFound.title")}</strong>
+          <p>{t("notFound.lead")}</p>
           <Link className={styles.missingLink} to="/">
-            목록으로 돌아가기
+            {t("notFound.link")}
           </Link>
         </div>
       </div>
@@ -285,7 +291,7 @@ export default function Detail() {
         <button
           type="button"
           className={`${styles.iconBtn} ${styles.back}`}
-          aria-label="목록으로"
+          aria-label={t("backToList")}
           onClick={goBack}
         >
           <BiChevronLeft size={22} aria-hidden="true" />
@@ -296,7 +302,7 @@ export default function Detail() {
         <button
           type="button"
           className={styles.iconBtn}
-          aria-label="공유"
+          aria-label={t("share")}
           onClick={share}
         >
           <BiShareAlt size={19} aria-hidden="true" />
@@ -305,7 +311,7 @@ export default function Detail() {
         <Link
           className={styles.iconBtn}
           to="/cart"
-          aria-label={`장바구니 ${cartCount}개`}
+          aria-label={t("cartAria", { count: cartCount })}
         >
           <BiCart size={20} aria-hidden="true" />
           {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
@@ -313,8 +319,8 @@ export default function Detail() {
       </header>
 
       <div className={styles.wrap}>
-        <nav className={styles.crumbs} aria-label="경로">
-          <Link to="/">홈</Link>
+        <nav className={styles.crumbs} aria-label={t("crumbsAria")}>
+          <Link to="/">{t("home")}</Link>
 
           {topCategory && (
             <>
@@ -336,7 +342,7 @@ export default function Detail() {
         </nav>
 
         <div className={styles.top}>
-          <section className={styles.gallery} aria-label="상품 이미지">
+          <section className={styles.gallery} aria-label={t("galleryAria")}>
             <div
               className={`${styles.track} ${
                 slides.length === 1 ? styles.single : ""
@@ -379,8 +385,8 @@ export default function Detail() {
                     {product.tag}
                   </span>
                 )}
-                <span className={styles.tag}>무료배송</span>
-                <span className={styles.tag}>오늘출발</span>
+                <span className={styles.tag}>{t("tags.freeShipping")}</span>
+                <span className={styles.tag}>{t("tags.todayShip")}</span>
               </div>
 
               <div className={styles.price}>
@@ -398,7 +404,7 @@ export default function Detail() {
 
                 {reviewData && reviewCount === 0 && (
                   <span className={styles.ratingWait}>
-                    아직 리뷰가 없습니다
+                    {t("noReviewsShort")}
                   </span>
                 )}
 
@@ -411,40 +417,60 @@ export default function Detail() {
                       className={styles.reviewLink}
                       onClick={() => scrollToSection("reviews")}
                     >
-                      리뷰 {reviewCount}개
+                      {t("reviewCountLink", { count: reviewCount })}
                     </button>
                   </>
                 )}
               </div>
             </section>
 
+            {/* 굵게 들어가는 자리가 문장 안에 있어 Trans로 넘긴다.
+                영어에서 어순이 바뀌어도 번역문만 고치면 된다. */}
             <dl className={styles.rows}>
               <div className={styles.row}>
-                <dt>배송</dt>
+                <dt>{t("rows.shipping")}</dt>
                 <dd>
-                  <b>무료</b> · 평일 14시 이전 주문 시 당일 출고(하는 척)
+                  <Trans
+                    ns="detail"
+                    i18nKey="rows.shippingValue"
+                    components={{ b: <b /> }}
+                  />
                 </dd>
               </div>
               <div className={styles.row}>
-                <dt>도착 예정</dt>
+                <dt>{t("rows.eta")}</dt>
                 <dd>
-                  <b>{today}</b> 도착 예정 없음
+                  <Trans
+                    ns="detail"
+                    i18nKey="rows.etaValue"
+                    values={{ date: today }}
+                    components={{ b: <b /> }}
+                  />
                 </dd>
               </div>
               <div className={styles.row}>
-                <dt>혜택</dt>
+                <dt>{t("rows.benefit")}</dt>
                 <dd>
-                  안삼 멤버십 <b>{Math.round(product.price * 0.05)}P</b> 적립 (5%)
+                  <Trans
+                    ns="detail"
+                    i18nKey="rows.benefitValue"
+                    values={{ points: Math.round(product.price * 0.05) }}
+                    components={{ b: <b /> }}
+                  />
                 </dd>
               </div>
             </dl>
 
-            <section className={styles.options} aria-label="옵션 선택">
+            <section className={styles.options} aria-label={t("options.aria")}>
               {sizes.length > 0 && (
                 <div className={styles.opt}>
-                  <span className={styles.eyebrow}>사이즈</span>
+                  <span className={styles.eyebrow}>{t("options.size")}</span>
 
-                  <div className={styles.chips} role="group" aria-label="사이즈">
+                  <div
+                    className={styles.chips}
+                    role="group"
+                    aria-label={t("options.size")}
+                  >
                     {sizes.map((size, index) => (
                       <button
                         key={size}
@@ -461,12 +487,12 @@ export default function Detail() {
               )}
 
               <div className={styles.opt}>
-                <span className={styles.eyebrow}>수량</span>
+                <span className={styles.eyebrow}>{t("options.qty")}</span>
 
                 <div className={styles.qty}>
                   <button
                     type="button"
-                    aria-label="수량 줄이기"
+                    aria-label={t("options.qtyDown")}
                     disabled={qty <= 1}
                     onClick={() => setQty((n) => Math.max(1, n - 1))}
                   >
@@ -477,7 +503,7 @@ export default function Detail() {
 
                   <button
                     type="button"
-                    aria-label="수량 늘리기"
+                    aria-label={t("options.qtyUp")}
                     disabled={qty >= MAX_QTY}
                     onClick={() => setQty((n) => Math.min(MAX_QTY, n + 1))}
                   >
@@ -487,7 +513,7 @@ export default function Detail() {
               </div>
 
               <div className={styles.total}>
-                <span>총 결제금액</span>
+                <span>{t("options.total")}</span>
                 <strong>{won(total)}</strong>
               </div>
             </section>
@@ -499,7 +525,7 @@ export default function Detail() {
                 className={`${styles.btn} ${styles.btnGhost}`}
                 onClick={addToCart}
               >
-                장바구니
+                {t("buy.cart")}
               </button>
 
               <button
@@ -507,13 +533,13 @@ export default function Detail() {
                 className={styles.btn}
                 onClick={buyNow}
               >
-                바로 구매
+                {t("buy.now")}
               </button>
             </div>
           </div>
         </div>
 
-        <nav className={styles.tabs} ref={tabsRef} aria-label="상세 정보">
+        <nav className={styles.tabs} ref={tabsRef} aria-label={t("tabsAria")}>
           {TABS.map((tab) => (
             <button
               key={tab.id}
@@ -544,7 +570,7 @@ export default function Detail() {
 
             {/* Pexels 방침: 사진을 쓴 화면에 출처를 남긴다. */}
             <p className={styles.credit}>
-              이미지 출처:{" "}
+              {t("imageCredit")}{" "}
               <a href={pexelsUrl} target="_blank" rel="noreferrer">
                 Pexels
               </a>
@@ -552,7 +578,7 @@ export default function Detail() {
           </section>
 
           <section className={styles.section} ref={setSectionRef("spec")}>
-            <h2>상세스펙</h2>
+            <h2>{t("specTitle")}</h2>
 
             <table className={styles.spec}>
               <tbody>
@@ -568,16 +594,18 @@ export default function Detail() {
 
           <section className={styles.section} ref={setSectionRef("reviews")}>
             <h2>
-              리뷰 {reviewData && <small>{reviewCount}</small>}
+              {t("reviews.title")} {reviewData && <small>{reviewCount}</small>}
             </h2>
 
-            {!reviewData && <p className={styles.revEmpty}>리뷰를 불러오는 중입니다.</p>}
+            {!reviewData && (
+              <p className={styles.revEmpty}>{t("reviews.loading")}</p>
+            )}
 
             {reviewData && reviewCount === 0 && (
               <p className={styles.revEmpty}>
-                아직 리뷰가 없습니다.
+                {t("reviews.emptyLine1")}
                 <br />
-                사지 않은 사람의 후기를 기다리는 중입니다.
+                {t("reviews.emptyLine2")}
               </p>
             )}
 
@@ -589,7 +617,9 @@ export default function Detail() {
 
                     <div className={styles.revMeta}>
                       <span className={styles.stars}>{stars(rating)}</span>
-                      <small>{positiveRate}%가 4점 이상을 남겼습니다</small>
+                      <small>
+                        {t("reviews.positiveRate", { rate: positiveRate })}
+                      </small>
                     </div>
                   </div>
 
@@ -600,7 +630,7 @@ export default function Detail() {
 
                       return (
                         <li key={score}>
-                          <span>{score}점</span>
+                          <span>{t("reviews.score", { score })}</span>
                           <i>
                             <b
                               style={{
@@ -638,7 +668,7 @@ export default function Detail() {
                       setShownReviews((shown) => shown + REVIEW_STEP)
                     }
                   >
-                    리뷰 더 보기 ({reviewCount - shownReviews}개 남음)
+                    {t("reviews.more", { count: reviewCount - shownReviews })}
                   </button>
                 )}
               </>
@@ -646,7 +676,7 @@ export default function Detail() {
           </section>
 
           <section className={styles.section} ref={setSectionRef("related")}>
-            <h2>함께 보는 상품</h2>
+            <h2>{t("relatedTitle")}</h2>
 
             <div className={styles.rel}>
               {related.map((item) => (

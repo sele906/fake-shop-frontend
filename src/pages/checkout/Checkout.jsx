@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Trans, useTranslation } from "react-i18next";
 import styles from "./Checkout.module.css";
 import { findProduct, productImage, won } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
@@ -12,154 +13,33 @@ import useGoBack from "../../hooks/useGoBack";
 
 import { BiChevronLeft } from "react-icons/bi";
 
-const PAY_METHODS = [
-  { name: "눈으로 결제", desc: "보기만 하고 닫기", recommended: true },
-  { name: "상상페이", desc: "잔액 무한", recommended: false },
-  { name: "참을성 카드", desc: "36개월 무이자", recommended: false },
-  { name: "스크린샷 이체", desc: "저장만 하기", recommended: false },
+/* 문구는 checkout.json이 들고, 코드에는 순서와 조건만 남긴다. */
+const PAY_IDS = ["eye", "imagine", "patience", "screenshot"];
+const RECOMMENDED_PAY_ID = "eye";
+
+const DELIVERY_IDS = ["room", "balance", "urge", "door", "dream"];
+const STAT_IDS = ["spent", "shipping", "coupon", "regret"];
+
+/* 절제 · 도파민 문구가 갈리는 지점. checkout.json의 restraint · dopamine 키와 같다. */
+const MESSAGE_STEPS = [
+  0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+  100,
 ];
 
-/* 절제 비율에 따라 마지막으로 통과한 문구를 쓴다. */
-const RESTRAINT_MESSAGES = [
-  [0, "절제 0% — 위험합니다"],
-  [5, "절제 시도 감지 — 아직 흔들립니다"],
-  [10, "첫 저항 성공 — 손이 결제 버튼에서 떨어졌습니다"],
-  [15, "이성 작동 중 — 충동을 잠시 눌렀습니다"],
-  [20, "초기 방어 성공 — 지금까진 잘 버티는 중"],
-  [25, "절제 루틴 진입 — 생각보다 잘 참는 중입니다"],
-  [30, "안정권 진입 — 장바구니와 거리 유지 중"],
-  [35, "자제력 상승 — 구매욕이 약해지고 있습니다"],
-  [40, "흔들리지만 버팀 — 제법 훌륭합니다"],
-  [45, "중간 방어선 유지 — 거의 절반 왔습니다"],
-  [50, "절제 절반 달성 — 반은 이겼습니다"],
-  [55, "자기통제 우수 — 꽤 강해졌습니다"],
-  [60, "고비 통과 — 이제 쉽게 무너지지 않습니다"],
-  [65, "안정적 절제 상태 — 충동보다 이성이 앞섭니다"],
-  [70, "상급 절제력 — 결제 직전도 버틸 수 있습니다"],
-  [75, "매우 양호 — 소비욕을 잘 길들이는 중"],
-  [80, "절제 전문가 모드 — 거의 흔들리지 않습니다"],
-  [85, "강철 멘탈 — 유혹을 즐기며 피하는 단계"],
-  [90, "최상위 절제력 — 장바구니를 이겼습니다"],
-  [95, "거의 완벽 — 소비 충동 제압 완료"],
-  [100, "절제 만렙 — 오늘의 지름신을 완전히 봉인했습니다"],
-];
-
-/* 도파민 게이지 비율에 따라 마지막으로 통과한 문구를 쓴다. */
-const DOPAMINE_MESSAGES = [
-  [0, "아직 아무것도 안 참았습니다."],
-  [5, "도파민이 아주 미세하게 반응했습니다."],
-  [10, "“안 사도 된다”는 기분이 10% 충전되었습니다."],
-  [15, "참은 보람이 조금씩 쌓이고 있습니다."],
-  [20, "소소한 뿌듯함이 발생했습니다."],
-  [25, "도파민이 은근히 오릅니다. 괜히 기특합니다."],
-  [30, "“오늘 나 제법 괜찮은데?” 게이지가 활성화되었습니다."],
-  [35, "만족감이 슬금슬금 차오릅니다."],
-  [40, "참는 재미를 알아가는 단계입니다."],
-  [45, "도파민이 본격적으로 붙기 시작했습니다."],
-  [50, "뿌듯함 50% 달성. 스스로 칭찬할 타이밍입니다."],
-  [55, "아무것도 안 샀는데 기분이 좋아집니다."],
-  [60, "절제가 보상으로 전환되고 있습니다."],
-  [65, "가짜 쇼핑의 참맛을 알아버렸습니다."],
-  [70, "도파민이 넉넉하게 차오르고 있습니다."],
-  [75, "꽤 큰 만족감이 발생했습니다. 괜히 이긴 기분입니다."],
-  [80, "“안 샀다”는 사실만으로도 기분이 좋습니다."],
-  [85, "도파민 과충전 직전입니다. 표정 관리가 필요합니다."],
-  [90, "엄청난 성취감이 밀려옵니다. 안 샀는데 이겼습니다."],
-  [95, "도파민이 거의 최대치입니다. 아주 만족스럽습니다."],
-  [100, "도파민 최대치! 아무것도 사지 않았지만 마음만은 풀결제 완료."],
-];
-
-const DELIVERY_MESSAGES = [
-  [
-    "당신의 상상 속 방 한 칸",
-    "도착 예정: 마음속에 자리를 비우는 즉시",
-    "요청사항: 문 앞에 두고 가세요. 질문은 사양합니다.",
-  ],
-  [
-    "통장 잔고가 안전한 곳",
-    "도착 예정: 결제 충동이 완전히 지나간 뒤",
-    "요청사항: 카드 명세서에 흔적을 남기지 마세요.",
-  ],
-  [
-    "결제 욕구가 닿지 않는 곳",
-    "도착 예정: 사고 싶은 마음이 포기하는 즉시",
-    "요청사항: 주소를 결제 버튼에는 절대 알려주지 마세요.",
-  ],
-  [
-    "마음속 현관문 앞",
-    "도착 예정: 이미 도착했습니다. 마음으로 수령해 주세요.",
-    "요청사항: 벨은 누르지 마세요. 괜히 현실로 돌아옵니다.",
-  ],
-  [
-    "오늘 밤 꿈속 택배함",
-    "도착 예정: 오늘 밤 잠든 후 2~3개의 꿈 이내",
-    "요청사항: 깨지 않게 조용히 넣어주세요. 아침에는 사라져도 괜찮습니다.",
-  ],
-];
-
-const STATS = [
-  ["0원", "실제 지출"],
-  ["0개", "배송 예정"],
-  ["무제한", "쿠폰 중복"],
-  ["구매 후회", "발생 전 차단"],
-];
-
-const RECEIPT_MESSAGES = [
-  {
-    min: 0,
-    note: "절제 0%. 이번 결제는 안 삼 할인이 전액 막았습니다.",
-    grade: "절제 훈련 필요",
-  },
-  {
-    min: 20,
-    note: "절제 20%. 손가락이 결제 직전에 멈췄습니다.",
-    grade: "초보 절제자",
-  },
-  {
-    min: 40,
-    note: "절제 40%. 사고 싶은 마음과 제법 비겼습니다.",
-    grade: "절제 적응 중",
-  },
-  {
-    min: 60,
-    note: "절제 60%. 안 사는 쪽으로 승부가 기울었습니다.",
-    grade: "안 삼 우세",
-  },
-  {
-    min: 80,
-    note: "절제 80%. 지름신이 퇴근 준비를 시작했습니다.",
-    grade: "절제 우등생",
-  },
-  {
-    min: 100,
-    note: "절제 100%. 교과서적인 안 삼이 완성됐습니다.",
-    grade: "등급 승급 임박",
-  },
-];
+/* 영수증 등급이 갈리는 지점. checkout.json의 receiptMsg 키와 같다. */
+const RECEIPT_STEPS = [0, 20, 40, 60, 80, 100];
 
 const CONFETTI_COLORS = ["#4b70d3", "#2b4798", "#93a9e6", "#1c1e24", "#dce3f8"];
 const CONFETTI_COUNT = 70;
 const CONFETTI_MS = 3600;
 
-const SHARE_LABEL = "영수증 자랑하기";
 const SHARE_RESET_MS = 2400;
 
-/* 도파민 게이지 비율에 따라 마지막으로 통과한 문구를 반환 */
-function dopamineMessage(percent) {
-  let message = DOPAMINE_MESSAGES[0][1];
+/* 비율이 넘어선 지점 중 가장 큰 것. 넘어선 게 없으면 첫 지점을 쓴다. */
+function lastPassed(steps, percent) {
+  const passed = steps.filter((step) => percent >= step);
 
-  for (const [requiredPercent, text] of DOPAMINE_MESSAGES) {
-    if (percent < requiredPercent) break;
-
-    message = text;
-  }
-
-  return message;
-}
-
-function restraintMessage(percent) {
-  const matched = RESTRAINT_MESSAGES.filter(([edge]) => percent >= edge);
-  return matched[matched.length - 1][1];
+  return passed.length > 0 ? passed[passed.length - 1] : steps[0];
 }
 
 function makeConfetti() {
@@ -175,6 +55,7 @@ function makeConfetti() {
 }
 
 export default function Checkout() {
+  const { t } = useTranslation(["checkout", "common"]);
   const goBack = useGoBack("/cart");
   const navigate = useNavigate();
   const location = useLocation();
@@ -183,8 +64,6 @@ export default function Checkout() {
   const [payIndex, setPayIndex] = useState(0);
   /* 절제 포인트는 0%에서 시작해서 사용자가 직접 올린다. */
   const [restraint, setRestraint] = useState(0);
-  /* 절제 포인트가 0%로 시작하므로 문구도 0% 것으로 맞춰 연다. */
-  const [dopamineMsg, setDopamineMsg] = useState(() => dopamineMessage(0));
   const [agreeService, setAgreeService] = useState(true);
   const [agreeThrill, setAgreeThrill] = useState(true);
   const [agreeNudge, setAgreeNudge] = useState(false);
@@ -192,9 +71,14 @@ export default function Checkout() {
   const [isDone, setIsDone] = useState(false);
   const [receipt, setReceipt] = useState(null);
   const [confetti, setConfetti] = useState([]);
-  const [anywayLabel, setAnywayLabel] = useState("그래도 진짜로 사고 싶어요");
-  const isDisabled = anywayLabel === "여기서는 살 수 없습니다. 그게 이 사이트의 기능입니다.";
-  const [shareLabel, setShareLabel] = useState(SHARE_LABEL);
+
+  /* 문구가 아니라 상태만 들고 있는다. 문구를 상태에 넣어 두면
+     언어를 바꿨을 때 옛 언어의 문장이 그대로 남는다. */
+  const [isAnywayPressed, setIsAnywayPressed] = useState(false);
+  const [shareState, setShareState] = useState("idle");
+
+  /* 필수 동의를 빠뜨린 채 누르면 게이지 문구 자리에 안내를 대신 띄운다. */
+  const [needsAgree, setNeedsAgree] = useState(false);
 
   const confettiTimer = useRef(null);
   const shareTimer = useRef(null);
@@ -204,8 +88,7 @@ export default function Checkout() {
 
   const modalRef = useRef(null);
 
-  const [deliveryName, deliveryDate, deliveryRequest] =
-    DELIVERY_MESSAGES[deliveryIndex];
+  const deliveryId = DELIVERY_IDS[deliveryIndex];
 
   /* 상세에서 "바로 구매"로 들어오면 장바구니를 거치지 않은 주문 초안이 실려 온다. */
   const buyNow = location.state?.buyNow ?? null;
@@ -306,35 +189,32 @@ export default function Checkout() {
     };
   }, [isDeliveryModalOpen]);
 
-  const payName = PAY_METHODS[payIndex].name;
+  /* 주문 · 영수증에 남기는 결제수단은 지금 언어로 찍은 이름이다.
+     주문 기록과 공유 링크는 그 시점의 화면을 그대로 담는 스냅샷이다. */
+  const payName = t(`pay.${PAY_IDS[payIndex]}.name`);
   const usedPoints = Math.round((total * restraint) / 100);
 
   /* 도파민 게이지는 절제 포인트를 얼마나 썼는지만 그대로 비춘다.
      상태로 두면 다른 곳에서 또 건드리게 되므로 파생값으로 둔다. */
   const dopamine = restraint;
 
+  const dopamineMsg = needsAgree
+    ? t("dopamineNeedsAgree")
+    : t(`dopamine.${lastPassed(MESSAGE_STEPS, restraint)}`);
+
   function changeRestraint(value) {
     setRestraint(value);
-    setDopamineMsg(dopamineMessage(value));
-  }
-
-  function getReceiptMessage(percent) {
-    return [...RECEIPT_MESSAGES]
-      .reverse()
-      .find(({ min }) => percent >= min);
+    setNeedsAgree(false);
   }
 
   function submit() {
-
-    const receiptMessage = getReceiptMessage(restraint);
-
     if (!agreeService || !agreeThrill) {
       setIsWobbling(true);
-      setDopamineMsg(
-        "필수 항목에 동의해 주세요. 아무것도 안 사려면 절차는 지켜야 합니다."
-      );
+      setNeedsAgree(true);
       return;
     }
+
+    const receiptStep = lastPassed(RECEIPT_STEPS, restraint);
 
     /* 주문이 끝나면 장바구니를 비우므로, 영수증에 쓸 것은 여기서 찍어둔다.
        상품 데이터를 참조하지 않는 스냅샷이라 그대로 링크에 실을 수 있다. */
@@ -342,8 +222,8 @@ export default function Checkout() {
       date: today,
       total,
       payName,
-      note: receiptMessage.note,
-      grade: receiptMessage.grade,
+      note: t(`receiptMsg.${receiptStep}.note`),
+      grade: t(`receiptMsg.${receiptStep}.grade`),
       itemCount: items.length,
       items: items.map(({ product, qty }) => ({ name: product.name, qty })),
     });
@@ -386,11 +266,11 @@ export default function Checkout() {
     if (!receipt) return;
 
     const url = receiptUrl(receipt);
-    const text = `오늘 안삼에서 ${won(receipt.total)} 안 썼습니다.`;
+    const text = t("share.text", { amount: won(receipt.total) });
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: "안삼 절약 영수증", text, url });
+        await navigator.share({ title: t("share.title"), text, url });
         return;
       } catch (error) {
         /* 공유 시트를 그냥 닫은 것이므로 복사까지 하지는 않는다. */
@@ -403,16 +283,16 @@ export default function Checkout() {
     const copied = await copyText(url);
 
     if (copied) {
-      setShareLabel("링크를 복사했습니다. 마음껏 자랑하세요");
+      setShareState("copied");
     } else {
       /* 복사가 막힌 환경에서는 성공한 척하지 않고 링크를 띄워 준다. */
-      setShareLabel("복사가 막혀 있습니다");
+      setShareState("blocked");
       toast(url);
     }
 
     clearTimeout(shareTimer.current);
     shareTimer.current = setTimeout(
-      () => setShareLabel(SHARE_LABEL),
+      () => setShareState("idle"),
       SHARE_RESET_MS
     );
   }
@@ -423,33 +303,33 @@ export default function Checkout() {
         <button
           type="button"
           className={styles.iconBtn}
-          aria-label="장바구니로"
+          aria-label={t("back")}
           onClick={goBack}
         >
           <BiChevronLeft size={22} aria-hidden="true" />
         </button>
 
-        <h1>결제하기</h1>
+        <h1>{t("title")}</h1>
 
-        <span className={styles.wink}>돈은 안 나갑니다</span>
+        <span className={styles.wink}>{t("wink")}</span>
       </header>
 
       <div className={styles.wrap}>
         {isDone ? (
-          <section className={styles.done} aria-label="결제 완료">
+          <section className={styles.done} aria-label={t("done.aria")}>
             <div className={styles.doneIn}>
-              <span className={styles.stamp}>안 삼 완료</span>
+              <span className={styles.stamp}>{t("done.stamp")}</span>
 
               <h2>
-                축하합니다,
+                {t("done.titleLine1")}
                 <br />
-                아무것도 사지 않았습니다
+                {t("done.titleLine2")}
               </h2>
 
               <p className={styles.lead}>
-                장바구니는 비었고 잔고는 그대로입니다. 
-                <br></br>
-                결제 버튼을 누른 손끝의 짜릿함만 정확히 챙겼습니다.
+                {t("done.leadLine1")}
+                <br />
+                {t("done.leadLine2")}
               </p>
 
               {/* 장바구니는 이미 비워졌으니 주문 시점에 찍어둔 스냅샷을 쓴다. */}
@@ -461,11 +341,11 @@ export default function Checkout() {
                   className={styles.btn}
                   onClick={goShopping}
                 >
-                  한 번 더 안 사러 가기
+                  {t("done.again")}
                 </button>
 
                 <Link className={styles.ghost} to="/delivery">
-                  배송 조회하기
+                  {t("done.delivery")}
                 </Link>
 
                 <button
@@ -473,37 +353,41 @@ export default function Checkout() {
                   className={styles.ghost}
                   onClick={bragReceipt}
                 >
-                  {shareLabel}
+                  {t(`share.${shareState}`)}
                 </button>
               </div>
             </div>
           </section>
         ) : items.length === 0 ? (
           /* 장바구니가 비었거나 아무것도 선택하지 않고 주소로 바로 들어온 경우 */
-          <section className={styles.empty} aria-label="빈 주문서">
-            <strong>주문할 상품이 없습니다</strong>
-            <p>장바구니에서 담고 선택한 상품만 여기로 올라옵니다.</p>
+          <section className={styles.empty} aria-label={t("empty.aria")}>
+            <strong>{t("empty.title")}</strong>
+            <p>{t("empty.lead")}</p>
             <Link className={styles.btn} to="/cart">
-              장바구니로 가기
+              {t("empty.cta")}
             </Link>
           </section>
         ) : (
           <>
-            <nav className={styles.steps} aria-label="주문 단계">
+            <nav className={styles.steps} aria-label={t("steps.aria")}>
               <div className={styles.step}>
-                <b>01</b>담기
+                <b>01</b>
+                {t("steps.cart")}
               </div>
               <div className={styles.step} aria-current="step">
-                <b>02</b>결제
+                <b>02</b>
+                {t("steps.pay")}
               </div>
               <div className={styles.step}>
-                <b>03</b>안 삼
+                <b>03</b>
+                {t("steps.notBuy")}
               </div>
             </nav>
 
-            <section className={styles.sec} aria-label="주문 상품">
+            <section className={styles.sec} aria-label={t("items.aria")}>
               <h2>
-                주문 상품 <small>{items.length}개 · 실제로는 오지 않음</small>
+                {t("items.title")}{" "}
+                <small>{t("items.note", { count: items.length })}</small>
               </h2>
 
               <div>
@@ -534,7 +418,7 @@ export default function Checkout() {
 
               {/* 이 화면에도 사진이 실리므로 Pexels 출처를 남긴다. (공용 푸터 밖이다) */}
               <p className={styles.credit}>
-                상품 이미지 출처:{" "}
+                {t("imageCredit")}{" "}
                 <a
                   href="https://www.pexels.com"
                   target="_blank"
@@ -545,14 +429,14 @@ export default function Checkout() {
               </p>
             </section>
 
-            <section className={styles.sec} aria-label="배송지">
-              <h2>배송지</h2>
+            <section className={styles.sec} aria-label={t("address.aria")}>
+              <h2>{t("address.title")}</h2>
 
               <div className={styles.cardLine}>
                 <div className={styles.addr}>
-                  <b>{deliveryName}</b>
-                  <span>{deliveryDate}</span>
-                  <span>{deliveryRequest}</span>
+                  <b>{t(`delivery.${deliveryId}.name`)}</b>
+                  <span>{t(`delivery.${deliveryId}.date`)}</span>
+                  <span>{t(`delivery.${deliveryId}.request`)}</span>
                 </div>
 
                 <button
@@ -560,29 +444,35 @@ export default function Checkout() {
                   className={styles.ghost}
                   onClick={() => setIsDeliveryModalOpen(true)}
                 >
-                  배송지 변경
+                  {t("address.change")}
                 </button>
               </div>
             </section>
 
-            <section className={styles.sec} aria-label="결제수단">
+            <section className={styles.sec} aria-label={t("payment.aria")}>
               <h2>
-                결제수단 <small>넷 다 0원입니다</small>
+                {t("payment.title")} <small>{t("payment.note")}</small>
               </h2>
 
-              <div className={styles.pays} role="group" aria-label="결제수단 선택">
-                {PAY_METHODS.map((method, index) => (
+              <div
+                className={styles.pays}
+                role="group"
+                aria-label={t("payment.groupAria")}
+              >
+                {PAY_IDS.map((payId, index) => (
                   <button
-                    key={method.name}
+                    key={payId}
                     type="button"
                     className={styles.pay}
                     aria-pressed={index === payIndex}
                     onClick={() => setPayIndex(index)}
                   >
-                    <b>{method.name}</b>
-                    <em>{method.desc}</em>
-                    {method.recommended && (
-                      <span className={styles.rec}>추천</span>
+                    <b>{t(`pay.${payId}.name`)}</b>
+                    <em>{t(`pay.${payId}.desc`)}</em>
+                    {payId === RECOMMENDED_PAY_ID && (
+                      <span className={styles.rec}>
+                        {t("payment.recommended")}
+                      </span>
                     )}
                   </button>
                 ))}
@@ -591,10 +481,10 @@ export default function Checkout() {
 
             <section
               className={`${styles.sec} ${styles.slider}`}
-              aria-label="절제 포인트"
+              aria-label={t("slider.aria")}
             >
               <h2>
-                절제 포인트 사용 <small>많이 쓸수록 아무 일도 안 일어남</small>
+                {t("slider.title")} <small>{t("slider.note")}</small>
               </h2>
 
               <input
@@ -603,21 +493,23 @@ export default function Checkout() {
                 max={100}
                 step={5}
                 value={restraint}
-                aria-label="절제 포인트 사용 비율"
+                aria-label={t("slider.inputAria")}
                 /* 채워진 만큼을 CSS가 알아야 해서 값을 변수로 내려준다. */
                 style={{ "--fill": `${restraint}%` }}
                 onChange={(event) => changeRestraint(Number(event.target.value))}
               />
 
               <div className={styles.val}>
-                <span>{restraintMessage(restraint)}</span>
+                <span>
+                  {t(`restraint.${lastPassed(MESSAGE_STEPS, restraint)}`)}
+                </span>
                 <b>{restraint}%</b>
               </div>
             </section>
 
             <div className={styles.dopa}>
               <div className={styles.dopaTop}>
-                <b>도파민 게이지</b>
+                <b>{t("gauge.title")}</b>
                 <span>{Math.round(dopamine)}%</span>
               </div>
 
@@ -634,38 +526,39 @@ export default function Checkout() {
               <p>{dopamineMsg}</p>
             </div>
 
-            <section className={styles.sum} aria-label="결제 금액">
+            <section className={styles.sum} aria-label={t("sum.aria")}>
               <div className={styles.row}>
-                <span>담았던 금액</span>
+                <span>{t("sum.basket")}</span>
                 <span>{won(total)}</span>
               </div>
 
               <div className={styles.row}>
-                <span>절제 포인트</span>
+                <span>{t("sum.restraintPoints")}</span>
                 <span>−{won(usedPoints)}</span>
               </div>
 
               <div className={styles.row}>
                 <span>
-                  안 삼 할인 <small>(나머지 전액)</small>
+                  {t("sum.notBuyDiscount")}{" "}
+                  <small>{t("sum.notBuyDiscountNote")}</small>
                 </span>
                 <span>−{won(total - usedPoints)}</span>
               </div>
 
               <div className={styles.row}>
-                <span>배송비</span>
-                <span>0원</span>
+                <span>{t("sum.shipping")}</span>
+                <span>{t("sum.zero")}</span>
               </div>
 
               <div className={`${styles.row} ${styles.saved}`}>
-                <span>오늘 아낀 금액</span>
+                <span>{t("sum.saved")}</span>
                 <span>{won(total)}</span>
               </div>
 
               <div className={`${styles.row} ${styles.grand}`}>
-                <span>실제 결제금액</span>
+                <span>{t("sum.grandTotal")}</span>
                 <span>
-                  <strong>0원</strong>
+                  <strong>{t("sum.zero")}</strong>
                 </span>
               </div>
             </section>
@@ -678,8 +571,11 @@ export default function Checkout() {
                   onChange={(event) => setAgreeService(event.target.checked)}
                 />
                 <span>
-                  이 사이트는 아무것도 팔지 않으며, 아무것도 배송하지 않는다는
-                  사실에 동의합니다. <b>(필수)</b>
+                  <Trans
+                    ns="checkout"
+                    i18nKey="terms.service"
+                    components={{ b: <b /> }}
+                  />
                 </span>
               </label>
 
@@ -690,8 +586,11 @@ export default function Checkout() {
                   onChange={(event) => setAgreeThrill(event.target.checked)}
                 />
                 <span>
-                  결제 직전의 짜릿함만 챙기고 조용히 창을 닫을 권리가 있음을
-                  확인합니다. <b>(필수)</b>
+                  <Trans
+                    ns="checkout"
+                    i18nKey="terms.thrill"
+                    components={{ b: <b /> }}
+                  />
                 </span>
               </label>
 
@@ -701,18 +600,16 @@ export default function Checkout() {
                   checked={agreeNudge}
                   onChange={(event) => setAgreeNudge(event.target.checked)}
                 />
-                <span>
-                  장바구니 속 상품과 아름답게 작별하겠습니다. (선택)
-                </span>
+                <span>{t("terms.nudge")}</span>
               </label>
             </div>
 
             <div className={styles.bar}>
               <div className={styles.barRow}>
                 <span>
-                  {payName} · 절제 {restraint}%
+                  {t("bar.summary", { payName, percent: restraint })}
                 </span>
-                <strong>0원</strong>
+                <strong>{t("sum.zero")}</strong>
               </div>
 
               <button
@@ -721,46 +618,40 @@ export default function Checkout() {
                 onClick={submit}
                 onAnimationEnd={() => setIsWobbling(false)}
               >
-                0원 결제하기
+                {t("bar.submit")}
               </button>
 
               <button
                 type="button"
                 className={styles.anyway}
-                disabled={isDisabled}
-                onClick={() =>
-                  setAnywayLabel(
-                    "여기서는 살 수 없습니다. 그게 이 사이트의 기능입니다."
-                  )
-                }
+                disabled={isAnywayPressed}
+                onClick={() => setIsAnywayPressed(true)}
               >
-                {anywayLabel}
+                {isAnywayPressed ? t("bar.anywayPressed") : t("bar.anyway")}
               </button>
 
-              <p className={styles.tiny}>
-                카드 정보는 묻지 않습니다. 물어볼 이유가 없습니다.
-              </p>
+              <p className={styles.tiny}>{t("bar.tiny")}</p>
             </div>
 
-            <section className={styles.brag} aria-label="절제 기록">
-              <h2>당신의 절제 기록</h2>
+            <section className={styles.brag} aria-label={t("brag.aria")}>
+              <h2>{t("brag.title")}</h2>
 
               <div className={styles.stats}>
-                {STATS.map(([value, label]) => (
-                  <div className={styles.stat} key={label}>
-                    <b>{value}</b>
-                    <span>{label}</span>
+                {STAT_IDS.map((statId) => (
+                  <div className={styles.stat} key={statId}>
+                    <b>{t(`stats.${statId}.value`)}</b>
+                    <span>{t(`stats.${statId}.label`)}</span>
                   </div>
                 ))}
               </div>
             </section>
 
             <p className={styles.disclaim}>
-              안삼은 실제 상품을 판매하지 않는 가상의 쇼핑몰입니다. 
+              {t("disclaimLine1")}
               <br />
-              결제, 배송, 환불, 고객센터, 재고, 택배기사님 모두 존재하지 않습니다. 
+              {t("disclaimLine2")}
               <br />
-              남는 것은 기분과 잔고뿐입니다.
+              {t("disclaimLine3")}
             </p>
           </>
         )}
@@ -788,23 +679,23 @@ export default function Checkout() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className={styles.modalHeader}>
-              <h2 id="delivery-modal-title">상상 배송지 선택</h2>
+              <h2 id="delivery-modal-title">{t("address.modalTitle")}</h2>
 
               <button
                 type="button"
                 className={styles.modalClose}
                 onClick={() => setIsDeliveryModalOpen(false)}
-                aria-label="닫기"
+                aria-label={t("address.close")}
               >
                 ×
               </button>
             </div>
 
             <div className={styles.deliveryList}>
-              {DELIVERY_MESSAGES.map(([name], index) => (
+              {DELIVERY_IDS.map((id, index) => (
                 <button
                   type="button"
-                  key={name}
+                  key={id}
                   className={styles.deliveryOption}
                   aria-pressed={deliveryIndex === index}
                   onClick={() => {
@@ -813,7 +704,7 @@ export default function Checkout() {
                   }}
                 >
                   <span>{deliveryIndex === index ? "●" : "○"}</span>
-                  {name}
+                  {t(`delivery.${id}.name`)}
                 </button>
               ))}
             </div>

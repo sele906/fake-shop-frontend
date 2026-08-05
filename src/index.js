@@ -7,6 +7,10 @@ import App from "./App";
    이 import가 빠지면 var(--...)가 전부 무효가 돼 디자인이 통째로 날아간다. */
 import "./index.css";
 
+/* 화면이 그려지기 전에 사전을 올려 둔다. 이 import가 빠지면
+   t()가 키 문자열을 그대로 뱉는다. */
+import "./i18n";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

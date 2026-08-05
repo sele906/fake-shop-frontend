@@ -1,0 +1,69 @@
+{
+  "tabs": {
+    "all": "전체 쿠폰",
+    "basic": "기본 쿠폰",
+    "today": "오늘의 쿠폰",
+    "cart": "장바구니 쿠폰",
+    "category": "카테고리 쿠폰",
+    "suspicious": "수상한 쿠폰"
+  },
+  "groups": {
+    "basic": "기본 지급",
+    "today": "시간대·상황",
+    "cart": "장바구니 행동",
+    "category": "카테고리",
+    "suspicious": "말도 안 되는 고액",
+    "unknown": "출처 불명"
+  },
+  "msg": {
+    "intro": "받은 쿠폰은 이 브라우저에만 저장됩니다.",
+    "already": "“{{name}}”은 이미 쿠폰함에 있습니다. 두 장이 되지는 않습니다.",
+    "got": "“{{name}}” 획득! 쿠폰함에 저장했습니다.",
+    "rain_other": "쿠폰 비가 내립니다. {{count}}장이 쿠폰함에 쌓였습니다.",
+    "rainNone": "오늘의 쿠폰은 이미 다 받으셨습니다. 비만 내립니다.",
+    "removed": "“{{name}}”을 버렸습니다. 어차피 쓸 데도 없었습니다.",
+    "cleared_other": "{{count}}장을 전부 비웠습니다. 후회는 지금부터입니다."
+  },
+  "hero": {
+    "eyebrow": "COUPON WAREHOUSE",
+    "title": "쿠폰 보관함",
+    "owned": "보유 쿠폰",
+    "ownedCount_other": "{{count}}장",
+    "maxDiscount": "예상 최대 할인율",
+    "maxDiscountValue": "438%",
+    "leadLine1": "오늘도 안 샀으니 이미 100% 절약하셨습니다.",
+    "leadLine2": "하지만 쿠폰은 별개니까 일단 받아두세요.",
+    "getToday": "오늘의 쿠폰 전부 받기"
+  },
+  "tabsAria": "쿠폰 분류",
+  "catalog": {
+    "eyebrow": "COUPON COLLECTION",
+    "title": "쿠폰은 많을수록 좋고, 중복은 자유로울수록 좋습니다.",
+    "onDisplay_other": "{{count}}장의 쿠폰을 전시 중입니다.",
+    "stackable": "중복 가능",
+    "noCondition": "조건 없음",
+    "minOrder": "최소 주문 금액",
+    "minOrderValue": "그런 거 없음",
+    "validUntil": "유효기간",
+    "validUntilValue": "마음이 식을 때까지",
+    "saved": "쿠폰함에 있음",
+    "receive": "쿠폰 받기"
+  },
+  "achievements": {
+    "eyebrow": "SECRET ACHIEVEMENTS",
+    "title": "숨겨진 업적 쿠폰",
+    "lead": "사이트 곳곳에서 쓸데없이 성실한 행동을 해보세요. {{total}}개 중 {{found}}개를 찾으셨습니다.",
+    "unlocked": "UNLOCKED",
+    "locked": "LOCKED"
+  },
+  "wallet": {
+    "eyebrow": "MY COUPON STORAGE",
+    "title": "내 쿠폰함",
+    "lead_other": "이 브라우저가 쿠폰 {{count}}장을 기억하고 있습니다.",
+    "empty": "쿠폰함이 비었습니다. 위에서 아무거나 받아두세요. 어차피 쓸 곳은 없지만 저장은 확실히 됩니다.",
+    "removeAria": "{{name}} 삭제",
+    "remove": "삭제",
+    "goToCart": "장바구니에서 확인하기",
+    "clearAll": "전체 비우기"
+  }
+}

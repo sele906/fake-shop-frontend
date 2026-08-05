@@ -1,0 +1,36 @@
+{
+  "header": {
+    "openCategories": "카테고리 열기",
+    "cartAria_other": "장바구니 {{count}}개",
+    "userMenu": "사용자 메뉴",
+    "login": "로그인하는 척",
+    "cart": "안 살 것들"
+  },
+  "footer": {
+    "hireTitle": "이 사이트를 만든 개발자",
+    "hireLead": "기획부터 배포까지 직접 만든 백엔드 개발자의 이야기입니다.",
+    "hireCta": "이력과 프로젝트 보기 →",
+    "storeLead1": "사고 싶은 마음만 정성껏 모았습니다.",
+    "storeLead2": "결제는 없고, 미련은 무료로 제공됩니다.",
+    "helpTitle": "고객센터",
+    "helpFaq": "굳이 자주 묻는 질문",
+    "helpReturn": "안 산 상품 반품하기",
+    "companyTitle": "회사",
+    "companyAbout": "제법 그럴듯한 회사 소개",
+    "companyPartner": "입점 문의만 받아보기",
+    "companyCareers": "채용 공고 구경하기",
+    "imageCredit": "상품 이미지 출처:"
+  },
+  "sidebar": {
+    "categories": "카테고리",
+    "close": "닫기",
+    "all": "전체",
+    "promoTitle": "기획",
+    "promo": {
+      "weekly": "이번 주도 안 살 것들",
+      "new": "방금 들어온 척",
+      "picked": "안삼이 괜히 골라봄"
+    },
+    "login": "로그인 척하기"
+  }
+}
