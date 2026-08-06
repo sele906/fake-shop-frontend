@@ -112,4 +112,21 @@ i18n
     },
   });
 
+/**
+ * 지금 언어를 <html lang>에 적어 둔다.
+ *
+ * public/index.html의 lang은 "en"으로 박혀 있는 고정값이라, 이게 없으면
+ * 한국어로 보는 동안에도 문서가 계속 영어라고 주장한다. 그러면
+ *   - 스크린리더가 한국어 문장을 영어 발음으로 읽는다
+ *   - 각 CSS 모듈의 :global(html:lang(en)) 영어 보정이 한국어에도 걸린다
+ *
+ * resolvedLanguage를 쓰면 "en-US"로 감지됐어도 항상 "ko"·"en" 둘 중 하나다.
+ */
+const syncHtmlLang = () => {
+  document.documentElement.lang = i18n.resolvedLanguage ?? "ko";
+};
+
+syncHtmlLang();
+i18n.on("languageChanged", syncHtmlLang);
+
 export default i18n;

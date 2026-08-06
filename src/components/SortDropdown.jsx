@@ -1,128 +1,45 @@
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./SortDropdown.module.css";
-
-import { BiCaretDown, BiCheck } from "react-icons/bi";
+import Select from "./Select";
 
 /**
  * 모바일 전용 정렬 드롭다운. 데스크톱에는 정렬 탭이 따로 있어서 이 컴포넌트는
  * 좁은 화면에서만 나온다. (숨기고 보이는 것은 이 파일의 CSS가 맡는다)
  *
- * 네이티브 select를 쓰지 않는 이유는 목록의 여백을 정할 수 없기 때문이다.
- * 항목마다 손가락이 닿을 높이를 주려고 직접 그린다.
- *
  *   <SortDropdown options={sorts} value={sortKey} onChange={setSortKey} />
  *
- * options는 [{ key, label }] 모양이다.
+ * options는 useSortOptions가 주는 [{ key, label }] 모양이다. 정렬 탭도 같은
+ * 목록을 쓰기 때문에 그쪽 모양을 바꾸지 않고 여기서 Select의 value로 옮긴다.
+ *
+ * 여닫는 동작·키보드·의미는 전부 Select가 맡는다. 이 파일에 남은 것은
+ * "툴바에 놓는 정렬용"이라는 설정뿐이다.
  */
 export default function SortDropdown({ options, value, onChange, label }) {
   const { t } = useTranslation("common");
-  const [isOpen, setIsOpen] = useState(false);
 
   /* 부르는 쪽이 따로 주지 않으면 공용 문구를 쓴다. */
   const menuLabel = label ?? t("sortLabel");
 
-  const wrapRef = useRef(null);
-  const triggerRef = useRef(null);
-  const listRef = useRef(null);
-
-  const current = options.find((option) => option.key === value) ?? options[0];
-
-  /* 바깥을 누르면 닫는다. click이 아니라 pointerdown으로 듣는 이유는
-     스크롤·드래그를 시작한 순간에도 닫히는 편이 자연스럽기 때문이다. */
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handlePointerDown(event) {
-      if (wrapRef.current?.contains(event.target)) return;
-
-      setIsOpen(false);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, [isOpen]);
-
-  /* 열면 지금 골라둔 항목으로 초점을 옮긴다. 키보드로도 바로 고를 수 있어야 한다. */
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const items = listRef.current?.querySelectorAll("button");
-    const index = options.findIndex((option) => option.key === value);
-
-    items?.[Math.max(0, index)]?.focus();
-  }, [isOpen, options, value]);
-
-  function close({ focusTrigger = true } = {}) {
-    setIsOpen(false);
-    if (focusTrigger) triggerRef.current?.focus();
-  }
-
-  function pick(key) {
-    onChange(key);
-    close();
-  }
-
-  /* 목록 안에서의 위아래 이동. 끝에 닿으면 반대쪽으로 넘어간다. */
-  function handleListKeyDown(event) {
-    if (event.key === "Escape") {
-      close();
-      return;
-    }
-
-    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
-
-    event.preventDefault();
-
-    const items = [...(listRef.current?.querySelectorAll("button") ?? [])];
-    if (items.length === 0) return;
-
-    const step = event.key === "ArrowDown" ? 1 : -1;
-    const here = items.indexOf(document.activeElement);
-    const next = (here + step + items.length) % items.length;
-
-    items[next].focus();
-  }
+  const selectOptions = useMemo(
+    () => options.map((option) => ({ value: option.key, label: option.label })),
+    [options]
+  );
 
   return (
-    <div className={styles.wrap} ref={wrapRef}>
-      <button
-        type="button"
-        className={styles.trigger}
-        ref={triggerRef}
-        aria-haspopup="true"
-        aria-expanded={isOpen}
-        aria-label={menuLabel}
-        onClick={() => setIsOpen((open) => !open)}
-      >
-        {current?.label}
-        <BiCaretDown aria-hidden="true" />
-      </button>
-
-      {isOpen && (
-        <ul
-          className={styles.list}
-          ref={listRef}
-          role="menu"
-          aria-label={menuLabel}
-          onKeyDown={handleListKeyDown}
-        >
-          {options.map((option) => (
-            <li key={option.key}>
-              <button
-                type="button"
-                role="menuitemradio"
-                aria-checked={option.key === value}
-                onClick={() => pick(option.key)}
-              >
-                {option.label}
-                {option.key === value && <BiCheck aria-hidden="true" />}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+    /* Select의 바깥 요소는 목록 위치의 기준이라 건드리지 않는다.
+       보이고 숨기는 것은 이 껍데기가 맡는다. */
+    <div className={styles.wrap}>
+      <Select
+        variant="quiet"
+        align="end"
+        options={selectOptions}
+        value={value}
+        onChange={onChange}
+        /* 정렬은 늘 골라진 상태다. 목록에 없는 값이 들어와도 빈칸으로 두지 않는다. */
+        placeholder={selectOptions[0]?.label}
+        ariaLabel={menuLabel}
+      />
     </div>
   );
 }

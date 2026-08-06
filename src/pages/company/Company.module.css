@@ -291,8 +291,9 @@
   font-weight: 600;
 }
 
+/* 분야 고르기는 components/Select가 맡는다. 트리거가 이 값들과 같은 모양이라
+   여기 숫자를 바꾸면 Select.module.css도 같이 봐야 한다. */
 .fields input,
-.fields select,
 .fields textarea {
   width: 100%;
   min-width: 0;
@@ -305,8 +306,7 @@
   font-size: 14px;
 }
 
-.fields input,
-.fields select {
+.fields input {
   min-height: 46px;
   padding: 0 13px;
 }
@@ -323,7 +323,6 @@
 }
 
 .fields input:focus,
-.fields select:focus,
 .fields textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-200);

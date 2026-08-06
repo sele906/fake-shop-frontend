@@ -28,7 +28,8 @@
         "Set up a publicly reachable deployment with AWS EC2, Nginx, and DuckDNS."
       ],
       "links": {
-        "site": "Visit the site"
+        "service": "Visit the service",
+        "github": "View on GitHub"
       }
     }
   },
@@ -41,20 +42,20 @@
     "github": "Browse GitHub"
   },
   "intro": {
-    "title": "The backend developer who built this store",
-    "lead": "This part is serious.",
-    "sloganLine1": "I work on the parts where,",
-    "sloganLine2": "if they break, users notice first.",
+    "title": "The backend developer behind this store",
+    "lead": "Now for the serious part.",
+    "sloganLine1": "I find and fix backend problems",
+    "sloganLine2": "before users notice them.",
     "paragraph1": "I'm a backend developer who builds API servers with Spring Boot. I've mostly worked on things that must not fail quietly — authentication, third-party API integration, payments — and I prefer confirming problems with logs and numbers before fixing them, rather than guessing.",
-    "paragraph2": "Building the AI character chat service Beluo alone, from planning to deploy, I worked through slow queries, delayed notifications, and payment webhooks that failed verification, one at a time. This store is a frontend exercise meant to widen a backend-only view, which is why it has nothing to sell."
+    "paragraph2": "Building the AI character chat service Beluo alone, from planning to deploy, I worked through slow queries, delayed notifications, and payment webhooks that failed verification, one at a time. This store is a frontend project meant to widen a backend-only view."
   },
   "projectSection": {
     "title": "Selected projects",
-    "lead": "Actually deployed, and payments actually work."
+    "lead": "Built end to end, from planning to deployment and payment integration."
   },
   "stackSection": {
     "title": "Tech stack",
-    "lead": "Only what I've actually used on a project."
+    "lead": "Only technologies I've used hands-on in real projects."
   },
   "contact": {
     "title": "Get in touch",
@@ -66,7 +67,7 @@
   },
   "toast": {
     "copyFailedTitle": "Copy failed",
-    "copyFailedLead": "Please write down {{email}} manually.",
+    "copyFailedLead": "Copy the email address manually: {{email}}",
     "copiedTitle": "Address copied",
     "copiedLead": "The only feature on this store that actually works."
   },

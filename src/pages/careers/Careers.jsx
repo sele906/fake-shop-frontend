@@ -31,7 +31,7 @@ const PROJECTS = [
   {
     id: "library",
     stack: ["Java", "Spring", "MyBatis", "PostgreSQL", "AWS EC2", "Nginx"],
-    links: [{ id: "site", href: "https://liblio.duckdns.org" }],
+    links: [{ id: "service", href: "https://liblio.duckdns.org" }, { id: "github", href: "https://github.com/sele906/lib" }],
   },
 ];
 

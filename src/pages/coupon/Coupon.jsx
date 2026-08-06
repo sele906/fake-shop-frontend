@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import styles from "./Coupon.module.css";
 import { getVisibleCoupons } from "../../data/coupons";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
@@ -23,10 +24,6 @@ export default function Coupon() {
      데이터는 DataProvider가 채운 뒤이고 언어가 바뀌면 이 화면째 다시 그려지므로,
      처음 한 번만 읽어 두면 된다. */
   const coupons = useMemo(getVisibleCoupons, []);
-
-  /* 문장이 아니라 무엇을 알릴지만 들고 있는다. 문장을 상태에 넣어 두면
-     언어를 바꿨을 때 옛 언어의 안내가 그대로 남는다. */
-  const [message, setMessage] = useState({ key: "msg.intro" });
 
   /* 저장된 쿠폰은 손으로 고칠 수 있어서 모르는 group이 들어올 수 있다. */
   function groupLabel(group) {
@@ -56,12 +53,12 @@ export default function Coupon() {
 
   function receiveCoupon(coupon) {
     if (savedIds.has(coupon.id)) {
-      setMessage({ key: "msg.already", params: { name: coupon.name } });
+      toast(t("msg.already", { name: coupon.name }));
       return;
     }
 
     saveCoupons([coupon]);
-    setMessage({ key: "msg.got", params: { name: coupon.name } });
+    toast(t("msg.got", { name: coupon.name }));
   }
 
   function startCouponRain() {
@@ -69,25 +66,21 @@ export default function Coupon() {
     const added = saveCoupons(todayCoupons);
 
     setRainRun((current) => current + 1);
-    setMessage(
-      added
-        ? { key: "msg.rain", params: { count: added } }
-        : { key: "msg.rainNone" }
-    );
+    toast(added ? t("msg.rain", { count: added }) : t("msg.rainNone"));
   }
 
   function removeCoupon(coupon) {
     setSavedCoupons((current) =>
       current.filter((saved) => saved.id !== coupon.id)
     );
-    setMessage({ key: "msg.removed", params: { name: coupon.name } });
+    toast(t("msg.removed", { name: coupon.name }));
   }
 
   function clearWallet() {
     const count = savedCoupons.length;
 
     setSavedCoupons([]);
-    setMessage({ key: "msg.cleared", params: { count } });
+    toast(t("msg.cleared", { count }));
   }
 
   function goToCart() {
@@ -140,10 +133,6 @@ export default function Coupon() {
           </button>
         </div>
       </header>
-
-      <p className={styles.status} role="status" aria-live="polite">
-        {t(message.key, message.params)}
-      </p>
 
       <nav className={styles.tabs} aria-label={t("tabsAria")}>
         {TAB_IDS.map((tabId) => (

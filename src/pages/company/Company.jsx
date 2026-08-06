@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import styles from "./Company.module.css";
+import Select from "../../components/Select";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 
@@ -39,6 +40,17 @@ export default function Company() {
   const [website, setWebsite] = useState("");
   const [story, setStory] = useState("");
   const { unlock } = useHiddenCoupon();
+
+  /* value는 언어를 타지 않고 보이는 이름만 바뀐다. 언어를 바꾸면 t가 새로 와서
+     목록도 새로 만들어진다. */
+  const categoryOptions = useMemo(
+    () =>
+      CATEGORY_IDS.map((categoryId) => ({
+        value: categoryId,
+        label: t(`partner.categories.${categoryId}`),
+      })),
+    [t]
+  );
 
   useEffect(() => {
     if (!section) return;
@@ -208,18 +220,17 @@ export default function Company() {
               <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder={t("partner.emailPlaceholder")} />
             </label>
 
+            {/* <label>이 감싸도 이름이 붙지만, 버튼은 제 글자도 텍스트라
+                라벨 이름에 지금 고른 값까지 섞인다. 그래서 따로 가리킨다. */}
             <label>
-              {t("partner.categoryLabel")}
-              <select value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value="" disabled>
-                  {t("partner.categoryPlaceholder")}
-                </option>
-                {CATEGORY_IDS.map((categoryId) => (
-                  <option key={categoryId} value={categoryId}>
-                    {t(`partner.categories.${categoryId}`)}
-                  </option>
-                ))}
-              </select>
+              <span id="partner-category-label">{t("partner.categoryLabel")}</span>
+              <Select
+                options={categoryOptions}
+                value={category}
+                onChange={setCategory}
+                placeholder={t("partner.categoryPlaceholder")}
+                labelledBy="partner-category-label"
+              />
             </label>
 
             <label>

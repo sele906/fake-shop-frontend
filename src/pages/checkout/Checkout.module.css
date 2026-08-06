@@ -3,6 +3,8 @@
    기준점: 900px · 1200px(모바일 우선). 본문은 .wrap이 820px에서 멈춰
    900px 하나면 되고, 1200px는 배송지 모달만 쓴다. index.css 상단 주석 참고. */
 .page {
+  /* 첫 프레임용 어림값. 실제 높이는 Checkout.jsx가 바를 재서 인라인으로 덮는다 —
+     바 높이가 문구 길이에 따라 달라져서 여기 숫자로 고정할 수 없다. */
   --bar-h: 104px;
 
   padding-bottom: var(--bar-h);
@@ -888,8 +890,10 @@
 
 /* ── Tablet / desktop ─────────────────── */
 @media (min-width: 900px) {
+  /* 데스크톱은 바가 흐름 안에 있어 비워 둘 자리가 없다.
+     --bar-h를 0으로 두면 JS가 넣은 인라인 값에 밀리므로 padding을 직접 끈다. */
   .page {
-    --bar-h: 0px;
+    padding-bottom: 0;
   }
 
   .header {

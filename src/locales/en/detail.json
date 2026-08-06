@@ -9,7 +9,7 @@
   "galleryAria": "Product images",
   "shareResult": {
     "copied": "Link copied",
-    "blocked": "Copying is blocked. Please copy the address bar manually."
+    "blocked": "Copying is blocked. Please copy the URL instead."
   },
   "addedToCart_one": "Added {{count}} item to your cart",
   "addedToCart_other": "Added {{count}} items to your cart",
@@ -28,8 +28,8 @@
   "reviewCountLink_other": "{{count}} reviews",
   "rows": {
     "shipping": "Shipping",
-    "shippingValue": "<b>Free</b> · Ships the same day on weekday orders before 2 PM (allegedly)",
-    "eta": "Estimated arrival",
+    "shippingValue": "<b>Free</b> · Ships today before 2 PM—in our imagination.",
+    "eta": "Arrival",
     "etaValue": "<b>{{date}}</b> — nothing will arrive",
     "benefit": "Rewards",
     "benefitValue": "Earn <b>{{points}}P</b> with NOBUY membership (5%)"
@@ -48,7 +48,7 @@
   },
   "tabsAria": "Product details",
   "tabs": {
-    "info": "Details",
+    "info": "Info",
     "spec": "Specs",
     "reviews": "Reviews",
     "reviewsWithCount_one": "Reviews {{count}}",
@@ -61,11 +61,11 @@
     "title": "Reviews",
     "loading": "Loading reviews.",
     "emptyLine1": "No reviews yet.",
-    "emptyLine2": "Still waiting on people who didn't buy it.",
-    "positiveRate": "{{rate}}% rated it 4 stars or higher",
+    "emptyLine2": "Still waiting for non-buyers.",
+    "positiveRate": "{{rate}}% gave 4+ stars",
     "score": "{{score}} stars",
     "more_one": "Load more reviews ({{count}} left)",
     "more_other": "Load more reviews ({{count}} left)"
   },
-  "relatedTitle": "People also looked at"
+  "relatedTitle": "Also viewed"
 }

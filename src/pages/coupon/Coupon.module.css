@@ -150,18 +150,6 @@
   color: var(--accent-900);
 }
 
-.status {
-  min-height: 50px;
-  margin: 0;
-  padding: 14px 40px;
-  border-bottom: 1px solid var(--accent-700);
-  background: var(--accent);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-}
-
 /* ── Tabs ─────────────────────────────── */
 .tabs {
   display: grid;
@@ -588,11 +576,6 @@
     font-size: 54px;
   }
 
-  .status {
-    padding-right: 28px;
-    padding-left: 28px;
-  }
-
   .catalog,
   .achievements,
   .wallet {
@@ -649,11 +632,6 @@
 
   .heroActions button {
     width: 100%;
-  }
-
-  .status {
-    padding: 12px 16px;
-    font-size: 12px;
   }
 
   .tabs {

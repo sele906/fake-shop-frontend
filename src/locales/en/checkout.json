@@ -1,122 +1,142 @@
 {
   "back": "Back to cart",
   "title": "Checkout",
-  "wink": "No money leaves",
+  "wink": "No money involved",
   "pay": {
-    "eye": { "name": "Pay with your eyes", "desc": "Look, then close the tab" },
-    "imagine": { "name": "ImaginePay", "desc": "Unlimited balance" },
-    "patience": { "name": "Patience Card", "desc": "36 months, 0% interest" },
-    "screenshot": { "name": "Screenshot transfer", "desc": "Just save the image" }
+    "eye": { "name": "EyePay", "desc": "Look, then close the tab" },
+    "imagine": { "name": "ImaginePay", "desc": "Infinite balance" },
+    "patience": { "name": "Patience Card", "desc": "36 months, 0% reality" },
+    "screenshot": { "name": "Screenshot Pay", "desc": "Just save the image" }
   },
   "restraint": {
-    "0": "Restraint 0% — this is dangerous",
-    "5": "Restraint attempt detected — still wobbling",
-    "10": "First resistance — your hand left the pay button",
-    "15": "Reason engaged — the impulse is briefly contained",
-    "20": "Early defense holding — doing fine so far",
-    "25": "Restraint routine engaged — better than expected",
-    "30": "Safe zone — keeping your distance from the cart",
-    "35": "Self-control rising — the urge is weakening",
-    "40": "Shaky but standing — quite respectable",
-    "45": "Mid-line holding — nearly halfway there",
-    "50": "Half restrained — half the battle is won",
-    "55": "Excellent self-control — noticeably stronger",
-    "60": "Past the hard part — you won't fold easily now",
-    "65": "Stable restraint — reason is ahead of impulse",
-    "70": "Advanced restraint — you could survive the pay screen",
-    "75": "Very good — you're taming the urge to spend",
-    "80": "Expert mode — barely a wobble left",
-    "85": "Iron will — you enjoy temptation and walk away",
-    "90": "Top-tier restraint — you beat the cart",
-    "95": "Nearly perfect — impulse fully subdued",
-    "100": "Max restraint — today's shopping demon is sealed away"
+    "0": "0% — danger zone",
+    "5": "5% — restraint attempt wobbling",
+    "10": "10% — your hand left from the pay button",
+    "15": "15% — reason engaged",
+    "20": "20% — holding, somehow",
+    "25": "25% — better than expected",
+    "30": "30% — keeping distance from the cart",
+    "35": "35% — self-control rising",
+    "40": "40% —  quite respectable",
+    "45": "45% — nearly halfway there",
+    "50": "50% — the battle is half won",
+    "55": "55% — self-control upgraded",
+    "60": "60% — past the hard part",
+    "65": "65% — reason is winning",
+    "70": "70% — you can survive the pay screen",
+    "75": "75% — urge mostly tamed",
+    "80": "80% — expert restraint",
+    "85": "85% — iron will",
+    "90": "90% — you beat the cart",
+    "95": "95% — impulse nearly contained",
+    "100": "100% — shopping demon sealed"
   },
   "dopamine": {
-    "0": "Nothing resisted yet.",
-    "5": "Dopamine twitched, very slightly.",
+    "0": "No restraint yet.",
+    "5": "A tiny dopamine twitch.",
     "10": "“I don't need this” is 10% charged.",
-    "15": "The payoff for holding back is starting to stack up.",
-    "20": "A small flicker of pride occurred.",
-    "25": "Dopamine is quietly climbing. You're weirdly proud.",
-    "30": "“Honestly, I'm doing pretty well today” gauge activated.",
-    "35": "Satisfaction is creeping upward.",
+    "15": "Holding back feels oddly good.",
+    "20": "Small pride detected.",
+    "25": "Dopamine rising. Weirdly proud.",
+    "30": "“I'm doing great” mode on.",
+    "35": "Satisfaction creeping in.",
     "40": "You're starting to enjoy holding back.",
-    "45": "Dopamine is properly kicking in now.",
+    "45": "Dopamine entered the chat.",
     "50": "50% smug. Good time to congratulate yourself.",
-    "55": "You bought nothing and you feel great.",
-    "60": "Restraint is converting into reward.",
-    "65": "You've discovered the real joy of fake shopping.",
-    "70": "Dopamine is filling up nicely.",
-    "75": "A sizeable hit of satisfaction. You feel like you won.",
-    "80": "“I didn't buy it” is doing all the work now.",
-    "85": "Dopamine nearly overcharged. Manage your expression.",
-    "90": "Enormous sense of achievement. You won by not buying.",
-    "95": "Dopamine almost maxed. Deeply satisfying.",
-    "100": "Dopamine maxed! You bought nothing, but your heart checked out in full."
+    "55": "Bought nothing. Feeling great.",
+    "60": "Restraint became reward.",
+    "65": "Fake shopping, real joy.",
+    "70": "Dopamine filling nicely.",
+    "75": "Feels like you won.",
+    "80": "“Didn't buy it” carries the team.",
+    "85": "Nearly overcharged. Act normal.",
+    "90": "Enormous sense of achievement.",
+    "95": "Almost maxed. Deeply satisfying.",
+    "100": "Max dopamine. Zero purchase."
   },
-  "dopamineNeedsAgree": "Please agree to the required items. Buying nothing still has a process.",
+  "toast": {
+    "needsAgree": "Agree to the required terms first. Even buying nothing has rules."
+  },
   "delivery": {
     "room": {
-      "name": "A corner of the room in your head",
-      "date": "Arrives: the moment you clear space in your mind",
-      "request": "Note: Leave it at the door. No questions, please."
+      "name": "A room in your head",
+      "date": "ETA: Once you make some room.",
+      "request": "Request: Leave at the door. No questions."
     },
     "balance": {
-      "name": "Somewhere your bank balance is safe",
-      "date": "Arrives: once the urge to spend has fully passed",
-      "request": "Note: Leave no trace on the card statement."
+      "name": "Where your balance is safe",
+      "date": "ETA: After the urge passes.",
+      "request": "Request: Leave no trace on the statement."
     },
     "urge": {
-      "name": "Beyond the reach of the urge to buy",
-      "date": "Arrives: the instant the wanting gives up",
-      "request": "Note: Never give this address to the pay button."
+      "name": "Out of checkout's reach",
+      "date": "ETA: When the urge gives up.",
+      "request": "Request: Don't tell the pay button."
     },
     "door": {
-      "name": "The front door of your heart",
-      "date": "Arrives: already here. Please accept it emotionally.",
-      "request": "Note: Don't ring the bell. It drags you back to reality."
+      "name": "Your heart's front door",
+      "date": "ETA: Already here. Accept emotionally.",
+      "request": "Request: Don't ring. Reality may answer."
     },
     "dream": {
-      "name": "Tonight's dream parcel locker",
-      "date": "Arrives: within 2–3 dreams after you fall asleep",
-      "request": "Note: Slide it in quietly. It may vanish by morning."
+      "name": "Tonight's dream locker",
+      "date": "ETA: Within 2–3 dreams.",
+      "request": "Request: Leave quietly. Gone by morning is fine."
     }
   },
   "stats": {
-    "spent": { "value": "₩0", "label": "Actually spent" },
-    "shipping": { "value": "0", "label": "Shipments due" },
+    "spent": { "value": "₩0", "label": "Spent" },
+    "shipping": { "value": "0", "label": "Incoming" },
     "coupon": { "value": "Unlimited", "label": "Coupon stacking" },
-    "regret": { "value": "Buyer's remorse", "label": "Blocked before it starts" }
+    "regret": { "value": "Regret", "label": "Blocked" }
   },
   "receiptMsg": {
-    "0": { "note": "Restraint 0%. The NOBUY discount covered the whole thing.", "grade": "Restraint training required" },
-    "20": { "note": "Restraint 20%. Your finger stopped just short of the button.", "grade": "Beginner abstainer" },
-    "40": { "note": "Restraint 40%. You fought the urge to a draw.", "grade": "Adjusting to restraint" },
-    "60": { "note": "Restraint 60%. The odds tipped toward not buying.", "grade": "NOBUY leading" },
-    "80": { "note": "Restraint 80%. The shopping demon started packing up.", "grade": "Honor roll of restraint" },
-    "100": { "note": "Restraint 100%. A textbook case of not buying.", "grade": "Promotion imminent" }
+    "0": {
+      "note": "0% restraint. NOBUY covered it all.",
+      "grade": "Needs training"
+    },
+    "20": {
+      "note": "20% restraint. Finger stopped in time.",
+      "grade": "Rookie non-buyer"
+    },
+    "40": {
+      "note": "40% restraint. Urge fought to a draw.",
+      "grade": "Learning restraint"
+    },
+    "60": {
+      "note": "60% restraint. Not buying pulls ahead.",
+      "grade": "NOBUY ahead"
+    },
+    "80": {
+      "note": "80% restraint. Shopping demon is leaving.",
+      "grade": "Restraint honors"
+    },
+    "100": {
+      "note": "100% restraint. Textbook non-purchase.",
+      "grade": "Promotion pending"
+    }
   },
   "share": {
-    "idle": "Show off the receipt",
+    "idle": "Share receipt",
     "copied": "Link copied. Brag away.",
-    "blocked": "Copying is blocked",
-    "title": "NOBUY savings receipt",
-    "text": "Today I did not spend {{amount}} at NOBUY."
+    "blocked": "Copy blocked",
+    "title": "NOBUY receipt",
+    "text": "I saved {{amount}} by buying nothing at NOBUY."
   },
   "done": {
     "aria": "Order complete",
     "stamp": "NOBUY COMPLETE",
     "titleLine1": "Congratulations,",
     "titleLine2": "you bought nothing",
-    "leadLine1": "The cart is empty and your balance is untouched.",
-    "leadLine2": "You kept exactly the thrill of pressing the button, and nothing else.",
-    "again": "Go not-buy something else",
+    "leadLine1": "Cart cleared. Balance untouched.",
+    "leadLine2": "You kept the button-click thrill.",
+    "again": "Go not-buy more",
     "delivery": "Track your delivery"
   },
   "empty": {
     "aria": "Empty order",
-    "title": "Nothing to order",
-    "lead": "Only items you added and selected in the cart show up here.",
+    "title": "Nothing here",
+    "lead": "Only selected cart items appear here.",
     "cta": "Go to cart"
   },
   "steps": {
@@ -141,15 +161,15 @@
   },
   "payment": {
     "aria": "Payment method",
-    "title": "Payment method",
-    "note": "All four cost nothing",
-    "groupAria": "Select a payment method",
-    "recommended": "Recommended"
+    "title": "Fake payment",
+    "note": "All cost ₩0",
+    "groupAria": "Choose a payment method",
+    "recommended": "Best choice"
   },
   "slider": {
     "aria": "Restraint points",
-    "title": "Use restraint points",
-    "note": "The more you spend, the less happens",
+    "title": "Restraint points",
+    "note": "Spend more. Get less.",
     "inputAria": "Restraint points to use"
   },
   "gauge": {
@@ -160,29 +180,29 @@
     "basket": "What you added",
     "restraintPoints": "Restraint points",
     "notBuyDiscount": "NOBUY discount",
-    "notBuyDiscountNote": "(everything else)",
+    "notBuyDiscountNote": "(the rest)",
     "shipping": "Shipping",
     "zero": "₩0",
     "saved": "Saved today",
     "grandTotal": "Actually charged"
   },
   "terms": {
-    "service": "I agree that this site sells nothing and ships nothing. <b>(required)</b>",
-    "thrill": "I confirm my right to take only the thrill and quietly close the tab. <b>(required)</b>",
-    "nudge": "I will part with the items in my cart gracefully. (optional)"
+    "service": "I agree this store sells and ships nothing. <b>(required)</b>",
+    "thrill": "I agree to take the thrill and close the tab. <b>(required)</b>",
+    "nudge": "I will release my cart peacefully. (optional)"
   },
   "bar": {
     "summary": "{{payName}} · Restraint {{percent}}%",
     "submit": "Pay ₩0",
-    "anyway": "But I really do want to buy it",
-    "anywayPressed": "You can't buy here. That is the feature.",
-    "tiny": "We never ask for card details. There is no reason to."
+    "anyway": "I still want to buy it",
+    "anywayPressed": "You can't. That's the whole point.",
+    "tiny": "No card details. There's nothing to charge."
   },
   "brag": {
     "aria": "Restraint record",
     "title": "Your restraint record"
   },
-  "disclaimLine1": "NOBUY is a fictional store that sells no real products.",
-  "disclaimLine2": "Payments, shipping, refunds, support, stock, and couriers do not exist.",
-  "disclaimLine3": "All that remains is the mood and your balance."
+  "disclaimLine1": "NOBUY is a fictional store. Nothing here is actually for sale.",
+  "disclaimLine2": "No payments, shipping, refunds, stock, support, or couriers.",
+  "disclaimLine3": "Only the vibe—and your balance—remain."
 }

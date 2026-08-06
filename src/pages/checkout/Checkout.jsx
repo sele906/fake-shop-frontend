@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Trans, useTranslation } from "react-i18next";
@@ -80,9 +86,6 @@ export default function Checkout() {
   const [isAnywayPressed, setIsAnywayPressed] = useState(false);
   const [shareState, setShareState] = useState("idle");
 
-  /* 필수 동의를 빠뜨린 채 누르면 게이지 문구 자리에 안내를 대신 띄운다. */
-  const [needsAgree, setNeedsAgree] = useState(false);
-
   const confettiTimer = useRef(null);
   const shareTimer = useRef(null);
 
@@ -90,6 +93,35 @@ export default function Checkout() {
   const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
 
   const modalRef = useRef(null);
+
+  const pageRef = useRef(null);
+  const barRef = useRef(null);
+
+  /**
+   * 모바일 하단 고정 바가 본문 끝을 가리지 않게, 바 높이만큼 본문 아래를 비워 둔다.
+   *
+   * 바 안에는 요약줄 · 결제 버튼 · "그래도 사고 싶어요" · 안내문이 세로로 쌓이는데,
+   * 이 높이는 문구 길이에 따라 달라진다. 언어를 바꾸면 새로고침 없이 그 자리에서
+   * 버튼 글자가 한 줄 늘기도 해서, 숫자로 박아 두면 그때마다 아래가 잘린다.
+   * (실제로 --bar-h가 104px로 고정돼 있어 한국어에서도 90px 넘게 잘리고 있었다.)
+   *
+   * 그래서 바를 직접 재서 --bar-h에 넣는다. 데스크톱은 바가 흐름 안에 있어
+   * 이 값이 필요 없고, CSS 쪽에서 padding-bottom을 0으로 덮는다.
+   */
+  useLayoutEffect(() => {
+    const bar = barRef.current;
+    const page = pageRef.current;
+
+    if (!bar || !page) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      page.style.setProperty("--bar-h", `${entry.target.offsetHeight}px`);
+    });
+
+    observer.observe(bar);
+
+    return () => observer.disconnect();
+  }, [isDone]);
 
   const deliveryId = DELIVERY_IDS[deliveryIndex];
 
@@ -201,19 +233,16 @@ export default function Checkout() {
      상태로 두면 다른 곳에서 또 건드리게 되므로 파생값으로 둔다. */
   const dopamine = restraint;
 
-  const dopamineMsg = needsAgree
-    ? t("dopamineNeedsAgree")
-    : t(`dopamine.${lastPassed(MESSAGE_STEPS, restraint)}`);
+  const dopamineMsg = t(`dopamine.${lastPassed(MESSAGE_STEPS, restraint)}`);
 
   function changeRestraint(value) {
     setRestraint(value);
-    setNeedsAgree(false);
   }
 
   function submit() {
     if (!agreeService || !agreeThrill) {
       setIsWobbling(true);
-      setNeedsAgree(true);
+      toast(t("toast.needsAgree"));
       return;
     }
 
@@ -301,7 +330,10 @@ export default function Checkout() {
   }
 
   return (
-    <div className={`${styles.page} ${isDone ? styles.isDone : ""}`}>
+    <div
+      ref={pageRef}
+      className={`${styles.page} ${isDone ? styles.isDone : ""}`}
+    >
       <header className={styles.header}>
         <button
           type="button"
@@ -609,7 +641,7 @@ export default function Checkout() {
               </label>
             </div>
 
-            <div className={styles.bar}>
+            <div className={styles.bar} ref={barRef}>
               <div className={styles.barRow}>
                 <span>
                   {t("bar.summary", { payName, percent: restraint })}

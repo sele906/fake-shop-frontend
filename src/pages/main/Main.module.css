@@ -1,3 +1,13 @@
+/* 영어 보정은 :global(html:lang(en))으로 건다. <html lang>은 src/i18n.js가
+   언어를 바꿀 때마다 맞춰 준다 — 덕분에 JSX는 언어를 몰라도 된다.
+
+   보정은 반드시 짝이 되는 규칙 바로 아래에 둔다.
+   미디어쿼리는 특정도를 올려 주지 않아서
+     :global(html:lang(en)) .hero h1   (0,2,2)
+     @media { .hero h1 }               (0,1,1)
+   가 되고, 모바일 짝을 빠뜨리면 데스크톱 영어 값이 모바일까지 새어 나온다.
+   붙여 두면 짝을 빠뜨릴 수가 없다. */
+
 /* ── Hero ─────────────────────────────── */
 .hero {
   position: relative;
@@ -17,12 +27,21 @@
   overflow: hidden;
 }
 
+:global(html:lang(en)) .hero {
+  gap: 11px;
+}
+
 .heroKicker {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #fff;
   opacity: 0.9;
+}
+
+:global(html:lang(en)) .heroKicker {
+  font-size: 10px;
+  letter-spacing: 0.11em;
 }
 
 .hero h1 {
@@ -34,6 +53,13 @@
   color: #fff;
 }
 
+:global(html:lang(en)) .hero h1 {
+  font-size: 39px;
+  line-height: 1.12;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
 .hero p {
   margin: 0;
   max-width: 420px;
@@ -41,6 +67,10 @@
   line-height: 1.6;
   color: #fff;
   opacity: 0.92;
+}
+
+:global(html:lang(en)) .hero p {
+  line-height: 1.45;
 }
 
 .heroCta {
@@ -58,6 +88,11 @@
   font-weight: 700;
   font-size: 14px;
   padding: 12px 20px;
+}
+
+:global(html:lang(en)) .btn {
+  font-size: 13px;
+  padding-inline: 18px;
 }
 
 .btn:hover {
@@ -94,6 +129,10 @@
   gap: 10px;
   font-weight: 800;
   font-size: 18px;
+}
+
+:global(html:lang(en)) .toolbar h2 {
+  font-size: 17px;
 }
 
 .toolbar h2 small {
@@ -167,6 +206,11 @@
   padding: 3px 7px;
 }
 
+:global(html:lang(en)) .tag {
+  font-size: 10px;
+  line-height: 1.25;
+}
+
 .cardMeta {
   display: flex;
   flex-direction: column;
@@ -209,8 +253,23 @@
     font-size: 30px;
   }
 
+  :global(html:lang(en)) .hero h1 {
+    font-size: 27px;
+    line-height: 1.12;
+  }
+
   .hero p {
     font-size: 13px;
+  }
+
+  /* 데스크톱 짝(10px)만 두면 모바일까지 그대로 새어 나온다. */
+  :global(html:lang(en)) .heroKicker {
+    font-size: 9px;
+  }
+
+  :global(html:lang(en)) .btn {
+    font-size: 12px;
+    padding-inline: 16px;
   }
 
   .toolbar {
@@ -219,6 +278,10 @@
 
   .toolbar h2 {
     font-size: 15px;
+  }
+
+  :global(html:lang(en)) .toolbar h2 {
+    font-size: 14px;
   }
 
   .toolbar h2 small {

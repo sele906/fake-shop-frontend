@@ -1,0 +1,130 @@
+/* 겉모습만 variant · align으로 갈린다. 여닫는 동작과 의미는 두 변형이 같다.
+   값(46px 높이, 13px 안쪽 여백, 1px 테두리)은 페이지 CSS 모듈이 아니라 여기에
+   적는다 — 공용 컴포넌트가 특정 페이지의 스타일에 기대면 다른 폼에서 못 쓴다. */
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  /* 감싼 요소의 글자 설정을 그대로 받는다. 크기는 각 variant가 정한다. */
+  font: inherit;
+  text-align: left;
+}
+
+.trigger svg {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+
+.trigger[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+/* ── variant: field ─── 폼 입력칸과 같은 모양 ─── */
+.field {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--n-400);
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.field svg {
+  color: var(--n-600);
+}
+
+.field:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-200);
+  outline: 0;
+}
+
+.field[aria-expanded="true"] {
+  border-color: var(--accent);
+}
+
+.field[aria-expanded="true"] svg {
+  color: var(--text);
+}
+
+/* ── variant: quiet ─── 툴바에서 가장 조용한 요소 ─── */
+.quiet {
+  gap: 6px;
+  /* 손가락이 닿을 높이를 지킨다. */
+  min-height: 44px;
+  padding: 0 2px;
+  color: var(--n-700);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.quiet svg {
+  color: var(--n-500);
+}
+
+.quiet[aria-expanded="true"],
+.quiet[aria-expanded="true"] svg {
+  color: var(--text);
+}
+
+/* ── 목록 ─────────────────────────────── */
+.list {
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 20;
+  margin: 0;
+  padding: 6px 0;
+  border: 2px solid var(--text);
+  background: #fff;
+  list-style: none;
+}
+
+/* 폼 필드는 칸 너비를 그대로 쓴다. */
+.stretch {
+  right: 0;
+  left: 0;
+}
+
+/* 화면 가장자리에 붙은 트리거는 오른쪽을 기준으로 편다. */
+.end {
+  right: 0;
+  min-width: 200px;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  /* 항목 사이가 붙으면 잘못 누른다. 넉넉히 벌려 둔다. */
+  min-height: 52px;
+  padding: 0 16px;
+  color: var(--n-800);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+/* 키보드로 짚고 있거나 마우스를 올린 항목. 고른 값과는 다른 표시다. */
+.list li.active {
+  background: var(--n-100);
+}
+
+.list li[aria-selected="true"] {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.list li svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+}

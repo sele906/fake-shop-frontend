@@ -8,15 +8,14 @@
     "suspicious": "수상한 쿠폰"
   },
   "groups": {
-    "basic": "기본 지급",
-    "today": "시간대·상황",
-    "cart": "장바구니 행동",
-    "category": "카테고리",
-    "suspicious": "말도 안 되는 고액",
-    "unknown": "출처 불명"
+    "basic": "기본 지급 쿠폰",
+    "today": "오늘만 쿠폰",
+    "cart": "장바구니 쿠폰",
+    "category": "카테고리 쿠폰",
+    "suspicious": "말도 안 되는 고액 쿠폰",
+    "unknown": "출처 불명 쿠폰"
   },
   "msg": {
-    "intro": "받은 쿠폰은 이 브라우저에만 저장됩니다.",
     "already": "“{{name}}”은 이미 쿠폰함에 있습니다. 두 장이 되지는 않습니다.",
     "got": "“{{name}}” 획득! 쿠폰함에 저장했습니다.",
     "rain_other": "쿠폰 비가 내립니다. {{count}}장이 쿠폰함에 쌓였습니다.",
@@ -38,7 +37,7 @@
   "tabsAria": "쿠폰 분류",
   "catalog": {
     "eyebrow": "COUPON COLLECTION",
-    "title": "쿠폰은 많을수록 좋고, 중복은 자유로울수록 좋습니다.",
+    "title": "쿠폰은 많게, 중복은 자유롭게.",
     "onDisplay_other": "{{count}}장의 쿠폰을 전시 중입니다.",
     "stackable": "중복 가능",
     "noCondition": "조건 없음",
@@ -52,7 +51,7 @@
   "achievements": {
     "eyebrow": "SECRET ACHIEVEMENTS",
     "title": "숨겨진 업적 쿠폰",
-    "lead": "사이트 곳곳에서 쓸데없이 성실한 행동을 해보세요. {{total}}개 중 {{found}}개를 찾으셨습니다.",
+    "lead": "사이트 곳곳에서 쓸데없이 성실해보세요. {{total}}개 중 {{found}}개 발견!",
     "unlocked": "UNLOCKED",
     "locked": "LOCKED"
   },
@@ -60,7 +59,7 @@
     "eyebrow": "MY COUPON STORAGE",
     "title": "내 쿠폰함",
     "lead_other": "이 브라우저가 쿠폰 {{count}}장을 기억하고 있습니다.",
-    "empty": "쿠폰함이 비었습니다. 위에서 아무거나 받아두세요. 어차피 쓸 곳은 없지만 저장은 확실히 됩니다.",
+    "empty": "쿠폰함이 비었습니다. 위에서 아무거나 받아두세요. 쓸 곳은 없어도 저장은 됩니다",
     "removeAria": "{{name}} 삭제",
     "remove": "삭제",
     "goToCart": "장바구니에서 확인하기",

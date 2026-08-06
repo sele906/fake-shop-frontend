@@ -1,14 +1,14 @@
 {
   "hero": {
-    "kicker": "This is a store where nobody buys",
-    "titleLine1": "Fill your cart",
-    "titleLine2": "and browse to your heart's content",
-    "lead": "But there is no real checkout, and no real delivery.",
-    "ctaPrimary": "Go add something anyway",
-    "ctaSecondary": "Act like you have coupons"
+    "kicker": "A STORE WHERE NOBODY BUYS",
+    "titleLine1": "Fill your cart,",
+    "titleLine2": "Buy nothing", 
+    "lead": "No checkout. No delivery. Just browsing.",
+    "ctaPrimary": "Add to cart anyway",
+    "ctaSecondary": "Use a fake coupon"
   },
   "toolbar": {
-    "title": "Everyone's browsing for no reason",
+    "title": "Just browsing",
     "tempting_one": "{{count}} item tempting you",
     "tempting_other": "{{count}} items tempting you"
   },

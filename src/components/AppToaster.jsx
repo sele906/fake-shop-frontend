@@ -19,7 +19,7 @@ const WIDTH = "356px";
 
 /* 장바구니 · 상세의 하단 고정 바를 가리지 않게 띄워 둔다.
    left 값은 여백이면서 동시에 모바일 토스트 폭의 기준이기도 하다. */
-const MOBILE_OFFSET = { bottom: "96px", left: "16px", right: "16px" };
+const MOBILE_OFFSET = { bottom: "30px", left: "16px", right: "16px" };
 
 export default function AppToaster() {
   return (
