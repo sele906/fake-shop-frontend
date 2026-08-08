@@ -1,24 +1,24 @@
 {
   "weekly": {
-    "label": "Not buying these this week either",
-    "kicker": "WEEKLY NOT-SHOPPING",
-    "title": "This week too,\nchosen with the eyes only",
-    "description": "Things you could buy or not buy, gathered up with this week's excuse."
+    "label": "Still not buying",
+    "kicker": "WEEKLY NO-BUY",
+    "title": "This week's\nalmost-buys",
+    "description": "Nice to look at. Easy to leave."
   },
   "new": {
-    "label": "Pretending to be new",
-    "kicker": "JUST PRETENDING TO BE NEW",
-    "title": "Look around slowly,\nas if for the first time",
-    "description": "You've probably seen these somewhere, but they're arranged as if they just arrived."
+    "label": "New-ish",
+    "kicker": "NEW-ISH",
+    "title": "Freshly\npretending",
+    "description": "Looks new enough."
   },
   "picked": {
-    "label": "NOBUY picked these for no reason",
-    "kicker": "NOBUY'S USELESS PICKS",
-    "title": "NOBUY put these\non its mind for no reason",
-    "description": "Not strictly necessary, but worth one more look. Picked entirely on personal taste."
+    "label": "NOBUY picks",
+    "kicker": "POINTLESS PICKS",
+    "title": "Picked for\nno reason",
+    "description": "Unneeded. Still tempting."
   },
-  "jumpToProducts": "Browse them anyway",
-  "tabsAria": "Select a collection",
-  "pickedCount_one": "{{count}} item picked, and you don't have to buy any of them.",
-  "pickedCount_other": "{{count}} items picked, and you don't have to buy a single one."
+  "jumpToProducts": "Browse anyway",
+  "tabsAria": "Collections",
+  "pickedCount_one": "{{count}} pick. Buying optional.",
+  "pickedCount_other": "{{count}} picks. Buying optional."
 }

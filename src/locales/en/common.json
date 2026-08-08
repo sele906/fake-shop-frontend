@@ -12,9 +12,9 @@
   },
   "sortLabel": "Sort by",
   "sort": {
-    "new": "Pretending to be newest",
-    "low": "Least painful to the wallet",
-    "views": "Most pretend-viewed"
+    "new": "New-ish",
+    "low": "Wallet-friendly",
+    "views": "Popular-ish"
   },
   "intlLocale": "en-US",
   "price": "₩{{amount}}",

@@ -30,12 +30,32 @@
 
 .iconBtn {
   position: relative;
-  width: 44px;
+  width: 34px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: inherit;
+}
+
+/* 왼쪽 10px은 아이콘 두 개와 떼어 놓는 간격이고, 오른쪽 4px은 화면 끝까지의
+   여백이다. 뜻이 다른 값이라 한 줄로 묶지 않는다. */
+.toggleAdjust {
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+/* 헤더 우측 조작부. 버튼이 아이콘보다 여백을 많이 물고 있어서 헤더의 gap(8px)을
+   그대로 두면 아이콘 사이가 실제보다 훨씬 벌어져 보인다. 여기서만 좁힌다.
+   아이콘끼리는 이래도 16px 떨어져 보인다(버튼 안쪽 여백 7px씩 + gap 2px).
+
+   토글은 .toggleAdjust가 왼쪽에 10px을 더 줘서 아이콘 두 개와 한 덩어리로 붙지
+   않게 떼어 둔다 — 성격이 다른 조작이라 같은 간격으로 두면 셋이 한 묶음으로 읽힌다. */
+.headerActions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .title {
@@ -515,6 +535,13 @@
 .revBars span {
   width: 22px;
   flex-shrink: 0;
+}
+
+/* "5점"은 22px에 들어가지만 "5 stars"는 33px이라 칸 안에서 두 줄로 접힌다.
+   여기서는 문구를 줄이지 않는다 — "5"로 깎으면 영어에서만 단위가 사라진다.
+   막대(i)가 flex: 1이라 12px을 내주고도 표시에 지장이 없다. */
+:global(html:lang(en)) .revBars span {
+  width: 34px;
 }
 
 .revBars i {

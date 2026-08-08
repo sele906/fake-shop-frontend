@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import styles from "./Receipt.module.css";
 import ReceiptCard from "../../receipt/ReceiptCard";
 import { decodeReceipt } from "../../receipt/receiptLink";
-import LanguageToggle from "../../components/LanguageToggle";
 
 /**
  * 남이 보낸 절약 영수증을 보는 화면.
@@ -23,10 +22,6 @@ export default function Receipt() {
     return (
       <div className={styles.page}>
         <div className={styles.inner}>
-          <div className={styles.langRow}>
-            <LanguageToggle />
-          </div>
-
           <h1>{t("broken.title")}</h1>
           <p>
             {t("broken.leadLine1")}
@@ -45,10 +40,6 @@ export default function Receipt() {
   return (
     <div className={styles.page}>
       <div className={styles.inner}>
-        <div className={styles.langRow}>
-          <LanguageToggle />
-        </div>
-
         <span className={styles.stamp}>{t("stamp")}</span>
 
         <h1>

@@ -16,6 +16,7 @@ import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { copyText } from "../../lib/clipboard";
 import useGoBack from "../../hooks/useGoBack";
+import useBottomBar from "../../hooks/useBottomBar";
 import LanguageToggle from "../../components/LanguageToggle";
 import usePrice from "../../lib/usePrice";
 
@@ -44,6 +45,10 @@ export default function Detail() {
   const goBack = useGoBack();
   const navigate = useNavigate();
   const { addItem, count: cartCount } = useCart();
+
+  /* 구매바 높이는 CSS(--bar-h)가 정하므로 페이지 요소는 넘기지 않는다.
+     여기서는 토스트를 바 위로 띄우는 데만 쓴다. */
+  const buybarRef = useBottomBar();
 
   /* 상품 id는 "0110-31871752"(카테고리코드-pexelsId) 형태의 문자열이다.
      URL 파라미터도 문자열이라 변환 없이 그대로 찾는다. */
@@ -297,25 +302,31 @@ export default function Detail() {
 
         <div className={styles.title}>{product.name}</div>
 
-        <LanguageToggle />
+        <div className={styles.headerActions}>
+          
 
-        <button
-          type="button"
-          className={styles.iconBtn}
-          aria-label={t("share")}
-          onClick={share}
-        >
-          <BiShareAlt size={19} aria-hidden="true" />
-        </button>
+          <button
+            type="button"
+            className={styles.iconBtn}
+            aria-label={t("share")}
+            onClick={share}
+          >
+            <BiShareAlt size={19} aria-hidden="true" />
+          </button>
 
-        <Link
-          className={styles.iconBtn}
-          to="/cart"
-          aria-label={t("cartAria", { count: cartCount })}
-        >
-          <BiCart size={20} aria-hidden="true" />
-          {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
-        </Link>
+          <Link
+            className={styles.iconBtn}
+            to="/cart"
+            aria-label={t("cartAria", { count: cartCount })}
+          >
+            <BiCart size={20} aria-hidden="true" />
+            {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
+          </Link>
+
+          <div className={styles.toggleAdjust}>
+            <LanguageToggle />
+          </div>
+        </div>
       </header>
 
       <div className={styles.wrap}>
@@ -518,7 +529,7 @@ export default function Detail() {
               </div>
             </section>
 
-            <div className={styles.buybar}>
+            <div className={styles.buybar} ref={buybarRef}>
 
               <button
                 type="button"

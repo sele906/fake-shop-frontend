@@ -17,15 +17,30 @@ import { Toaster } from "sonner";
 /* 데스크톱 토스트 폭. 모바일에서는 MOBILE_OFFSET이 대신 폭을 정한다. */
 const WIDTH = "356px";
 
-/* 장바구니 · 상세의 하단 고정 바를 가리지 않게 띄워 둔다.
-   left 값은 여백이면서 동시에 모바일 토스트 폭의 기준이기도 하다. */
-const MOBILE_OFFSET = { bottom: "30px", left: "16px", right: "16px" };
+/**
+ * 하단 고정 바를 가리지 않게 토스트를 띄운다.
+ *
+ * --toast-lift는 useBottomBar가 :root에 넣는 바 높이다. 바가 없는 화면이나
+ * 바가 흐름 안으로 들어간 데스크톱에서는 0px이라 평소 여백만 남는다.
+ *
+ * 30px으로 박혀 있던 값은 어느 바보다도 낮아(상세 72px · 장바구니 약 119px ·
+ * 주문서 약 198px) 토스트가 통째로 바 뒤에 가려 있었다.
+ *
+ * 모바일과 데스크톱을 둘 다 적어야 한다. sonner는 --mobile-offset-*을 600px
+ * 이하에서만 쓰는데, 바는 900px까지 고정이라 600~900px 구간이 비기 때문이다.
+ */
+const lift = (gap) => `calc(var(--toast-lift, 0px) + ${gap})`;
+
+/* left 값은 여백이면서 동시에 모바일 토스트 폭의 기준이기도 하다. */
+const MOBILE_OFFSET = { bottom: lift("16px"), left: "16px", right: "16px" };
+const OFFSET = { bottom: lift("24px") };
 
 export default function AppToaster() {
   return (
     <Toaster
       position="bottom-right"
       duration={2000}
+      offset={OFFSET}
       mobileOffset={MOBILE_OFFSET}
       style={{ "--width": WIDTH }}
       toastOptions={{

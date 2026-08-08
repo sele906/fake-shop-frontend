@@ -24,15 +24,19 @@
   color: var(--n-600);
 }
 
+/* gap은 협상 불가라 두 칸이 쓰지 못하는 자리를 먼저 떼어간다. space-between이
+   양끝으로 벌려 주므로 넉넉히 둘 이유가 없고, 좁을 때 상품명 칸만 손해 본다. */
 .receiptRow {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 60px;
+  gap: 16px;
   padding: 10px 16px;
   font-size: 14px;
 }
 
+/* 기본형은 "왼쪽이 고정 라벨, 오른쪽이 가변 값"이다 — 결제수단 · 절제스타일 ·
+   나머지 줄이 이 모양이라, 라벨을 안 줄고 안 접히게 두고 값이 접히게 한다. */
 .receiptRow span:first-child {
   flex: none;
   color: var(--n-700);
@@ -42,6 +46,25 @@
 .receiptRow span:last-child {
   text-align: right;
   text-wrap: pretty;
+}
+
+/* 상품 줄만 전제가 뒤집힌다 — 왼쪽이 상품명(가변), 오른쪽이 "구매 안 함"(고정).
+   뻣뻣한 대접을 오른쪽으로 옮기지 않으면, 안 줄어드는 상품명이 오른쪽을 눌러
+   "NOT / BOUGHT"로 접고 줄마다 오른쪽 끝이 어긋난다. 상품명은 data/products.json에
+   있어 길이를 통제할 수 없다(영어 최장 55자).
+
+   위 규칙과 특정도가 (0,2,1)로 같아서 순서로만 이긴다. 반드시 아래에 둘 것. */
+.itemRow span:first-child {
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  white-space: normal;
+  text-wrap: pretty;
+}
+
+.itemRow span:last-child {
+  flex: none;
+  white-space: nowrap;
 }
 
 .receiptTotal {

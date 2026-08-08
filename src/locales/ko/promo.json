@@ -3,19 +3,19 @@
     "label": "이번 주도 안 살 것들",
     "kicker": "WEEKLY NOT-SHOPPING",
     "title": "이번 주도\n눈으로만 골랐습니다",
-    "description": "사도 그만, 안 사도 그만인 물건을 이번 주의 핑계와 함께 모았습니다."
+    "description": "안 사도 그만인 물건을 이번 주의 핑계와 함께 모았습니다."
   },
   "new": {
     "label": "방금 들어온 척",
     "kicker": "JUST PRETENDING TO BE NEW",
     "title": "처음 본 것처럼\n천천히 둘러보세요",
-    "description": "어디선가 본 듯하지만 방금 들어온듯이 진열된 상품들입니다."
+    "description": "어디선가 본 듯하지만 방금 들어온 척 진열된 상품들입니다."
   },
   "picked": {
     "label": "안삼이 괜히 골라봄",
     "kicker": "ANSAM'S USELESS PICKS",
     "title": "안삼이 괜히\n마음에 담아봤습니다",
-    "description": "꼭 필요하지는 않지만 한 번 더 보고 싶은 것만 주관적으로 골랐습니다."
+    "description": "꼭 필요하지 않은 것만 주관적으로 골랐습니다."
   },
   "jumpToProducts": "괜히 골라보기",
   "tabsAria": "기획전 선택",

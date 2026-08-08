@@ -1,16 +1,16 @@
 {
   "faqs": [
     {
-      "question": "Can I really not buy anything?",
-      "answer": "Correct. You can add items and browse, but no payment or shipping ever happens. Just bring a light heart."
+      "question": "Can I actually buy anything?",
+      "answer": "Nope. Browse, cart, check out—nothing is really charged or shipped."
     },
     {
       "question": "Where are the items in my cart stored?",
       "answer": "Only in the browser you're using right now. If you clear your browser data or switch devices, your cart may look different."
     },
     {
-      "question": "Does pressing the pay button take my money?",
-      "answer": "It isn't connected to any real payment method, so no money moves. You get the feeling of ordering and a convincing receipt."
+      "question": "Will the pay button charge me?",
+      "answer": "No. You get the checkout thrill and a very official-looking receipt."
     },
     {
       "question": "Are the product photos and descriptions real listings?",
@@ -23,45 +23,45 @@
   ],
   "returnSteps": [
     {
-      "title": "Find the item you didn't buy",
-      "description": "Pick something from your cart or a receipt that you'd like to pretend to return."
+      "title": "Pick what you didn't buy",
+      "description": "Choose something you'd like to pretend to return."
     },
     {
       "title": "Recall the purchase",
-      "description": "Slowly confirm that you never actually paid for it."
+      "description": "Remember that it never happened."
     },
     {
-      "title": "Complete the return",
-      "description": "There's nothing to ship back and nothing to refund, so the return completes the moment you confirm."
+      "title": "Return complete",
+      "description": "Nothing to send. Nothing to refund."
     }
   ],
   "hero": {
     "eyebrow": "HELP DESK",
-    "titleLine1": "Answered before you asked,",
-    "titleLine2": "refunded before you bought",
-    "lead": "Everything you might pointlessly wonder about NOBUY STORE, plus how to return something you never bought.",
+    "titleLine1": "Ask less.",
+    "titleLine2": "Return sooner.",
+    "lead": "FAQs, plus returns for things you never bought.",
     "quickLinksAria": "Help shortcuts",
     "faqLink": "FAQ",
     "returnLink": "Returns"
   },
   "faq": {
-    "title": "Questions nobody asked",
-    "lead": "Answers that will roughly solve it before you contact anyone."
+    "title": "Frequently Unasked Questions",
+    "lead": "Answers before you bother anyone."
   },
   "return": {
-    "title": "Return something you never bought",
-    "lead": "Since you didn't buy it, this is faster and simpler than anywhere else.",
-    "noticeTitle": "Before you return",
-    "noticeLead": "NOBUY STORE has no real orders and no real shipping. The steps below exist to complete the feeling of returning something."
+    "title": "Return what you never bought",
+    "lead": "Fast, because the purchase never happened.",
+    "noticeTitle": "Before returning",
+    "noticeLead": "No real order. No real delivery. This is purely for the experience."
   },
   "policy": {
     "periodTerm": "Return window",
-    "periodValue": "Anytime, since you never bought it",
+    "periodValue": "Anytime. You never bought it.",
     "feeTerm": "Return shipping",
-    "feeValue": "₩0, since there's nothing to send",
-    "refundTerm": "Refund amount",
-    "refundValue": "₩0, since nothing was charged",
+    "feeValue": "₩0. Nothing to send.",
+    "refundTerm": "Refund",
+    "refundValue": "₩0. Nothing was charged.",
     "excludedTerm": "Not returnable",
-    "excludedValue": "Anything you actually bought at a real store"
+    "excludedValue": "Anything you actually bought elsewhere"
   }
 }

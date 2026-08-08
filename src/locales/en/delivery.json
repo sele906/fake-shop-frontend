@@ -1,5 +1,6 @@
 {
-  "subtitle": "Delivery tracking, allegedly live",
+  "back": "Back",
+  "headerTitle": "Delivery",
   "intro": {
     "eyebrow": "IMAGINARY TRACKING SERVICE",
     "titleLine1": "Between your expectations",
@@ -19,10 +20,10 @@
   },
   "areas": {
     "cart": "Cart District",
-    "rationalize": "Rationalization Ave",
+    "rationalize": "Excuses Ave",
     "coupon": "57-Coupon Junction",
     "impulse": "Impulse Buy Road",
-    "home": "The House Where Nothing Arrives"
+    "home": "Empty House"
   },
   "steps": {
     "paid": {
@@ -30,7 +31,7 @@
       "message": "Your pretend order has been received."
     },
     "warehouse": {
-      "place": "Storage for Things We Don't Have",
+      "place": "Empty Warehouse",
       "message": "Searching the warehouse for an item that isn't there."
     },
     "packing": {
@@ -42,7 +43,7 @@
       "message": "Taking the long way despite the shorter route."
     },
     "nearby": {
-      "place": "Pretending to Be Near You",
+      "place": "Nearly There",
       "message": "It looks close. It is not."
     },
     "door": {
@@ -83,5 +84,5 @@
     "title": "Delivered to your heart!",
     "lead": "Your item has been left safely at the lobby door of your heart."
   },
-  "sampleOrderNumber": "NOBUY-ITWASHEREAMOMENTAGO"
+  "sampleOrderNumber": "NOBUY-NOTCOMING"
 }

@@ -1,18 +1,18 @@
 {
   "notes": {
-    "0100": "The closet is already full, but the eyes keep wandering back here.",
-    "0200": "Nobody reads the ingredients. The bottle just looks nice.",
-    "0300": "In the cart, we always eat healthy.",
-    "0400": "You lived fine without these until you saw them.",
-    "0500": "The cooking never improves. Only the gadgets multiply.",
-    "0600": "You can't change the floor plan, so you change the cart instead.",
-    "0700": "What you own still works, but it somehow looks slower now.",
-    "0800": "No use whatsoever. Collecting is the whole point.",
-    "0900": "It started as a hobby. It is now a storage problem.",
-    "1000": "Buy the gear first and you're already halfway to a workout.",
-    "1100": "This aisle fills up before anything you'd buy for yourself.",
-    "1200": "\"It's for my niece\" works best in this aisle.",
-    "default": "Feel free to just look around."
+    "0100": "Closet full. Still no outfit.",
+    "0200": "One more serum. For science.",
+    "0300": "Cart calories don't count.",
+    "0400": "For problems you just noticed.",
+    "0500": "Same cooking. Better gadgets.",
+    "0600": "One lamp away from a new life.",
+    "0700": "Still works. Somehow outdated.",
+    "0800": "New notebook. Same unfinished plans.",
+    "0900": "A hobby with storage consequences.",
+    "1000": "Gear first. Exercise later.",
+    "1100": "For them. Your wallet understands.",
+    "1200": "Tiny humans. Giant carts.",
+    "default": "Look. Don't commit."
   },
   "missing": {
     "title": "No such category",

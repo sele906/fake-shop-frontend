@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import styles from "./Delivery.module.css";
 import { findProduct, productImage } from "../../data/products";
 import { clearOrder, readOrder } from "../../order/orderStorage";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
+import useGoBack from "../../hooks/useGoBack";
 import LanguageToggle from "../../components/LanguageToggle";
 import usePrice from "../../lib/usePrice";
+
+import { BiChevronLeft } from "react-icons/bi";
 
 /* 지점 이름과 안내 문구는 delivery.json의 steps가 들고, 여기엔 좌표만 남긴다. */
 const DELIVERY_STEPS = [
@@ -83,8 +85,9 @@ const SAMPLE_ORDER = {
 const DELIVERY_SECONDS = 25;
 
 export default function Delivery() {
-  const { t } = useTranslation(["delivery", "common"]);
+  const { t } = useTranslation("delivery");
   const price = usePrice();
+  const goBack = useGoBack();
   const [elapsed, setElapsed] = useState(0);
 
   /* 주문서(Checkout)가 localStorage에 남긴 주문. 첫 렌더에 한 번만 읽는다.
@@ -149,14 +152,18 @@ export default function Delivery() {
   return (
     <div className={styles.page}>
       <header className={styles.pageHeader}>
-        <Link className={styles.brand} to="/">
-          {t("common:brand.name")} <span>{t("common:brand.suffix")}</span>
-        </Link>
-        <div className={styles.headerRight}>
-          <p>{t("subtitle")}</p>
+        <button
+          type="button"
+          className={styles.iconBtn}
+          aria-label={t("back")}
+          onClick={goBack}
+        >
+          <BiChevronLeft size={22} aria-hidden="true" />
+        </button>
 
-          <LanguageToggle />
-        </div>
+        <h1 className={styles.headerTitle}>{t("headerTitle")}</h1>
+
+        <LanguageToggle />
       </header>
 
       <main className={styles.main}>

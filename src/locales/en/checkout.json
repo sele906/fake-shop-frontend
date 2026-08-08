@@ -126,11 +126,11 @@
   "done": {
     "aria": "Order complete",
     "stamp": "NOBUY COMPLETE",
-    "titleLine1": "Congratulations,",
-    "titleLine2": "you bought nothing",
-    "leadLine1": "Cart cleared. Balance untouched.",
-    "leadLine2": "You kept the button-click thrill.",
-    "again": "Go not-buy more",
+    "titleLine1": "Congrats.",
+    "titleLine2": "Nothing purchased.",
+    "leadLine1": "Cart emptied. Wallet survived.",
+    "leadLine2": "Checkout complete. Reality skipped.",
+    "again": "Browse some more",
     "delivery": "Track your delivery"
   },
   "empty": {

@@ -10,37 +10,40 @@
   z-index: 30;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 12px;
   height: 68px;
   padding: 0 32px;
   border-bottom: 2px solid var(--text);
   background: var(--bg);
 }
 
-.brand {
+/* Detail · Cart와 같은 하위 페이지 헤더 구조 — [←] [제목] [오른쪽 묶음].
+   화살표의 aria-label은 동작 이름("뒤로")이고, 페이지가 어디인지는 제목이 맡는다. */
+.iconBtn {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.iconBtn:hover {
+  color: var(--accent-700);
+}
+
+.headerTitle {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
   color: var(--text);
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
-.brand span {
-  color: var(--accent);
-}
-
-/* 헤더는 space-between이라 오른쪽 항목들을 하나로 묶어 준다. */
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.pageHeader p {
-  margin: 0;
-  color: var(--n-600);
-  font-size: 12px;
-}
 
 .main {
   width: 100%;
@@ -815,12 +818,8 @@
     padding: 0 16px;
   }
 
-  .brand {
+  .headerTitle {
     font-size: 17px;
-  }
-
-  .pageHeader p {
-    font-size: 10px;
   }
 
   .main {

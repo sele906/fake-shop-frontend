@@ -9,17 +9,17 @@
   },
   "footer": {
     "hireTitle": "The developer who built this",
-    "hireLead": "A backend developer who built the whole thing, from planning to deploy.",
-    "hireCta": "See the résumé and projects →",
-    "storeLead1": "We carefully collected the urge to buy.",
-    "storeLead2": "No checkout, and the lingering regret is free.",
-    "helpTitle": "Support",
-    "helpFaq": "Questions nobody asked",
-    "helpReturn": "Return something you never bought",
+    "hireLead": "Built from idea to deploy.",
+    "hireCta": "Résumé & projects →",
+    "storeLead1": "All the browsing.",
+    "storeLead2": "None of the buying.",
+    "helpTitle": "Help",
+    "helpFaq": "Unasked questions",
+    "helpReturn": "Return nothing",
     "companyTitle": "Company",
-    "companyAbout": "A fairly convincing About page",
-    "companyPartner": "Send a partnership inquiry into the void",
-    "companyCareers": "Browse the job listings",
+    "companyAbout": "About-ish",
+    "companyPartner": "Partner with nobody",
+    "companyCareers": "Jobs",
     "imageCredit": "Product photos:"
   },
   "sidebar": {
@@ -28,9 +28,9 @@
     "all": "All",
     "promoTitle": "Collections",
     "promo": {
-      "weekly": "Not buying these this week either",
-      "new": "Pretending to be new",
-      "picked": "NOBUY picked these for no reason"
+      "weekly": "Still not buying",
+      "new": "New-ish",
+      "picked": "Picked for no reason"
     },
     "login": "Pretend to log in"
   }

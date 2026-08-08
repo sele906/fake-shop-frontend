@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Trans, useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
+import useBottomBar from "../../hooks/useBottomBar";
 import LanguageToggle from "../../components/LanguageToggle";
 import usePrice from "../../lib/usePrice";
 
@@ -52,6 +53,11 @@ export default function Cart() {
   } = useCart();
 
   const [coupon, setCoupon] = useState("");
+
+  /* 박아둔 96px이 실제(약 119px)보다 모자라 목록 맨 아래 출처 문구가 바에
+     가려져 있었다. 바 높이를 재서 --bar-h와 토스트 띄우기에 함께 쓴다. */
+  const pageRef = useRef(null);
+  const barRef = useBottomBar(pageRef);
 
   /* 쿠폰 보관함(/coupon)에서 받아 localStorage에 쌓아둔 쿠폰들. */
   const [ownedCoupons, , removeCoupons] = useSavedCoupons();
@@ -200,7 +206,7 @@ export default function Cart() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={pageRef}>
       <header className={styles.header}>
         <button
           type="button"
@@ -215,11 +221,11 @@ export default function Cart() {
           {t("title")} <em>{items.length}</em>
         </h1>
 
-        <LanguageToggle />
-
         <Link className={styles.home} to="/">
           {t("keepShopping")}
         </Link>
+
+        <LanguageToggle />
       </header>
 
       <div className={`${styles.wrap} ${styles.cols}`}>
@@ -593,7 +599,7 @@ export default function Cart() {
                 </p>
               </section>
 
-              <div className={styles.checkout}>
+              <div className={styles.checkout} ref={barRef}>
                 <div className={styles.checkoutRow}>
                   <span>
                     {t("checkout.selectedCount", { count: selected.length })}

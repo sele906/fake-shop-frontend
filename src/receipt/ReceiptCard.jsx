@@ -27,7 +27,10 @@ export default function ReceiptCard({ receipt }) {
         </div>
 
         {items.map(({ name, qty }, index) => (
-          <div className={styles.receiptRow} key={`${name}-${index}`}>
+          <div
+            className={`${styles.receiptRow} ${styles.itemRow}`}
+            key={`${name}-${index}`}
+          >
             <span>
               {name}
               {qty > 1 ? ` ×${qty}` : ""}

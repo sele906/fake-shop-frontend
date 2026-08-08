@@ -142,11 +142,11 @@ export default function Login() {
         </Link>
 
         <div className={styles.headerRight}>
-          <LanguageToggle />
-
           <Link className={styles.help} to="/help">
             {t("help")}
           </Link>
+
+          <LanguageToggle />
         </div>
       </header>
 

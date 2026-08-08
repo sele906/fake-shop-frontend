@@ -35,37 +35,6 @@
   color: var(--accent);
 }
 
-.search {
-  flex: 1;
-  max-width: 520px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  padding: 0 14px;
-  border: 2px solid var(--text);
-  background: #fff;
-}
-
-/* 아이콘이 입력창에 밀려 찌그러지지 않게 고정한다. */
-.search svg {
-  flex: none;
-  color: var(--n-600);
-}
-
-.search input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  outline: 0;
-  font-size: 14px;
-  background: none;
-}
-
-.search input::placeholder {
-  color: var(--n-600);
-}
-
 .utils {
   display: flex;
   align-items: center;
@@ -466,7 +435,6 @@
     font-size: 17px;
   }
 
-  .search,
   .utils {
     display: none;
   }

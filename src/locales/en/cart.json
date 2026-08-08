@@ -4,37 +4,37 @@
   "keepShopping": "Keep browsing",
   "toast": {
     "removed": "Item removed",
-    "allCouponsApplied_one": "Applied all {{count}} coupon. Nobody is stopping you.",
-    "allCouponsApplied_other": "Applied all {{count}} coupons. Nobody is stopping you.",
-    "noCodeLine1": "No valid coupon code.",
-    "noCodeLine2": "You saw that coming, though.",
+    "allCouponsApplied_one": "All {{count}} coupon applied. No one's stopping you.",
+    "allCouponsApplied_other": "All {{count}} coupons applied. No one's stopping you.",
+    "noCodeLine1": "No coupon code found.",
+    "noCodeLine2": "Shocking, we know.",
     "badCodeLine1": "That coupon doesn't exist.",
-    "badCodeLine2": "But you typed it very convincingly.",
+    "badCodeLine2": "Nice typing, though.",
     "couponsUsed_one": "Used {{count}} coupon. It's gone from your wallet.",
     "couponsUsed_other": "Used {{count}} coupons. They're gone from your wallet.",
-    "noneSelected": "Nothing is selected",
+    "noneSelected": "Nothing selected",
     "removedSelected_one": "Removed {{count}} item",
     "removedSelected_other": "Removed {{count}} items",
-    "restockRequested": "We pretended to sign you up for a restock alert"
+    "restockRequested": "Restock alert requested. Though it will be meaningless."
   },
   "empty": {
     "title": "Your cart is empty",
-    "lead": "Nothing in here yet. Start with this week's deals.",
+    "lead": "Nothing here yet. Go find something not to buy.",
     "cta": "Keep browsing"
   },
   "ship": {
     "aria": "Free shipping progress",
-    "remaining": "Add <b>{{amount}}</b> more to reach <b>free shipping</b>",
-    "met": "You've unlocked <b>free shipping</b>"
+    "remaining": "Add <b>{{amount}}</b> for <b>free shipping</b>",
+    "met": "<b>Free shipping</b> unlocked"
   },
   "selbar": {
-    "selectAll": "Select all ({{selected}}/{{total}})",
+    "selectAll": "All ({{selected}}/{{total}})",
     "removeSelected": "Remove selected"
   },
   "group": {
-    "directAria": "Shipped by NOBUY",
-    "directHead": "Shipped by NOBUY",
-    "directNote": "· Free shipping",
+    "directAria": "NOBUY shipping",
+    "directHead": "NOBUY shipping",
+    "directNote": "· Free",
     "soldOutAria": "Unavailable items",
     "soldOutHead": "Unavailable",
     "soldOutNote": "· Restock alerts available"
@@ -44,36 +44,36 @@
     "removeAria": "Remove {{name}}",
     "qtyDown": "Decrease quantity",
     "qtyUp": "Increase quantity",
-    "cannotSelect": "Cannot select",
+    "cannotSelect": "Unavailable",
     "soldOut": "Sold out",
     "restock": "Restock alert"
   },
   "coupon": {
-    "title": "Coupon discount",
+    "title": "Coupons",
     "selectedCount_one": "{{count}} selected",
     "selectedCount_other": "{{count}} selected",
-    "empty": "You don't have any coupons. Grab some from the <walletLink>coupon wallet</walletLink>. Stack as many as you like.",
+    "empty": "No coupons yet. Grab some from the <walletLink>coupon wallet</walletLink>. Stack away.",
     "deselectAll": "Deselect all",
     "selectAll_one": "Select all {{count}}",
     "selectAll_other": "Select all {{count}}",
     "codeFormAria": "Apply coupon code",
-    "codePlaceholder": "Enter a suspicious coupon code",
+    "codePlaceholder": "Enter a suspicious code",
     "codeAria": "Coupon code",
     "apply": "Apply"
   },
   "sum": {
     "aria": "Order total",
-    "title": "Order total",
+    "title": "Total",
     "itemTotal": "Subtotal",
-    "itemDiscount": "Product discount",
-    "couponDiscount_one": "Coupon discount ({{count}})",
-    "couponDiscount_other": "Coupon discount ({{count}})",
+    "itemDiscount": "Discount",
+    "couponDiscount_one": "Coupons ({{count}})",
+    "couponDiscount_other": "Coupons ({{count}})",
     "shipping": "Shipping",
     "free": "Free",
     "zero": "₩0",
-    "grandTotal": "Total",
-    "wasted": "You still have <b>{{amount}}</b> of coupon left, but zero is the floor. The rest just spills over.",
-    "points": "Membership points pending: <b>{{points}}P</b> · Enjoy the feeling of checking out, safely."
+    "grandTotal": "To pay",
+    "wasted": "<b>{{amount}}</b> in coupons left. Zero refuses to go lower.",
+    "points": "Earn <b>{{points}}P</b> · Enjoy checkout without the consequences."
   },
   "checkout": {
     "selectedCount_one": "{{count}} selected",
@@ -82,8 +82,8 @@
     "selectFirst": "Please select an item"
   },
   "rec": {
-    "aria": "Frequently added together",
-    "title": "Goes well in the cart with"
+    "aria": "More items for your cart",
+    "title": "More things not to buy"
   },
-  "imageCredit": "Product photos:"
+  "imageCredit": "Photos:"
 }
