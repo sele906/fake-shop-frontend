@@ -126,7 +126,22 @@ const syncHtmlLang = () => {
   document.documentElement.lang = i18n.resolvedLanguage ?? "ko";
 };
 
-syncHtmlLang();
-i18n.on("languageChanged", syncHtmlLang);
+/**
+ * 문서 제목도 지금 언어로 맞춘다.
+ *
+ * public/index.html의 <title>은 한국어로 박혀 있는 고정값이라, 이게 없으면
+ * 영어로 보는 동안에도 탭 이름과 북마크·공유 미리보기가 한국어로 남는다.
+ */
+const syncDocumentTitle = () => {
+  document.title = i18n.t("common:documentTitle");
+};
+
+const syncDocument = () => {
+  syncHtmlLang();
+  syncDocumentTitle();
+};
+
+syncDocument();
+i18n.on("languageChanged", syncDocument);
 
 export default i18n;

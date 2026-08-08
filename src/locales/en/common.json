@@ -4,6 +4,7 @@
     "suffix": "STORE",
     "full": "NOBUY STORE"
   },
+  "documentTitle": "NOBUY - A Store Where You Can't Buy Anything",
   "loading": "Loading the things you won't buy.",
   "loadFailed": {
     "title": "Couldn't load the products",
