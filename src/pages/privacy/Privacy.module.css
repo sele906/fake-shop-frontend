@@ -27,7 +27,6 @@
 }
 
 .hero > p {
-  max-width: 62ch;
   margin: 20px 0 0;
   color: var(--accent-100);
   font-size: 14px;
@@ -58,7 +57,6 @@
 }
 
 .summary p {
-  max-width: 72ch;
   margin: 0;
   color: var(--n-700);
   font-size: 14px;
@@ -108,7 +106,6 @@
 }
 
 .body > p {
-  max-width: 72ch;
   margin: 0;
   color: var(--n-700);
   font-size: 14px;
