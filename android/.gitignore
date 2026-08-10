@@ -40,6 +40,10 @@ captures/
 
 # IntelliJ
 *.iml
+# .idea는 통째로 뺀다. 아래 목록은 예전 Android Studio 기준이라
+# deploymentTargetSelector.xml · deviceManager.xml처럼 나중에 생긴
+# 파일이 걸러지지 않고, 고른 에뮬레이터와 로컬 경로가 커밋에 실렸다.
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
