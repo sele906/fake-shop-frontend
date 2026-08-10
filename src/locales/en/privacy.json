@@ -9,7 +9,7 @@
 
   "summary": {
     "title": "In short",
-    "body": "The developer does not directly collect or store personal information such as your name, contact details, address, or payment method, and uses no advertising or analytics tools. Product photos are loaded from Pexels, and your IP address and connection details may be passed to Pexels in the process."
+    "body": "The developer does not directly collect or store personal information such as your name, contact details, address, or payment method. The app does connect to Pexels to load product images, and may connect to Google Fonts to load web fonts. Your IP address and connection details may be passed to those services in the process. The developer uses no advertising or behavioural analytics tools."
   },
 
   "stored": {
@@ -65,18 +65,19 @@
   },
 
   "network": {
-    "title": "One connection leaves the app",
+    "title": "Two connections leave the app",
     "paragraphs": [
-      "Product photos are not bundled into the app; they are fetched from Pexels (images.pexels.com) as you browse. As with any app that loads images over the internet, your device's IP address and connection details may be passed to the Pexels servers in the process. The developer sends nothing alongside them and keeps nothing that comes back.",
-      "How Pexels handles what reaches it is governed by that company's own privacy policy.",
-      "Apart from that one connection, the app reaches nowhere. No ad network, no analytics, no tracking."
+      "Product images are not bundled into the app; they are fetched from Pexels (images.pexels.com) as you browse. As with any app that loads images over the internet, your device's IP address and connection details may be passed to Pexels in the process.",
+      "The web font on screen (Noto Sans KR) is not bundled either; it comes from Google Fonts (fonts.googleapis.com and fonts.gstatic.com). Your IP address and connection details may likewise be passed to Google in the process.",
+      "In both cases the developer sends nothing alongside them and keeps nothing that comes back. How each service handles what reaches it is governed by that company's own privacy policy.",
+      "Apart from those two, the app reaches nowhere. The developer uses no ad network, no behavioural analytics, and no tracking tools."
     ]
   },
 
   "permission": {
     "title": "Permissions",
     "paragraphs": [
-      "The app asks for one permission, internet access, and it is there to fetch the product photos described above.",
+      "The app asks for one permission, internet access, and it is there to fetch the product images and web font described above.",
       "It does not touch your location, contacts, camera, microphone, photo library, or phone number."
     ]
   },
