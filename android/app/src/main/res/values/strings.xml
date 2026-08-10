@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">안삼</string>
+    <string name="title_activity_main">안삼</string>
+    <string name="package_name">com.ansam.app</string>
+    <string name="custom_url_scheme">com.ansam.app</string>
+</resources>

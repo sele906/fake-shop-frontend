@@ -29,6 +29,8 @@ export default function Footer() {
         <strong><Link to="/help">{t("footer.helpTitle")}</Link></strong>
         <Link to="/help/faq">{t("footer.helpFaq")}</Link>
         <Link to="/help/return">{t("footer.helpReturn")}</Link>
+        {/* 스토어에 걸어 둘 주소라 여기만 농담 없이 이름 그대로 적는다. */}
+        <Link to="/privacy">{t("footer.helpPrivacy")}</Link>
       </nav>
 
       <nav>

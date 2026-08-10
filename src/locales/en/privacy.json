@@ -1,0 +1,102 @@
+{
+  "hero": {
+    "eyebrow": "Privacy policy",
+    "titleLine1": "Nothing sold.",
+    "titleLine2": "Nothing kept.",
+    "lead": "Ansam is a fake shop that sells nothing. It does not collect or store your name, contact details, address, or payment information on any server. What you type into the login and checkout screens is never sent to an external server.",
+    "updated": "Effective 10 August 2026"
+  },
+
+  "summary": {
+    "title": "In short",
+    "body": "The developer does not directly collect or store personal information such as your name, contact details, address, or payment method, and uses no advertising or analytics tools. Product photos are loaded from Pexels, and your IP address and connection details may be passed to Pexels in the process."
+  },
+
+  "stored": {
+    "title": "Stays on your device",
+    "lead": "The items below are written only to storage on your device while you use the app. Nothing is sent to anyone, the developer included, and nothing syncs to another device.",
+    "items": [
+      {
+        "term": "Cart",
+        "detail": "The items you added and how many."
+      },
+      {
+        "term": "Coupons",
+        "detail": "Coupons you claimed and whether they were used."
+      },
+      {
+        "term": "Hidden coupons",
+        "detail": "Whether you have found a hidden coupon before."
+      },
+      {
+        "term": "Last order",
+        "detail": "The items, total, and payment name from your pretend order."
+      },
+      {
+        "term": "Login trace",
+        "detail": "A nickname to greet you with, and when you pretended to sign in."
+      },
+      {
+        "term": "Language",
+        "detail": "Whether you read this in Korean or English."
+      }
+    ],
+    "noticeTitle": "Device backup",
+    "noticeBody": "If Android auto backup is on, these values may be included in the backup held in your own Google account. That is an Android feature, and the developer cannot open that backup."
+  },
+
+  "fake": {
+    "title": "The login and checkout are pretend",
+    "paragraphs": [
+      "The login screen has email and password fields, but no real account is created. What you type is not sent anywhere and is not saved. If you enter an email, only the part before the @ is used to build a nickname for the greeting, and that nickname is the only thing left on the device. The password is kept nowhere.",
+      "The social buttons work the same way. They connect to no outside account, and nothing goes to those companies.",
+      "Checkout is not wired to any real payment method, so no money moves. There is no field that asks for a card or account number. You do not type a delivery address either — you pick from prepared examples, so a real address or phone number never enters the app.",
+      "The map and route on the delivery screen are drawings. No location data is used."
+    ]
+  },
+
+  "receipt": {
+    "title": "Shared receipt links",
+    "paragraphs": [
+      "A receipt becomes a link only when you press share. With no server involved, the contents ride inside the address itself and are stored nowhere else.",
+      "So anyone holding the link can read that receipt. It carries only pretend order details — item names, quantities, amounts, and the payment name — but who receives the link is your call.",
+      "The clipboard is written to only when you copy a link. It is never read."
+    ]
+  },
+
+  "network": {
+    "title": "One connection leaves the app",
+    "paragraphs": [
+      "Product photos are not bundled into the app; they are fetched from Pexels (images.pexels.com) as you browse. As with any app that loads images over the internet, your device's IP address and connection details may be passed to the Pexels servers in the process. The developer sends nothing alongside them and keeps nothing that comes back.",
+      "How Pexels handles what reaches it is governed by that company's own privacy policy.",
+      "Apart from that one connection, the app reaches nowhere. No ad network, no analytics, no tracking."
+    ]
+  },
+
+  "permission": {
+    "title": "Permissions",
+    "paragraphs": [
+      "The app asks for one permission, internet access, and it is there to fetch the product photos described above.",
+      "It does not touch your location, contacts, camera, microphone, photo library, or phone number."
+    ]
+  },
+
+  "erase": {
+    "title": "Clearing it",
+    "paragraphs": [
+      "Settings → Apps → Ansam → Storage → Clear data removes everything stored on the device.",
+      "Uninstalling the app deletes its data too. If Android auto backup is on, some data may be restored from that backup.",
+      "No copy sits on a developer server, so there is nothing to file a deletion request for."
+    ]
+  },
+
+  "foot": {
+    "childrenTitle": "Children",
+    "childrenBody": "This app is not directed at children under 14, and it never asks for or collects an age.",
+    "changeTitle": "If this changes",
+    "changeBody": "When the policy changes, this screen is updated with the app and the effective date above is moved forward.",
+    "contactTitle": "Contact",
+    "contactBody": "Send questions about this privacy policy to the address below.",
+    "contactEmail": "sele906@gmail.com"
+  }
+}
