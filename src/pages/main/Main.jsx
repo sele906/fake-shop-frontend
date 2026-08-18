@@ -32,7 +32,11 @@ export default function Main() {
           {t("hero.titleLine2")}
         </h1>
 
-        <p>{t("hero.lead")}</p>
+        <p>
+          {t("hero.lead1")}
+          <br />
+          {t("hero.lead2")}
+        </p>
 
         <div className={styles.heroCta}>
           <Link className={styles.btn} to="/promo/weekly">

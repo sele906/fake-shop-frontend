@@ -1,10 +1,11 @@
 {
   "hero": {
-    "kicker": "여긴 안 사는 쇼핑몰입니다",
-    "titleLine1": "마음껏 담고",
-    "titleLine2": "끝까지 구경하세요",
-    "lead": "하지만 실제 결제도, 실제 배송도 없습니다.",
-    "ctaPrimary": "일단 담으러 가기",
+    "kicker": "지르고 싶은 날을 위한 가짜 쇼핑몰",
+    "titleLine1": "사고 싶을 땐,",
+    "titleLine2": "일단 안삼",
+    "lead1": "쇼핑 충동이 지나갈 때까지 구경하세요.",
+    "lead2": "고르고, 담고, 결제해도 돈은 안 나갑니다.",
+    "ctaPrimary": "담으러 가기",
     "ctaSecondary": "쿠폰 있는 것처럼 굴기"
   },
   "toolbar": {

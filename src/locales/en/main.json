@@ -1,9 +1,10 @@
 {
   "hero": {
-    "kicker": "A STORE WHERE NOBODY BUYS",
-    "titleLine1": "Fill your cart,",
-    "titleLine2": "Buy nothing", 
-    "lead": "No checkout. No delivery. Just browsing.",
+    "kicker": "A FAKE SHOP FOR REAL URGES",
+    "titleLine1": "Spend the urge,",
+    "titleLine2": "not the money.",
+    "lead1": "Shop until the impulse passes.",
+    "lead2": "Browse, add, and check out — nothing is ever charged.",
     "ctaPrimary": "Add to cart anyway",
     "ctaSecondary": "Use a fake coupon"
   },
