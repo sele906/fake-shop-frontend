@@ -106,7 +106,7 @@
   flex: 1;
   min-height: 46px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--n-700);
 }
 
@@ -293,7 +293,7 @@
   border: 2px solid var(--text);
   background: #fff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   color: inherit;
 }
 

@@ -190,7 +190,7 @@
   background: var(--accent-100);
   color: var(--accent-700);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   padding: 4px 8px;
 }
 
@@ -283,7 +283,7 @@
 }
 
 .row dd b {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* ── Options ──────────────────────────── */
@@ -595,7 +595,7 @@
   margin-top: 16px;
   border: 2px solid var(--text);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .revMore:hover {
@@ -732,7 +732,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 16px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
   background: var(--accent);
   color: #fff;
@@ -782,7 +782,7 @@
   padding: 0 24px;
   background: var(--accent);
   color: #fff;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
 }
 

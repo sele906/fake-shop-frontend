@@ -50,7 +50,7 @@
   border: 2px solid #fff;
   color: #fff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .quickLinks a:first-child {
@@ -354,7 +354,7 @@
   background: var(--accent);
   color: #fff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .formAction button:hover {

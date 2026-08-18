@@ -121,7 +121,7 @@
 
 .list li[aria-selected="true"] {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .list li svg {

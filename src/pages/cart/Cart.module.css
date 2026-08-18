@@ -206,7 +206,7 @@
   gap: 8px;
   padding: 14px 16px 0;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .groupHead span {
@@ -354,7 +354,7 @@
   width: max-content;
   padding: 3px 7px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   background: var(--accent-100);
   color: var(--accent-700);
 }
@@ -400,7 +400,7 @@
 
 .couponEmpty a {
   color: var(--accent);
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: underline;
 }
 
@@ -410,7 +410,7 @@
   padding: 12px;
   border-bottom: 1px solid var(--n-300);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .selectAll:hover {
@@ -488,7 +488,7 @@
 .couponCode button {
   padding: 0 18px;
   border-left: 1px solid var(--text);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
   white-space: nowrap;
 }
@@ -535,7 +535,7 @@
 
 .sumRow.grand span:first-child {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
 }
 
@@ -553,7 +553,7 @@
 }
 
 .note b {
-  font-weight: 700;
+  font-weight: 800;
   color: var(--n-800);
 }
 
@@ -668,7 +668,7 @@
   padding: 0 16px;
   background: var(--accent);
   color: #fff;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
 }
 

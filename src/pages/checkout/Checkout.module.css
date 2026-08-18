@@ -190,7 +190,7 @@
 }
 
 .addr b {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .addr span {
@@ -204,7 +204,7 @@
   min-height: 44px;
   padding: 9px 12px;
   border: 2px solid var(--text);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 13px;
   white-space: nowrap;
 }
@@ -232,7 +232,7 @@
 }
 
 .pay b {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
 }
 
@@ -465,7 +465,7 @@
 
 .row.grand span:first-child {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
 }
 

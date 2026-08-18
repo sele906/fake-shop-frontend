@@ -136,7 +136,7 @@
   border: 2px solid #fff;
   color: #fff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .heroActions button:first-child {
@@ -178,7 +178,7 @@
 .tabs button[aria-pressed="true"] {
   background: var(--text);
   color: #fff;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* ── Shared heading ───────────────────── */
@@ -202,7 +202,7 @@
   margin-bottom: 7px;
   color: var(--accent-700);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.12em;
 }
 
@@ -334,7 +334,7 @@
   background: var(--text);
   color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .couponCard > button:hover:not(:disabled) {
@@ -397,7 +397,7 @@
 .achievementGrid article > span {
   color: var(--accent-400);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.1em;
 }
 
@@ -513,7 +513,7 @@
   background: var(--accent);
   color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .walletActions button:hover {
@@ -542,7 +542,7 @@
   padding: 13px 16px;
   color: var(--n-700);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
 
