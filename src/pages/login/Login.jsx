@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -16,11 +16,6 @@ const MODES = {
   code: { autoComplete: "one-time-code" },
 };
 
-/* login.json의 modes.*.submits · nudges 길이와 맞춰 둔다.
-   누를수록 문턱이 낮아져 세 번째에는 통과시킨다. */
-const SUBMIT_COUNT = 3;
-const NUDGE_COUNT = 2;
-
 /* 아이콘 글자는 로고에서 따온 것이라 언어를 타지 않는다. */
 const SOCIALS = [
   { id: "kakao", mark: "K" },
@@ -31,7 +26,6 @@ const SOCIALS = [
 
 const FOOT_LINK_IDS = ["copyright", "terms", "privacy", "why", "cs"];
 
-const ENTER_MS = 1400;
 const USER_KEY = "ansam.user.v1";
 
 export default function Login() {
@@ -43,25 +37,13 @@ export default function Login() {
   const [secret, setSecret] = useState("");
   const [isPeeking, setIsPeeking] = useState(false);
   const [keepSignedIn, setKeepSignedIn] = useState(true);
-  const [isEmailBad, setIsEmailBad] = useState(false);
-  const [isSecretBad, setIsSecretBad] = useState(false);
-  const [tries, setTries] = useState(0);
-  const [isEntering, setIsEntering] = useState(false);
-  const [isWobbling, setIsWobbling] = useState(false);
   const { unlock } = useHiddenCoupon();
 
-  const enterTimer = useRef(null);
-
   const current = MODES[mode];
-  const submitLabel = isEntering
-    ? t("entering")
-    : t(`modes.${mode}.submits.${Math.min(tries, SUBMIT_COUNT - 1)}`);
-
-  useEffect(() => () => clearTimeout(enterTimer.current), []);
+  const submitLabel = t(`modes.${mode}.submit`);
 
   function changeMode(next) {
     setMode(next);
-    setIsSecretBad(false);
     setIsPeeking(false);
   }
 
@@ -83,40 +65,23 @@ export default function Login() {
       console.error("로그인 흔적을 남기지 못했습니다.", error);
     }
 
-    setIsEntering(true);
     toast(message);
-
-    enterTimer.current = setTimeout(() => navigate("/"), ENTER_MS);
+    navigate("/");
   }
 
   function submit(event) {
     event.preventDefault();
-    if (isEntering) return;
 
-    const id = email.trim();
-    const password = secret.trim();
+    /* 빈칸도 그대로 통과시킨다. 부를 이름이 없을 때만 인사를 갈아 끼운다. */
+    const name = email.trim().split("@")[0];
 
-    /* 아무 값이나 받지만, 완전 빈칸은 한 번 붙잡는다. */
-    if (!id || !password) {
-      setIsEmailBad(!id);
-      setIsSecretBad(!password);
-      setIsWobbling(true);
-      toast(t("toast.emptyFields"));
+    if (!name) {
+      const nickname = t("nickname", { name: t("anonymous") });
+      enter(nickname, "self", t("toast.welcomeAnon"));
       return;
     }
 
-    const attempt = tries + 1;
-    setTries(attempt);
-
-    if (attempt <= NUDGE_COUNT) {
-      setIsWobbling(true);
-      toast(t(`modes.${mode}.nudges.${attempt - 1}`));
-      return;
-    }
-
-    const nickname = t("nickname", {
-      name: id.split("@")[0] || t("anonymous"),
-    });
+    const nickname = t("nickname", { name });
     enter(nickname, "self", t("toast.welcome", { nickname }));
   }
 
@@ -129,8 +94,6 @@ export default function Login() {
 
   /* 소셜 버튼은 눌리기만 한다. 로그인 흔적도 남기지 않고 어디로 넘어가지도 않는다. */
   function pretendSocial(socialId) {
-    if (isEntering) return;
-
     toast(t(`socials.${socialId}.message`));
   }
 
@@ -192,7 +155,7 @@ export default function Login() {
             </div>
 
             <form className={styles.form} onSubmit={submit} noValidate>
-              <div className={`${styles.field} ${isEmailBad ? styles.bad : ""}`}>
+              <div className={styles.field}>
                 <label htmlFor="email">{t("idLabel")}</label>
 
                 <div className={styles.control}>
@@ -203,20 +166,12 @@ export default function Login() {
                     value={email}
                     placeholder={t("idPlaceholder")}
                     autoComplete="email"
-                    aria-invalid={isEmailBad || undefined}
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                      setIsEmailBad(false);
-                    }}
+                    onChange={(event) => setEmail(event.target.value)}
                   />
                 </div>
-
-                <span className={styles.err}>{t("idError")}</span>
               </div>
 
-              <div
-                className={`${styles.field} ${isSecretBad ? styles.bad : ""}`}
-              >
+              <div className={styles.field}>
                 <label htmlFor="secret">{t(`modes.${mode}.label`)}</label>
 
                 <div className={styles.control}>
@@ -229,11 +184,7 @@ export default function Login() {
                     value={secret}
                     placeholder={t(`modes.${mode}.placeholder`)}
                     autoComplete={current.autoComplete}
-                    aria-invalid={isSecretBad || undefined}
-                    onChange={(event) => {
-                      setSecret(event.target.value);
-                      setIsSecretBad(false);
-                    }}
+                    onChange={(event) => setSecret(event.target.value)}
                   />
 
                   {mode === "pw" && (
@@ -253,7 +204,6 @@ export default function Login() {
                   )}
                 </div>
 
-                <span className={styles.err}>{t(`modes.${mode}.error`)}</span>
               </div>
 
               <div className={styles.row}>
@@ -269,8 +219,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className={`${styles.btn} ${isWobbling ? styles.wob : ""}`}
-                onAnimationEnd={() => setIsWobbling(false)}
+                className={styles.btn}
               >
                 {submitLabel}
               </button>

@@ -4,33 +4,15 @@
       "tab": "Fake password",
       "label": "Password",
       "placeholder": "Anything works",
-      "error": "Anything works. Blank doesn't.",
       "forgot": "Forgot your password?",
-      "submits": [
-        "Pretend to sign in",
-        "Sign in anyway",
-        "Just let me in"
-      ],
-      "nudges": [
-        "Too serious. Try less.",
-        "Wrong password. We forgive you."
-      ]
+      "submit": "Pretend to sign in"
     },
     "code": {
       "tab": "Fake code",
       "label": "Code",
       "placeholder": "Any 6 digits",
-      "error": "Six digits. Accuracy optional.",
       "forgot": "No code?",
-      "submits": [
-        "Pretend to verify",
-        "Verify anyway",
-        "Just let me in"
-      ],
-      "nudges": [
-        "Suspiciously accurate. Try less.",
-        "Wrong code. We forgive you."
-      ]
+      "submit": "Pretend to verify"
     }
   },
   "socials": {
@@ -87,17 +69,15 @@
   "tablistAria": "Sign-in method",
   "idLabel": "ID",
   "idPlaceholder": "Type anything",
-  "idError": "Any ID works. Blank doesn't.",
   "hideSecret": "Hide password",
   "showSecret": "Show password",
   "keepSignedIn": "Let this browser remember me",
-  "entering": "Letting you in…",
   "forgotId": "Forgot your ID?",
   "toast": {
-    "emptyFields": "Anything works. Nothing doesn't.",
     "forgotId": "We don't know either. Make one up.",
     "forgotSecret": "Type anything. You're in.",
-    "welcome": "{{nickname}}, back to not buying.",
+    "welcome": "Fake login complete. Go wild, {{nickname}} — none of it is real.",
+    "welcomeAnon": "Fake login complete. Shop for fake, save for real.",
     "join": "Just pretend you're new here."
   },
   "anonymous": "Anonymous",

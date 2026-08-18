@@ -187,22 +187,6 @@
   color: var(--text);
 }
 
-/* 오류는 붙잡을 때만 보인다. */
-.err {
-  display: none;
-  font-size: 12px;
-  color: var(--accent-700);
-}
-
-.field.bad .control {
-  border-color: var(--accent-700);
-  background: var(--accent-100);
-}
-
-.field.bad .err {
-  display: block;
-}
-
 .row {
   display: flex;
   align-items: center;
@@ -276,23 +260,6 @@
 .btn:hover {
   background: var(--accent-600);
   color: #fff;
-}
-
-.wob {
-  animation: wob 0.45s ease;
-}
-
-@keyframes wob {
-  0%,
-  100% {
-    transform: none;
-  }
-  25% {
-    transform: translateX(-4px);
-  }
-  75% {
-    transform: translateX(4px);
-  }
 }
 
 .divide {
