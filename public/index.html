@@ -4,12 +4,19 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/logo.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <!-- 헤더 배경(--bg)과 같은 값. 어긋나면 화면 위쪽에 검은 띠가 생긴다. -->
+    <meta name="theme-color" content="#f4f5f7" />
     <meta
       name="description"
       content="장바구니는 채워도 결제는 못 하는 가짜 쇼핑몰, 안삼."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.ico" />
+    <!--
+      본문 폰트. 예전에는 index.css가 fonts.googleapis.com을 @import 했는데,
+      그러면 앱을 켤 때마다 인터넷을 타고 그동안 글자가 안 그려졌다.
+      조각 파일은 public/fonts/noto-sans-kr/에 들어 있다.
+    -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/fonts/noto-sans-kr.css" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

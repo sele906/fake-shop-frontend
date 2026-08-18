@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap");
+/* 폰트는 public/fonts/noto-sans-kr.css가 들고 있고 index.html이 <link>로 건다.
+   여기서 @import 하면 CSS 요청이 직렬로 이어져 첫 렌더가 그만큼 늦다. */
 
 :root {
   /* Accent ramp — #4B70D3 */
@@ -61,6 +62,8 @@ body {
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--n-500) transparent;
+  /* 누를 때마다 깜빡이는 회색 네모. 아래 :active가 이 자리를 대신한다. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -92,6 +95,33 @@ html::-webkit-scrollbar-thumb:hover {
   background: var(--n-600);
 }
 
+/* ── 네이티브 앱 티 ────────────────────────
+   .native는 index.js가 Capacitor로 실행됐을 때만 붙인다. 웹사이트로 열리면
+   아래 규칙이 하나도 안 걸려서 브라우저는 브라우저답게 남는다. */
+
+/* 길게 누르기 = 선택 핸들 + "복사 / 웹 검색". 앱에서 제일 티 나는 동작이다.
+   user-select는 드래그 선택을, touch-callout은 길게 누른 메뉴를 막는다.
+   둘은 별개라 하나만 꺼도 나머지가 남는다. */
+html.native,
+html.native body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* 입력칸까지 막으면 글자를 고치지도 붙여넣지도 못한다. */
+html.native input,
+html.native textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* 끝까지 스크롤했을 때의 당김 · 잔광, 그리고 당겨서 새로고침을 없앤다.
+   웹에서는 당겨서 새로고침이 기대되는 동작이라 .native에만 건다. */
+html.native {
+  overscroll-behavior: none;
+}
+
 /* 모바일 드로어 · 모달이 열려 있는 동안 배경 스크롤 잠금 */
 body.navOpen,
 body.modalOpen {
@@ -114,6 +144,13 @@ button {
   border: 0;
   padding: 0;
   cursor: pointer;
+}
+
+/* 눌린 반응. 지우기만 한 탭 하이라이트를 대신하므로 함께 있어야 한다.
+   transition을 두지 않는 것은 의도다 — 네이티브 앱의 반응은 즉각적이다. */
+a:active,
+button:active {
+  opacity: 0.6;
 }
 
 code {
