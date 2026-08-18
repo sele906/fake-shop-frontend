@@ -54,10 +54,11 @@
   "imageCredit": "이미지 출처:",
   "specTitle": "상세스펙",
   "reviews": {
-    "title": "리뷰",
+    "title": "안 산 사람들의 리뷰",
     "loading": "리뷰를 불러오는 중입니다.",
     "emptyLine1": "아직 리뷰가 없습니다.",
     "emptyLine2": "사지 않은 사람의 후기를 기다리는 중입니다.",
+    "note": "상품도 후기도 별점도 다 저희가 지어냈습니다.",
     "positiveRate": "{{rate}}%가 4점 이상을 남겼습니다",
     "score": "{{score}}점",
     "more_other": "리뷰 더 보기 ({{count}}개 남음)"

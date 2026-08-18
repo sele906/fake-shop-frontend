@@ -424,15 +424,23 @@
   border-bottom: 1px solid var(--n-300);
 }
 
+/* 제목 옆 개수는 제목 베이스라인에 붙여 두고, 좁아지면 아랫줄로 내린다.
+   Ctg의 .catHero h1이 쓰는 방식과 같다 — 제목 길이를 통제할 수 없을 때
+   고정 배치 대신 흐르게 두는 쪽이다. */
 .section h2 {
   margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
   font-weight: 800;
   font-size: 18px;
 }
 
+/* 제목의 72%였을 때는 개수가 제목의 한 단어처럼 읽혔다. */
 .section h2 small {
   font-weight: 400;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--n-600);
 }
 
@@ -492,6 +500,16 @@
 .spec th {
   width: 96px;
   font-weight: 400;
+  color: var(--n-600);
+}
+
+/* 후기를 실제 구매평으로 읽지 않도록 요약 위에 먼저 붙인다. */
+/* .section p(0,1,1)가 이 문단의 색·크기를 이미 잡고 있어서, 클래스만으로는
+   (0,1,0) 져서 통째로 무시된다. 순서를 내려도 마찬가지라 p를 하나 얹는다.
+   line-height는 .section p와 같은 값이라 여기서 다시 적지 않는다. */
+.section p.revNote {
+  margin: 0 0 12px;
+  font-size: 13px;
   color: var(--n-600);
 }
 

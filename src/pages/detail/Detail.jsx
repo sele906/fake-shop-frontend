@@ -604,10 +604,14 @@ export default function Detail() {
           </section>
 
           <section className={styles.section} ref={setSectionRef("reviews")}>
-            <h2>
-              {t("reviews.title")} {reviewData && <small>{reviewCount}</small>}
-            </h2>
-
+            <div>
+              <h2>
+                {t("reviews.title")}
+                {reviewData && <small>{reviewCount}</small>}
+              </h2>
+              <p className={styles.revNote}>{t("reviews.note")}</p>
+            </div>
+            
             {!reviewData && (
               <p className={styles.revEmpty}>{t("reviews.loading")}</p>
             )}

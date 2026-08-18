@@ -58,10 +58,11 @@
   "imageCredit": "Photo:",
   "specTitle": "Specs",
   "reviews": {
-    "title": "Reviews",
+    "title": "Reviews from non-buyers",
     "loading": "Loading reviews.",
     "emptyLine1": "No reviews yet.",
     "emptyLine2": "Still waiting for non-buyers.",
+    "note": "We made up the product, reviews, and stars.",
     "positiveRate": "{{rate}}% gave 4+ stars",
     "score": "{{score}} stars",
     "more_one": "Load more reviews ({{count}} left)",
