@@ -20,6 +20,7 @@
   "intlLocale": "ko-KR",
   "price": "{{amount}}원",
   "defaultOption": "단일 옵션",
+  "exitConfirm": "한 번 더 누르면 앱이 종료됩니다.",
   "hiddenCoupon": {
     "eyebrow": "SECRET COUPON UNLOCKED",
     "saved": "쿠폰함에 저장했습니다"

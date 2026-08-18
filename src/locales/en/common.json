@@ -20,6 +20,7 @@
   "intlLocale": "en-US",
   "price": "₩{{amount}}",
   "defaultOption": "One option only",
+  "exitConfirm": "Press back again to exit.",
   "hiddenCoupon": {
     "eyebrow": "SECRET COUPON UNLOCKED",
     "saved": "Saved to your coupon wallet"
