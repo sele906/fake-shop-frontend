@@ -23,7 +23,7 @@
   align-items: center;
   gap: 8px;
   height: var(--header-h);
-  padding: 0 8px 0 4px;
+  padding: 0 16px;
   background: var(--bg);
   border-bottom: 2px solid var(--rule);
 }
@@ -37,6 +37,10 @@
   align-items: center;
   justify-content: center;
   color: inherit;
+}
+
+.iconBtn:last-child {
+  margin: 0 10px 0 -10px;
 }
 
 /* 헤더 우측 조작부. 버튼 44px에 아이콘 24px이라 안쪽에 10px씩 여백이 있고,
@@ -797,7 +801,7 @@
   }
 
   .header {
-    padding: 0 24px;
+    padding: 0 32px;
     gap: 16px;
   }
 
@@ -807,7 +811,7 @@
   }
 
   .header .back {
-    margin-left: -8px;
+    margin-left: -10px;
   }
 
   .crumbs {

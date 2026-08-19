@@ -833,6 +833,11 @@
 
 /* ── Responsive: 900px ───────────────── */
 @media (max-width: 899.98px) {
+  /* 모바일에서는 메인 헤더의 햄버거와 같은 자리에 둔다. */
+  .iconBtn {
+    margin-left: 0;
+  }
+
   .pageHeader {
     height: 56px;
     padding: 0 16px;

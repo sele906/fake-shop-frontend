@@ -76,6 +76,10 @@
   padding: 0 4px;
 }
 
+.iconBtn:last-child {
+  margin: 0 10px 0 -10px;
+}
+
 /* ── Shell ────────────────────────────── */
 .shell {
   display: flex;

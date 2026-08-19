@@ -328,6 +328,8 @@ export default function Detail() {
             <BiShareAlt aria-hidden="true" />
           </button>
 
+          <AccountMenu />
+
           <Link
             className={styles.iconBtn}
             to="/cart"
@@ -337,7 +339,7 @@ export default function Detail() {
             {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
           </Link>
 
-          <AccountMenu />
+          
         </div>
       </header>
 
