@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- windowLightStatusBar = "상태바 배경이 밝다" → 아이콘을 어둡게 그린다. -->
+    <bool name="statusBarLight">true</bool>
+</resources>

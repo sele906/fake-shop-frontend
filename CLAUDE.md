@@ -534,40 +534,96 @@ APK가 12 MB 늘어난다. 읽는 양이 아니라 설치 용량의 문제다.
 | 앱 이름 — `values-en/strings.xml` | 완료 |
 | 플레이 콘솔 영어 리스팅 — 이름 `NOBUY` + 설명문 | 완료 |
 | 다크 모드 (웹) | 완료 — `dark-mode` 브랜치 |
-| 상태바 색 | **남음** |
+| 상태바 색 · 네이티브 나이트 모드 | 완료 |
 | 새 AAB · 플레이 업로드 | **남음** |
 
-`android/app/release/`의 AAB(17.1 MB)는 다크 모드 이전 것이라 **버린다.** 아래를
-끝내고 다시 만들어 한 번에 올린다.
+`android/app/release/`의 AAB(17.1 MB)는 다크 모드 이전 것이라 **버린다.** 남은 것은
+새로 만들어 올리는 일뿐이다.
 
-### 남은 것 — 상태바
+### 상태바는 색이 아니라 나이트 모드로 맞춘다
 
-테스터가 **검은 상태바 위에 흰 헤더**가 붙은 스크린샷을 보냈다. 액티비티 테마
-(`AppTheme.NoActionBar`, `Theme.AppCompat.DayNight.NoActionBar`)가 `statusBarColor`를
-잡지 않아 시스템 기본값이 나온다. `values-night/styles.xml`도 아직 없다
-(`night` 폴더는 스플래시 drawable뿐이다).
+테스터가 **검은 상태바 위에 흰 헤더**가 붙은 스크린샷을 보낸 데서 시작했다.
+처음에는 `styles.xml`에 `android:statusBarColor` 한 줄이면 될 줄 알았는데
+그 판단이 두 번 틀렸다.
 
-**전에 "플러그인은 필요 없다"고 적어 뒀으나 그 판단은 토글이 생기면서 바뀌었다.**
-XML은 시스템 다크 설정만 따라간다. 라이트 OS에서 앱 안 토글로 다크를 고르면
-웹뷰만 어두워지고 상태바는 밝은 채로 남는다.
+**첫째, `statusBarColor`는 이제 무시된다.** targetSdk 35부터 엣지투엣지가
+강제라 이 속성은 아무 일도 하지 않는다. 36에서는 예외 신청
+(`windowOptOutEdgeToEdgeEnforcement`)조차 안 먹는다. 우리 타깃은 36이다.
+`StatusBar.setBackgroundColor()`도 같은 이유로 no-op이다 — Capacitor 8의 코어
+`SystemBars` 플러그인이 그 메서드를 아예 안 만든 것도 그래서다.
 
-그래서 둘 다 필요하다.
+상태바는 **투명**해지고 그 뒤로 창 배경(`android:windowBackground`)이 비친다.
+그러니 실제로 보이는 색은 이쪽이다.
 
-- **XML** — 앱이 뜨는 순간의 색. 웹뷰가 그려지기 전이라 JS가 손쓸 수 없다.
-  `values/styles.xml`에 `#f4f5f7` + `windowLightStatusBar: true`,
-  `values-night/styles.xml`에 `#1b1e23` + `false`
-- **`@capacitor/status-bar`** — 토글이 눌렸을 때. `AccountMenu`의 `pickTheme`에서
-  같이 부른다. 웹에서는 아무 일도 안 하므로 `Capacitor.isNativePlatform()` 분기가
-  필요 없다
+**둘째, XML만으로는 앱 안 토글을 못 따라간다.** `values-night`는 시스템 다크
+설정으로 갈린다. 라이트 OS에서 앱 토글로 다크를 고르면 웹뷰만 어두워지고
+상태바는 밝은 채로 남는다.
 
-`npx cap sync android`를 빼먹으면 앱은 옛 화면을 계속 띄운다.
+그래서 리소스 설정 자체를 바꾼다.
+
+```java
+// ThemePlugin.setNightMode
+AppCompatDelegate.setDefaultNightMode(ThemeStore.toDelegateMode(mode));
+```
+
+이러면 `values-night`가 "시스템이 다크일 때"가 아니라 **"앱이 다크를 고를 때"**
+적용된다. 순수 네이티브 앱이 Light / Dark / System을 만드는 방식과 같다.
+
+| 파일 | 맡는 일 |
+| --- | --- |
+| `ThemeStore.java` | 고른 값을 SharedPreferences에 두고 AppCompat 모드로 옮긴다 |
+| `ThemePlugin.java` | 웹이 부르는 `Theme.setNightMode({ mode })` |
+| `MainActivity.java` | 앱이 뜰 때 저장값을 읽어 적용 |
+| `res/values{,-night}/colors.xml` | `@color/appBg` — 창 배경, 상태바 뒤에 비치는 색 |
+| `res/values{,-night}/bools.xml` | `@bool/statusBarLight` — 아이콘 색 |
+
+**자바는 localStorage를 못 읽는다.** 앱이 뜨는 순간에는 웹뷰가 아직 없어
+`evaluateJavascript`도 못 쓴다. 그래서 같은 값을 두 곳에 따로 저장한다 —
+웹은 localStorage(부팅 스크립트용), 네이티브는 SharedPreferences. 둘을 잇는
+것은 토글이 부르는 플러그인 호출뿐이고, 어긋나면 `AccountMenu`의 마운트
+이펙트가 다음에 다시 맞춘다. `@capacitor/preferences`로 한 벌로 줄일 수는
+있지만 읽기가 비동기라 부팅 스크립트에서 못 쓴다 — 화면이 한 번 번쩍인다.
+
+### 이 전환에서 두 번 밟은 것
+
+**액티비티가 다시 만들어지지 않는다.** 매니페스트 `configChanges`에 `uiMode`가
+있어서 나이트 모드가 바뀌어도 액티비티가 재생성되지 않는다. 웹뷰가 리로드되지
+않는 것은 좋은데, **창 배경도 저절로 다시 칠해지지 않는다.** `ThemePlugin`이
+`decorView`를 직접 칠하는 이유다. `decor.post()`로 미루는 것은
+`setDefaultNightMode`가 `onConfigurationChanged`를 거쳐 리소스를 갈아끼우기
+때문이다 — 같은 프레임에 읽으면 옛 색이 나온다.
+
+**`registerPlugin`과 `setDefaultNightMode`는 `super.onCreate` 앞이다.** super가
+테마를 적용하고 화면을 만들므로, 뒤에 두면 첫 프레임이 옛 색으로 한 번 그려진다.
+
+**자바를 고쳤으면 `cap sync`만으로는 안 된다.** sync는 웹 자산을 복사하고
+플러그인 목록을 갱신할 뿐이다. APK를 다시 빌드해 설치해야 한다. 에뮬레이터에
+옛 APK가 남아 "안 되는 줄" 알았던 적이 있다. Android Studio에서는 번개 아이콘
+(Apply Changes)이 아니라 **Run 'app'** 이어야 리소스와 플러그인 등록이 들어간다.
+
+터미널 빌드는 JDK 21 이상이 필요하다. 셸의 `java`가 그보다 낮으면
+`invalid source release: 21`이 난다. Android Studio는 번들 JBR을 쓰므로 잘 된다.
+
+### 아직 안 한 것
+
+- **3단 토글(Light / Dark / System).** 플러그인은 `"system"`을 이미 받아
+  `MODE_NIGHT_FOLLOW_SYSTEM`으로 옮기는데 웹이 아직 안 보낸다. 지금은 저장값이
+  없을 때만 OS를 따르므로 한 번 고르면 되돌아갈 길이 없다. 웹에 세 번째 칸을
+  만들고 `"system"`일 때 `matchMedia` 변경을 듣게 하면 된다
+- **`@capacitor/status-bar`.** 이제 `setStyle`(아이콘 색) 하나만 쓴다. Capacitor 8
+  코어 `SystemBars`에 같은 것이 있는데 JS 노출을 확인하지 못해 남겨 뒀다
+- **`/receipt`에는 계정 메뉴가 없다.** 그 화면에서는 테마를 못 바꾸고
+  `syncChrome`도 돌지 않는다
 
 ### 잊기 쉬운 것
 
-- `public/index.html`의 `theme-color`가 `#f4f5f7` 하나다. `media` 속성으로 나누면
-  토글이 아니라 OS를 따라가므로, 토글이 meta를 직접 바꾸는 쪽이 맞다
-- `/receipt`에는 계정 메뉴가 없다. 그 화면에서는 테마를 못 바꾼다
+- `public/index.html`의 `theme-color`는 `syncChrome`이 직접 바꾼다. `media` 속성으로
+  나누면 토글이 아니라 OS를 따라가서 쓸 수 없다. 값이 세 곳에 흩어져 있으므로
+  (`index.css`의 `--bg`, `AccountMenu`의 `BAR`, `res/values*/colors.xml`의 `appBg`)
+  하나를 고치면 나머지도 봐야 한다
 - 상품 사진은 Pexels라 토큰을 안 탄다. `:root[data-theme="dark"] img`에
   `opacity: .92`를 걸어 카드만 어두워질 때 사진이 혼자 떠오르는 것을 눌렀다
+
+
 
 

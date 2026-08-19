@@ -1,6 +1,8 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Capacitor, registerPlugin } from "@capacitor/core";
+import { StatusBar, Style } from "@capacitor/status-bar";
 import styles from "./AccountMenu.module.css";
 import useDismissable from "../hooks/useDismissable";
 import { LANGUAGES } from "../i18n";
@@ -12,6 +14,42 @@ import { BiUser } from "react-icons/bi";
 const NATIVE_LABEL = { ko: "한국어", en: "English" };
 
 const THEMES = ["light", "dark"];
+
+/* index.css의 --bg와 같은 값. 브라우저 주소창에 칠해진다.
+   안드로이드의 짝은 res/values/colors.xml의 @color/appBg다 — 거기는 창 배경이라
+   상태바 뒤에 비치고, 여기는 주소창이다. 세 값이 어긋나면 띠가 생긴다. */
+const BAR = { light: "#f4f5f7", dark: "#1b1e23" };
+
+/* android/app/src/main/java/com/ansam/app/ThemePlugin.java */
+const Theme = registerPlugin("Theme");
+
+/**
+ * 화면 바깥 테두리 색을 웹 테마에 맞춘다 — 브라우저 주소창과 앱 상태바.
+ *
+ * 둘 다 CSS가 닿지 않는 자리라 토글이 직접 바꿔야 한다. theme-color는 media
+ * 속성으로 나눌 수 있지만 그러면 버튼으로 고른 값이 아니라 OS 설정을 따라간다.
+ *
+ * 상태바는 색을 직접 못 정한다. targetSdk 35부터 엣지투엣지가 강제라
+ * android:statusBarColor도 StatusBar.setBackgroundColor()도 무시되고, 상태바는
+ * 투명해져 그 뒤의 창 배경이 비친다. 그래서 색이 아니라 나이트 모드를 보낸다 —
+ * ThemePlugin이 AppCompatDelegate로 리소스 설정을 바꾸면 values-night의 창
+ * 배경이 앱이 고른 테마를 따라온다.
+ *
+ * 아이콘 색은 별개다. Style.Light은 "글자를 밝게"라는 뜻이라 어두운 배경에 쓴다.
+ * XML의 windowLightStatusBar("배경이 밝다")와 뜻이 반대다.
+ */
+function syncChrome(theme) {
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", BAR[theme]);
+
+  if (!Capacitor.isNativePlatform()) return;
+
+  Theme.setNightMode({ mode: theme }).catch(() => {});
+  StatusBar.setStyle({
+    style: theme === "dark" ? Style.Light : Style.Dark,
+  }).catch(() => {});
+}
 
 /**
  * 헤더의 계정 메뉴. 로그인 · 화면(라이트/다크) · 언어를 담는다.
@@ -48,6 +86,14 @@ export default function AccountMenu() {
   const [theme, setThemeState] = useState(() =>
     document.documentElement.dataset.theme === "dark" ? "dark" : "light",
   );
+
+  /* 저장된 선택이 OS 설정과 다를 수 있어 뜰 때 한 번 맞춘다. 부팅 스크립트는
+     <html>만 건드리고 네이티브에는 손이 닿지 않는다.
+     이 컴포넌트는 헤더마다 있어 페이지를 옮길 때도 다시 도는데, 같은 값을 다시
+     넣는 것뿐이라 그대로 둔다. 계정 메뉴가 없는 /receipt에서는 안 돈다. */
+  useEffect(() => {
+    syncChrome(theme);
+  }, [theme]);
 
   /* "en-US"로 감지됐을 수 있어 앞부분만 본다. i18n.js의 load: "languageOnly"와 짝이다. */
   const language = i18n.resolvedLanguage ?? i18n.language?.split("-")[0];

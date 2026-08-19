@@ -9,14 +9,29 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--
+        targetSdk 35부터 엣지투엣지가 강제라 android:statusBarColor는 무시된다.
+        상태바는 투명해지고 그 뒤로 창 배경(windowBackground)이 비친다 —
+        실제로 보이는 색은 이쪽이다. statusBarColor는 안드로이드 14 이하에서만
+        의미가 있어 남겨 둔다.
+
+        어느 값을 쓸지는 리소스 설정이 정하는데, ThemePlugin이
+        AppCompatDelegate.setDefaultNightMode로 그 설정을 바꾼다. 그래서
+        values-night는 시스템 다크가 아니라 앱이 고른 테마를 따른다.
+    -->
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/appBg</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <item name="android:statusBarColor">@color/appBg</item>
+        <item name="android:windowLightStatusBar">@bool/statusBarLight</item>
     </style>
 
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/appBg</item>
+        <item name="android:windowLightStatusBar">@bool/statusBarLight</item>
     </style>
 </resources>

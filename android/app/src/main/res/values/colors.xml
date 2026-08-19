@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        웹 index.css의 bg 토큰과 같은 값. 어긋나면 헤더 위에 다른 색 띠가 생긴다.
+
+        targetSdk 35부터 상태바는 투명이고 그 뒤로 창 배경이 비친다. 그래서
+        statusBarColor보다 windowBackground 쪽이 실제로 보이는 색이다.
+        values-night의 짝은 시스템이 아니라 앱이 고른 테마를 따른다 —
+        ThemePlugin이 AppCompatDelegate로 리소스 설정을 바꾸기 때문이다.
+
+        XML 주석 안에는 붙임표 두 개를 못 쓴다. CSS 변수 이름을 그대로 적으면
+        파일이 깨진다.
+    -->
+    <color name="appBg">#f4f5f7</color>
+</resources>
