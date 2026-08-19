@@ -168,6 +168,20 @@ export default function Detail() {
         if (section && section.offsetTop <= line) current = tab.id;
       });
 
+      /* 마지막 구역이 짧으면 스크롤이 그 앞에서 멈춰 기준선이 영영 닿지 않는다.
+         함께 보기는 상품이 4개라 데스크톱에서 4열 한 줄로 끝나고(모바일은 2열
+         두 줄) 뒤에 아무것도 없어서, 눌러도 밑줄이 리뷰에 머물렀다.
+         바닥까지 내려왔으면 마지막 구역을 고른다.
+
+         스크롤이 아예 없는 화면에서는 이 조건이 처음부터 참이라 마지막 탭이
+         켜져 버린다. 스크롤이 있는지 먼저 본다. */
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight > window.innerHeight + 2;
+      const atBottom =
+        window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
+
+      if (scrollable && atBottom) current = TABS[TABS.length - 1].id;
+
       setActiveTab(current);
     }
 
