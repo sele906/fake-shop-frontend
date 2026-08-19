@@ -716,13 +716,13 @@
 
    .doneIn이 max-width: 520px + 좌우 16px이라 쓸 수 있는 폭은 (화면 − 32px)다.
    한국어 "아무것도 사지 않았습니다"가 제일 긴 줄이고 대략 11.4자 폭이 필요해서,
-   417px보다 좁아지면 같이 줄어든다. 그보다 넓으면 30px 그대로다.
+   441px보다 좁아지면 같이 줄어든다. 그보다 넓으면 30px 그대로다.
 
    balance는 안전망이다. 그래도 넘치면 두 줄을 고르게 나눠 준다. */
 .done h2 {
   margin: 0;
   font-weight: 800;
-  font-size: clamp(21px, 7.2vw, 30px);
+  font-size: clamp(21px, 6.8vw, 30px);
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-wrap: balance;
