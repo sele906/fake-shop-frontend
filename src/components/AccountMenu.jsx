@@ -7,13 +7,33 @@ import styles from "./AccountMenu.module.css";
 import useDismissable from "../hooks/useDismissable";
 import { LANGUAGES } from "../i18n";
 
-import { BiUser } from "react-icons/bi";
+import { BiDesktop, BiMoon, BiSun, BiUser } from "react-icons/bi";
 
 /* 언어 이름은 그 언어로 적는 것이 관례다. 어느 언어로 보든 똑같이 읽혀야 해서
    locales에 두지 않는다. */
 const NATIVE_LABEL = { ko: "한국어", en: "English" };
 
-const THEMES = ["light", "dark"];
+/* 고를 수 있는 것은 셋인데 화면에 걸리는 것은 둘이다. "system"은 OS를 따라
+   light나 dark로 풀린다 — 아래 resolve()가 그 일을 한다. */
+const MODES = [
+  { value: "light", Icon: BiSun },
+  { value: "dark", Icon: BiMoon },
+  { value: "system", Icon: BiDesktop },
+];
+
+const DARK_QUERY = "(prefers-color-scheme: dark)";
+
+/** 고른 모드를 실제로 걸릴 테마로 푼다. */
+function resolve(mode) {
+  if (mode === "light" || mode === "dark") return mode;
+  return window.matchMedia?.(DARK_QUERY).matches ? "dark" : "light";
+}
+
+/** index.css가 보는 것은 이 속성 하나뿐이다. */
+function applyTheme(theme) {
+  if (theme === "dark") document.documentElement.dataset.theme = "dark";
+  else delete document.documentElement.dataset.theme;
+}
 
 /* index.css의 --bg와 같은 값. 브라우저 주소창에 칠해진다.
    안드로이드의 짝은 res/values/colors.xml의 @color/appBg다 — 거기는 창 배경이라
@@ -38,14 +58,19 @@ const Theme = registerPlugin("Theme");
  * 아이콘 색은 별개다. Style.Light은 "글자를 밝게"라는 뜻이라 어두운 배경에 쓴다.
  * XML의 windowLightStatusBar("배경이 밝다")와 뜻이 반대다.
  */
-function syncChrome(theme) {
+function syncChrome(mode, theme) {
   document
     .querySelector('meta[name="theme-color"]')
     ?.setAttribute("content", BAR[theme]);
 
   if (!Capacitor.isNativePlatform()) return;
 
-  Theme.setNightMode({ mode: theme }).catch(() => {});
+  /* 네이티브에는 푼 결과가 아니라 고른 모드를 보낸다. "system"은 안드로이드가
+     MODE_NIGHT_FOLLOW_SYSTEM으로 직접 따라가므로, 우리가 풀어서 보내면 OS가
+     바뀌어도 앱이 안 따라간다. */
+  Theme.setNightMode({ mode }).catch(() => {});
+
+  /* 아이콘 색은 지금 걸린 배경을 봐야 하므로 푼 결과를 쓴다. */
   StatusBar.setStyle({
     style: theme === "dark" ? Style.Light : Style.Dark,
   }).catch(() => {});
@@ -81,28 +106,53 @@ export default function AccountMenu() {
   const themeName = useId();
   const langName = useId();
 
-  /* 첫 값은 index.html의 부팅 스크립트가 이미 정해 둔 <html>에서 읽는다.
-     여기서 localStorage를 다시 읽으면 판정이 두 벌이 된다. */
-  const [theme, setThemeState] = useState(() =>
-    document.documentElement.dataset.theme === "dark" ? "dark" : "light",
-  );
+  /* 고른 모드는 localStorage에만 있다. 부팅 스크립트가 <html>에 남기는 것은
+     푼 결과(dark 여부)라 셋 중 무엇을 골랐는지는 거기서 알 수 없다. */
+  const [mode, setModeState] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ansamTheme");
+      return saved === "dark" || saved === "light" ? saved : "system";
+    } catch {
+      return "system";
+    }
+  });
 
-  /* 저장된 선택이 OS 설정과 다를 수 있어 뜰 때 한 번 맞춘다. 부팅 스크립트는
+  /* OS가 지금 어느 쪽인지. 별도 상태여야 하는 이유는, "system"으로 둔 채 OS만
+     바뀌면 mode 값은 그대로라 리렌더가 안 걸리기 때문이다. */
+  const [systemTheme, setSystemTheme] = useState(() => resolve("system"));
+
+  const theme = mode === "system" ? systemTheme : mode;
+
+  /* 앱을 열어 둔 채로 OS가 바뀌는 경우. 부팅 스크립트는 뜰 때 한 번 읽을 뿐이다.
+     mode와 무관하게 계속 듣는다 — 값만 갱신하고, 쓸지 말지는 위에서 정한다. */
+  useEffect(() => {
+    const query = window.matchMedia?.(DARK_QUERY);
+    if (!query) return;
+
+    const onChange = (event) => setSystemTheme(event.matches ? "dark" : "light");
+
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  /* 저장된 선택이 네이티브 쪽과 다를 수 있어 뜰 때 한 번 맞춘다. 부팅 스크립트는
      <html>만 건드리고 네이티브에는 손이 닿지 않는다.
      이 컴포넌트는 헤더마다 있어 페이지를 옮길 때도 다시 도는데, 같은 값을 다시
      넣는 것뿐이라 그대로 둔다. 계정 메뉴가 없는 /receipt에서는 안 돈다. */
   useEffect(() => {
-    syncChrome(theme);
-  }, [theme]);
+    applyTheme(theme);
+    syncChrome(mode, theme);
+  }, [mode, theme]);
 
   /* "en-US"로 감지됐을 수 있어 앞부분만 본다. i18n.js의 load: "languageOnly"와 짝이다. */
   const language = i18n.resolvedLanguage ?? i18n.language?.split("-")[0];
 
-  function pickTheme(next) {
-    setThemeState(next);
+  function pickMode(next) {
+    setModeState(next);
 
-    if (next === "dark") document.documentElement.dataset.theme = "dark";
-    else delete document.documentElement.dataset.theme;
+    /* 위 이펙트도 같은 일을 하지만 그건 페인트 뒤라 한 프레임 늦다.
+       누른 순간 바뀌어야 해서 여기서 한 번 더 건다. 같은 값을 넣는 것뿐이다. */
+    applyTheme(resolve(next));
 
     try {
       localStorage.setItem("ansamTheme", next);
@@ -138,17 +188,22 @@ export default function AccountMenu() {
           <fieldset className={styles.group}>
             <legend className={styles.legend}>{t("account.theme")}</legend>
 
-            <div className={styles.seg}>
-              {THEMES.map((value) => (
-                <label className={styles.opt} key={value}>
+            <div className={`${styles.seg} ${styles.seg3}`}>
+              {MODES.map(({ value, Icon }) => (
+                <label className={`${styles.opt} ${styles.iconOpt}`} key={value}>
                   <input
                     type="radio"
                     name={themeName}
                     value={value}
-                    checked={theme === value}
-                    onChange={() => pickTheme(value)}
+                    checked={mode === value}
+                    onChange={() => pickMode(value)}
                   />
-                  <span>{t(`account.${value}`)}</span>
+                  {/* 아이콘만 두면 이름이 비어 스크린리더가 못 읽는다.
+                      글자는 남기고 화면에서만 감춘다. */}
+                  <span>
+                    <Icon aria-hidden="true" />
+                    <em>{t(`account.${value}`)}</em>
+                  </span>
                 </label>
               ))}
             </div>

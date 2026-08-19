@@ -86,6 +86,12 @@
   border: 2px solid var(--border);
 }
 
+/* 화면 묶음은 셋이다. 패널 208px에서 안쪽이 176px이라 한 칸 58px —
+   글자로는 "시스템"이 안 들어가지만 24px 아이콘은 넉넉하다. */
+.seg3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .opt + .opt {
   border-left: 2px solid var(--border);
 }
@@ -129,6 +135,25 @@
   outline-offset: -2px;
 }
 
+/* 아이콘 칸. 글자는 이름을 남기려고 두는 것이라 화면에서만 감춘다 —
+   display: none이면 접근성 이름까지 사라진다. */
+.iconOpt span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--icon-size);
+  line-height: 1;
+}
+
+.iconOpt em {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 @media (max-width: 899.98px) {
   .panel {
     min-width: 188px;
@@ -138,5 +163,12 @@
   .opt span {
     font-size: 12px;
     padding: 11px 6px;
+  }
+
+  /* 위 규칙과 특정도가 (0,1,1)로 같고 뒤에 있어서, 이 짝이 없으면 아이콘이
+     12px로 줄어든다. 미디어쿼리는 특정도를 올려 주지 않는다 —
+     CLAUDE.md의 "오버라이드 작성 규칙" 참고. */
+  .iconOpt span {
+    font-size: var(--icon-size);
   }
 }

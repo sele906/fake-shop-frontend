@@ -36,6 +36,7 @@
     "theme": "화면",
     "light": "라이트",
     "dark": "다크",
-    "language": "언어"
+    "language": "언어",
+    "system": "시스템"
   }
 }

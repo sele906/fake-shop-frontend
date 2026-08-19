@@ -37,6 +37,7 @@
     "theme": "Appearance",
     "light": "Day",
     "dark": "Night",
-    "language": "Language"
+    "language": "Language",
+    "system": "System"
   }
 }
