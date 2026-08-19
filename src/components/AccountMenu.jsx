@@ -55,8 +55,13 @@ const Theme = registerPlugin("Theme");
  * ThemePlugin이 AppCompatDelegate로 리소스 설정을 바꾸면 values-night의 창
  * 배경이 앱이 고른 테마를 따라온다.
  *
- * 아이콘 색은 별개다. Style.Light은 "글자를 밝게"라는 뜻이라 어두운 배경에 쓴다.
- * XML의 windowLightStatusBar("배경이 밝다")와 뜻이 반대다.
+ * 아이콘 색은 별개다. Style의 이름은 글자가 아니라 **배경**을 가리킨다.
+ *
+ *   Style.Dark    어두운 배경용 → 글자를 밝게    (다크 테마에 쓴다)
+ *   Style.Light   밝은 배경용   → 글자를 어둡게  (라이트 테마에 쓴다)
+ *
+ * XML의 windowLightStatusBar도 같은 규칙이다 — "배경이 밝다"는 뜻이라
+ * 라이트에서 true다. 둘이 반대가 아니라 같은 방향이다.
  */
 function syncChrome(mode, theme) {
   document
