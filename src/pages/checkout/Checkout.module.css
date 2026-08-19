@@ -722,7 +722,7 @@
 .done h2 {
   margin: 0;
   font-weight: 800;
-  font-size: clamp(21px, 6.8vw, 30px);
+  font-size: clamp(21px, 6vw, 30px);
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-wrap: balance;

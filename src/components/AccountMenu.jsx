@@ -72,7 +72,7 @@ function syncChrome(mode, theme) {
 
   /* 아이콘 색은 지금 걸린 배경을 봐야 하므로 푼 결과를 쓴다. */
   StatusBar.setStyle({
-    style: theme === "dark" ? Style.Light : Style.Dark,
+    style: theme === "dark" ? Style.Dark : Style.Light,
   }).catch(() => {});
 }
 
