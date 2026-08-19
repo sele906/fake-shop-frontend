@@ -10,6 +10,8 @@
 
 /* ── Hero ─────────────────────────────── */
 .hero {
+  composes: onDark from global;
+
   position: relative;
   min-height: 340px;
   display: flex;
@@ -17,7 +19,7 @@
   justify-content: center;
   gap: 14px;
   padding: 40px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background-image:
     linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 45%)),
     url("../../assets/mainImg.jpg");
@@ -35,7 +37,7 @@
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--on-accent);
   opacity: 0.9;
 }
 
@@ -50,7 +52,7 @@
   font-size: 44px;
   line-height: 1.3;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--on-accent);
 }
 
 :global(html:lang(en)) .hero h1 {
@@ -64,7 +66,7 @@
   max-width: 420px;
   font-size: 14px;
   line-height: 1.6;
-  color: #fff;
+  color: var(--on-accent);
   opacity: 0.92;
 }
 
@@ -82,8 +84,8 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 14px;
   padding: 12px 20px;
@@ -96,18 +98,18 @@
 
 .btn:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .btnGhost {
   background: none;
-  border: 2px solid #fff;
-  color: #fff;
+  border: 2px solid var(--on-accent);
+  color: var(--on-accent);
   padding: 10px 20px;
 }
 
 .btnGhost:hover {
-  background: #fff;
+  background: var(--card);
   color: var(--text);
 }
 
@@ -198,8 +200,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 11px;
   font-weight: 800;
   padding: 3px 7px;

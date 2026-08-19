@@ -1,5 +1,6 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import styles from "./Select.module.css";
+import useDismissable from "../hooks/useDismissable";
 
 import { BiCaretDown, BiCheck } from "react-icons/bi";
 
@@ -44,14 +45,14 @@ export default function Select({
   variant = "field",
   align = "stretch",
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-
   /* 키보드로 짚고 있는 항목. 고른 값(value)과는 별개다 — 짚기만 하고
      Escape로 닫으면 값은 그대로 남는다. */
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const wrapRef = useRef(null);
-  const triggerRef = useRef(null);
+  /* 바깥클릭 · Escape · 포커스 복귀는 설정 패널과 공유한다. 아래 키보드
+     처리는 listbox 전용이라 여기 남는다. */
+  const { isOpen, open: openList, close, wrapRef, triggerRef, onKeyDown } =
+    useDismissable({ onClose: () => setActiveIndex(-1) });
 
   const listId = useId();
   const optionId = (index) => `${listId}-${index}`;
@@ -59,34 +60,10 @@ export default function Select({
   const selectedIndex = options.findIndex((option) => option.value === value);
   const selected = selectedIndex >= 0 ? options[selectedIndex] : null;
 
-  /* 바깥을 누르면 닫는다. click이 아니라 pointerdown으로 듣는 이유는
-     스크롤·드래그를 시작한 순간에도 닫히는 편이 자연스럽기 때문이다.
-     이때는 트리거로 포커스를 돌리지 않는다 — 사용자가 다른 곳을 눌렀다. */
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handlePointerDown(event) {
-      if (wrapRef.current?.contains(event.target)) return;
-
-      setIsOpen(false);
-      setActiveIndex(-1);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, [isOpen]);
-
   /* 열 때는 이미 고른 항목을 짚어 둔다. 고른 적이 없으면 첫 항목. */
   function open(index = selectedIndex) {
     setActiveIndex(index >= 0 ? index : 0);
-    setIsOpen(true);
-  }
-
-  function close({ focusTrigger = true } = {}) {
-    setIsOpen(false);
-    setActiveIndex(-1);
-    if (focusTrigger) triggerRef.current?.focus();
+    openList();
   }
 
   function pick(index) {
@@ -94,15 +71,8 @@ export default function Select({
     close();
   }
 
+  /* Escape는 여기 없다. useDismissable이 감싸는 요소에서 받는다. */
   function handleKeyDown(event) {
-    if (event.key === "Escape") {
-      if (!isOpen) return;
-
-      event.preventDefault();
-      close();
-      return;
-    }
-
     /* Tab은 막지 않는다. 목록만 닫고 초점은 다음 필드로 넘어가게 둔다. */
     if (event.key === "Tab") {
       if (isOpen) close({ focusTrigger: false });
@@ -145,7 +115,7 @@ export default function Select({
   }
 
   return (
-    <div className={styles.wrap} ref={wrapRef}>
+    <div className={styles.wrap} ref={wrapRef} onKeyDown={onKeyDown}>
       <button
         type="button"
         ref={triggerRef}

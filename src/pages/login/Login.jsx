@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import styles from "./Login.module.css";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 
 import { BiEnvelope, BiHide, BiLockAlt, BiShow } from "react-icons/bi";
 
@@ -109,7 +109,7 @@ export default function Login() {
             {t("help")}
           </Link>
 
-          <LanguageToggle />
+          <AccountMenu />
         </div>
       </header>
 

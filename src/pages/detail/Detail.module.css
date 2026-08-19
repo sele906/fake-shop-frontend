@@ -29,8 +29,9 @@
 }
 
 .iconBtn {
+  font-size: var(--icon-size);
   position: relative;
-  width: 34px;
+  width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
@@ -38,24 +39,14 @@
   color: inherit;
 }
 
-/* 왼쪽 10px은 아이콘 두 개와 떼어 놓는 간격이고, 오른쪽 4px은 화면 끝까지의
-   여백이다. 뜻이 다른 값이라 한 줄로 묶지 않는다. */
-.toggleAdjust {
-  margin-left: 10px;
-  margin-right: 4px;
-}
-
-/* 헤더 우측 조작부. 버튼이 아이콘보다 여백을 많이 물고 있어서 헤더의 gap(8px)을
-   그대로 두면 아이콘 사이가 실제보다 훨씬 벌어져 보인다. 여기서만 좁힌다.
-   아이콘끼리는 이래도 16px 떨어져 보인다(버튼 안쪽 여백 7px씩 + gap 2px).
-
-   토글은 .toggleAdjust가 왼쪽에 10px을 더 줘서 아이콘 두 개와 한 덩어리로 붙지
-   않게 떼어 둔다 — 성격이 다른 조작이라 같은 간격으로 두면 셋이 한 묶음으로 읽힌다. */
+/* 헤더 우측 조작부. 버튼 44px에 아이콘 24px이라 안쪽에 10px씩 여백이 있고,
+   gap 10px을 더하면 아이콘 사이가 30px로 보인다 — Layout 헤더와 같은 값이다.
+   전에는 버튼이 34px, gap이 2px이라 여기만 12px로 유독 좁았다. */
 .headerActions {
   flex: none;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 10px;
 }
 
 .title {
@@ -79,8 +70,8 @@
   position: absolute;
   top: 4px;
   right: 4px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 10px;
   padding: 0 4px;
 }
@@ -115,7 +106,7 @@
   flex: 0 0 100%;
   aspect-ratio: 1 / 1;
   scroll-snap-align: start;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background: var(--n-200);
 }
 
@@ -128,6 +119,8 @@
 }
 
 .dots {
+  composes: onDark from global;
+
   position: absolute;
   right: 12px;
   bottom: 12px;
@@ -144,7 +137,7 @@
 }
 
 .dots i.on {
-  background: #fff;
+  background: var(--card);
 }
 
 /* ── Summary ──────────────────────────── */
@@ -153,7 +146,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 20px 16px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .brand {
@@ -195,8 +188,8 @@
 }
 
 .tag.solid {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 .price {
@@ -255,7 +248,7 @@
 /* ── Info rows ────────────────────────── */
 .rows {
   margin: 0;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .row {
@@ -292,7 +285,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 20px 16px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .opt {
@@ -338,7 +331,7 @@
   display: flex;
   align-items: center;
   width: max-content;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
 }
 
 .qty button {
@@ -367,8 +360,8 @@
   line-height: 44px;
   text-align: center;
   font-weight: 800;
-  border-left: 2px solid var(--text);
-  border-right: 2px solid var(--text);
+  border-left: 2px solid var(--border);
+  border-right: 2px solid var(--border);
 }
 
 .total {
@@ -397,7 +390,7 @@
   z-index: 20;
   display: flex;
   background: var(--bg);
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .tabs button {
@@ -519,7 +512,7 @@
   gap: 16px;
   padding: 16px;
   background: var(--n-200);
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
 }
 
 /* 좁은 화면에서는 점수 아래에 별점을 두고, 분포 막대에 폭을 넘긴다. */
@@ -593,14 +586,14 @@
   width: 100%;
   min-height: 46px;
   margin-top: 16px;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   font-size: 14px;
   font-weight: 800;
 }
 
 .revMore:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .revScore {
@@ -706,7 +699,7 @@
   height: var(--bar-h);
   padding: 0 16px;
   background: var(--bg);
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
 }
 
 .wish {
@@ -716,7 +709,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
 }
 
 .wish[aria-pressed="true"] {
@@ -734,24 +727,24 @@
   padding: 0 16px;
   font-weight: 800;
   font-size: 15px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 .btn:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .btnGhost {
   background: none;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   color: var(--text);
 }
 
 .btnGhost:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 /* ── 없는 상품 ────────────────────────── */
@@ -780,15 +773,15 @@
   align-items: center;
   min-height: 48px;
   padding: 0 24px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 15px;
 }
 
 .missingLink:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 /* ── Tablet / desktop ─────────────────── */
@@ -844,7 +837,7 @@
   }
 
   .gallery {
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
   }
 
   .track {
@@ -881,7 +874,7 @@
     position: sticky;
     top: calc(var(--header-h) + 24px);
     margin-left: 24px;
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     background: var(--bg);
   }
 

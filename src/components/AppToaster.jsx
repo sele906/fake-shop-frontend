@@ -46,7 +46,7 @@ export default function AppToaster() {
       toastOptions={{
         style: {
           background: "var(--text)",
-          color: "#fff",
+          color: "var(--on-text)",
           border: 0,
           borderRadius: 0,
           boxShadow: "none",

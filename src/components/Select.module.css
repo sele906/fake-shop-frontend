@@ -31,7 +31,7 @@
   min-height: 46px;
   padding: 0 13px;
   border: 1px solid var(--n-400);
-  background: #fff;
+  background: var(--card);
   color: var(--text);
   font-size: 14px;
 }
@@ -81,8 +81,8 @@
   z-index: 20;
   margin: 0;
   padding: 6px 0;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
   list-style: none;
 }
 

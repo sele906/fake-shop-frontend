@@ -13,13 +13,14 @@
   gap: 12px;
   height: 68px;
   padding: 0 32px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background: var(--bg);
 }
 
 /* Detail · Cart와 같은 하위 페이지 헤더 구조 — [←] [제목] [오른쪽 묶음].
    화살표의 aria-label은 동작 이름("뒤로")이고, 페이지가 어디인지는 제목이 맡는다. */
 .iconBtn {
+  font-size: var(--icon-size);
   flex: none;
   width: 44px;
   height: 44px;
@@ -102,7 +103,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 16px 20px;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   border-bottom: 0;
   background: var(--n-100);
 }
@@ -124,17 +125,28 @@
 }
 
 .mapHead strong.etaDone {
-  border-color: var(--text);
-  background: var(--accent);
-  color: #fff;
+  border-color: var(--border);
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 /* ── Fake map ─────────────────────────── */
+
+/* 지도 면은 이 페이지에만 있어 index.css로 올리지 않는다.
+   경로의 흰 테(.routeCasing) · 정류장 점(.point circle) · 마커 외곽선은
+   전부 "지도 바탕을 오려낸 자리"라 바탕과 같은 색이어야 한다. 다크에서
+   흰색으로 남으면 어두운 지도 위에 흰 선이 그려진다. */
 .fakeMap {
+  --map-bg: #fbfcfd;
+
   position: relative;
   overflow: hidden;
-  border: 2px solid var(--text);
-  background: #fbfcfd;
+  border: 2px solid var(--border);
+  background: var(--map-bg);
+}
+
+:global(html[data-theme="dark"]) .fakeMap {
+  --map-bg: #20242a;
 }
 
 .fakeMap svg {
@@ -179,7 +191,7 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   paint-order: stroke;
-  stroke: #fbfcfd;
+  stroke: var(--map-bg);
   stroke-width: 3;
 }
 
@@ -193,7 +205,7 @@
 }
 
 .routeCasing {
-  stroke: #fff;
+  stroke: var(--map-bg);
   stroke-width: 12;
   opacity: 0.9;
 }
@@ -213,7 +225,7 @@
 
 /* stops */
 .point circle {
-  fill: #fff;
+  fill: var(--map-bg);
   stroke: var(--n-500);
   stroke-width: 3;
 }
@@ -224,7 +236,7 @@
   font-size: 11px;
   font-weight: 600;
   paint-order: stroke;
-  stroke: #fbfcfd;
+  stroke: var(--map-bg);
   stroke-width: 4;
 }
 
@@ -245,18 +257,19 @@
 
 .markerBody {
   fill: var(--text);
-  stroke: #fff;
+  stroke: var(--map-bg);
   stroke-width: 4;
 }
 
+/* 아이콘은 마커 몸통(--text) 위에 있으므로 그 짝인 --on-text를 쓴다. */
 .markerIcon rect {
   fill: none;
-  stroke: #fff;
+  stroke: var(--on-text);
   stroke-width: 1.8;
 }
 
 .markerIcon line {
-  stroke: #fff;
+  stroke: var(--on-text);
   stroke-width: 1.8;
 }
 
@@ -276,8 +289,8 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
@@ -299,7 +312,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 10px 14px;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
   background: var(--n-100);
 }
 
@@ -337,7 +350,7 @@
   margin: 0;
   padding: 12px 14px;
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
   font-size: 12px;
   line-height: 1.55;
   animation: toastIn 220ms ease-out both;
@@ -345,7 +358,7 @@
 
 .mapToast strong {
   margin-right: 6px;
-  color: #fff;
+  color: var(--on-text);
 }
 
 @keyframes toastIn {
@@ -365,8 +378,8 @@
   position: sticky;
   top: 92px;
   padding: 26px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
 }
 
 .statusHead {
@@ -378,8 +391,8 @@
 
 .statusHead span {
   padding: 5px 9px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -533,7 +546,7 @@
   gap: 16px;
   margin: 0;
   padding: 14px 0;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
   font-size: 13px;
 }
 
@@ -547,20 +560,22 @@
   margin-top: 16px;
   padding: 12px 16px;
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
   font-size: 14px;
   font-weight: 800;
 }
 
+/* 잉크 면 → 파란 면으로 바뀌므로 잉크도 같이 바꾼다. Coupon의 같은 버튼 참고. */
 .deliveryCard > button:hover {
-  background: var(--accent);
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 /* ── Timeline ─────────────────────────── */
 .timeline {
   margin-top: 56px;
   padding-top: 32px;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
 }
 
 .timeline > div h2 {
@@ -613,13 +628,18 @@
 }
 
 .timeline li[aria-current="step"] {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
+/* 파란 면 위 잉크라 반전되면 안 된다. --accent-100은 페이지 배경 위 틴트
+   자리와 이름을 공유해서 다크에서 진한 남색이 되고, strong(--on-accent)만
+   흰색으로 남아 글자색이 섞여 나왔다. 셋 다 흰색으로 통일한다.
+   li 자체가 이미 --on-accent지만, .timeline li > span과 .timeline li p가
+   각각 --n-500 · --n-600을 잡고 있어 이 규칙이 있어야 이긴다. */
 .timeline li[aria-current="step"] > span,
 .timeline li[aria-current="step"] p {
-  color: var(--accent-100);
+  color: var(--on-accent);
 }
 
 .timeline .completed {
@@ -682,9 +702,9 @@
   position: relative;
   max-width: min(520px, calc(100vw - 32px));
   padding: 30px 40px;
-  border: 3px solid var(--text);
-  background: var(--accent);
-  color: #fff;
+  border: 3px solid var(--border);
+  background: var(--accent-fill);
+  color: var(--on-accent);
   text-align: center;
   box-shadow:
     10px 10px 0 var(--text),

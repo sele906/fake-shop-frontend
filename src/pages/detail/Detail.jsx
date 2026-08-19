@@ -17,7 +17,7 @@ import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { copyText } from "../../lib/clipboard";
 import useGoBack from "../../hooks/useGoBack";
 import useBottomBar from "../../hooks/useBottomBar";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 import usePrice from "../../lib/usePrice";
 
 import {
@@ -258,11 +258,11 @@ export default function Detail() {
             aria-label={t("back")}
             onClick={goBack}
           >
-            <BiChevronLeft size={22} aria-hidden="true" />
+            <BiChevronLeft aria-hidden="true" />
           </button>
           <div className={styles.title}>{t("notFound.headerTitle")}</div>
 
-          <LanguageToggle />
+          <AccountMenu />
         </header>
 
         <div className={styles.missing}>
@@ -297,7 +297,7 @@ export default function Detail() {
           aria-label={t("backToList")}
           onClick={goBack}
         >
-          <BiChevronLeft size={22} aria-hidden="true" />
+          <BiChevronLeft aria-hidden="true" />
         </button>
 
         <div className={styles.title}>{product.name}</div>
@@ -311,7 +311,7 @@ export default function Detail() {
             aria-label={t("share")}
             onClick={share}
           >
-            <BiShareAlt size={19} aria-hidden="true" />
+            <BiShareAlt aria-hidden="true" />
           </button>
 
           <Link
@@ -319,13 +319,11 @@ export default function Detail() {
             to="/cart"
             aria-label={t("cartAria", { count: cartCount })}
           >
-            <BiCart size={20} aria-hidden="true" />
+            <BiCart aria-hidden="true" />
             {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
           </Link>
 
-          <div className={styles.toggleAdjust}>
-            <LanguageToggle />
-          </div>
+          <AccountMenu />
         </div>
       </header>
 

@@ -28,7 +28,7 @@
 /* 혜택만 흰 판에 얹어 쿠폰 조각처럼 보이게 한다. */
 .benefit {
   padding: 3px 9px;
-  background: #fff;
+  background: var(--card);
   color: var(--accent-900);
   font-size: 12px;
   font-weight: 800;

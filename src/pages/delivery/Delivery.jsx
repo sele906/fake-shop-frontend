@@ -6,7 +6,7 @@ import { clearOrder, readOrder } from "../../order/orderStorage";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 import usePrice from "../../lib/usePrice";
 
 import { BiChevronLeft } from "react-icons/bi";
@@ -158,12 +158,12 @@ export default function Delivery() {
           aria-label={t("back")}
           onClick={goBack}
         >
-          <BiChevronLeft size={22} aria-hidden="true" />
+          <BiChevronLeft aria-hidden="true" />
         </button>
 
         <h1 className={styles.headerTitle}>{t("headerTitle")}</h1>
 
-        <LanguageToggle />
+        <AccountMenu />
       </header>
 
       <main className={styles.main}>

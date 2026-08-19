@@ -2,10 +2,7 @@
   "header": {
     "openCategories": "Open categories",
     "cartAria_one": "Cart, {{count}} item",
-    "cartAria_other": "Cart, {{count}} items",
-    "userMenu": "User menu",
-    "login": "Pretend to log in",
-    "cart": "Things you won't buy"
+    "cartAria_other": "Cart, {{count}} items"
   },
   "footer": {
     "hireTitle": "The developer who built this",
@@ -32,7 +29,14 @@
       "weekly": "Still not buying",
       "new": "New-ish",
       "picked": "Picked for no reason"
-    },
-    "login": "Pretend to log in"
+    }
+  },
+  "account": {
+    "open": "Account",
+    "login": "Pretend to log in",
+    "theme": "Appearance",
+    "light": "Day",
+    "dark": "Night",
+    "language": "Language"
   }
 }

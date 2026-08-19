@@ -1,10 +1,7 @@
 {
   "header": {
     "openCategories": "카테고리 열기",
-    "cartAria_other": "장바구니 {{count}}개",
-    "userMenu": "사용자 메뉴",
-    "login": "로그인하는 척",
-    "cart": "안 살 것들"
+    "cartAria_other": "장바구니 {{count}}개"
   },
   "footer": {
     "hireTitle": "이 사이트를 만든 개발자",
@@ -31,7 +28,14 @@
       "weekly": "이번 주도 안 살 것들",
       "new": "방금 들어온 척",
       "picked": "안삼이 괜히 골라봄"
-    },
-    "login": "로그인 척하기"
+    }
+  },
+  "account": {
+    "open": "계정",
+    "login": "로그인하는 척",
+    "theme": "화면",
+    "light": "라이트",
+    "dark": "다크",
+    "language": "언어"
   }
 }

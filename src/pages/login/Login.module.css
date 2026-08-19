@@ -34,7 +34,7 @@
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .help {
@@ -55,7 +55,12 @@
 }
 
 /* 좁은 화면에서는 왼쪽 패널을 숨긴다. */
+/* 900px 이상에서 화면 왼쪽 절반을 차지하는 색면이다. 라이트에서는 파랑,
+   다크에서는 진한 남색으로 두 모드 다 어두우므로 안쪽은 라이트 팔레트를 쓴다.
+   composes는 미디어쿼리 안에 못 넣어서 숨어 있는 이 규칙에 붙인다. */
 .aside {
+  composes: onDark from global;
+
   display: none;
 }
 
@@ -99,7 +104,7 @@
 /* ── Tabs ─────────────────────────────── */
 .tabs {
   display: flex;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
 }
 
 .tabs button {
@@ -111,12 +116,12 @@
 }
 
 .tabs button + button {
-  border-left: 2px solid var(--text);
+  border-left: 2px solid var(--border);
 }
 
 .tabs button[aria-selected="true"] {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 /* ── Form ─────────────────────────────── */
@@ -143,8 +148,8 @@
   gap: 8px;
   height: 52px;
   padding: 0 14px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
 }
 
 .control:focus-within {
@@ -221,14 +226,14 @@
   height: 20px;
   flex: none;
   border: 2px solid var(--n-500);
-  background: #fff;
+  background: var(--card);
   display: grid;
   place-content: center;
   cursor: pointer;
 }
 
 .check input:checked {
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 
@@ -237,8 +242,8 @@
   content: "";
   width: 10px;
   height: 5px;
-  border-left: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  border-left: 2px solid var(--on-accent);
+  border-bottom: 2px solid var(--on-accent);
   transform: rotate(-45deg) translateY(-1px);
 }
 
@@ -251,15 +256,15 @@
   justify-content: center;
   gap: 8px;
   padding: 0 16px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 16px;
 }
 
 .btn:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .divide {
@@ -290,8 +295,8 @@
   justify-content: center;
   gap: 8px;
   min-height: 50px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
   font-size: 14px;
   font-weight: 800;
   color: inherit;
@@ -299,7 +304,7 @@
 
 .social:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .social i {
@@ -316,7 +321,7 @@
 }
 
 .social:hover i {
-  background: #fff;
+  background: var(--card);
 }
 
 .footNote {
@@ -374,16 +379,25 @@
     justify-content: space-between;
     gap: 32px;
     padding: 48px 40px;
-    background: var(--accent);
-    color: #fff;
-    border-right: 2px solid var(--text);
+    background: var(--accent-fill);
+    color: var(--on-accent);
+    border-right: 2px solid var(--border);
+  }
+
+  /* 다크에서 밝은 파란 반쪽이 화면을 지배해서 Promo .feature와 같은 진한
+     남색으로 눌렀다. 흰 글자 대비가 4.61 → 15.06이 된다. 대신 면이 페이지
+     배경과 1.11까지 붙으므로 위의 border-right가 유일한 경계가 된다.
+     onDark 덕분에 --accent-900이 반전되지 않고 #172548로 풀린다.
+     미디어쿼리는 특정도를 안 올리므로 (0,2,1)인 이 규칙이 위를 이긴다. */
+  :global(html[data-theme="dark"]) .aside {
+    background: var(--accent-900);
   }
 
   .asideTop {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    max-width: 420px;
+    max-width: 500px;
   }
 
   .kicker {

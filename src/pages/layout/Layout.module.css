@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 10px;
   height: var(--header-h);
   padding: 0 32px;
   background: var(--bg);
@@ -35,31 +35,15 @@
   color: var(--accent);
 }
 
-.utils {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 13px;
-  color: var(--n-700);
-  white-space: nowrap;
-}
-
-.utils .cart {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text);
-  font-weight: 600;
-}
-
 .badge {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 11px;
   padding: 1px 5px;
 }
 
 .hamburger {
+  font-size: var(--icon-size);
   display: none;
   width: 44px;
   height: 44px;
@@ -68,9 +52,13 @@
   color: var(--text);
 }
 
+/* 햄버거와 달리 폭에 상관없이 보인다. 데스크톱에서 글자 링크로 바뀌던
+   장바구니(.utils)를 없애고 아이콘 하나로 통일했다 — 계정도 아이콘이라
+   같은 줄에 글자와 아이콘이 섞이면 두 조작이 다른 종류로 보인다. */
 .iconBtn {
+  font-size: var(--icon-size);
   position: relative;
-  display: none;
+  display: flex;
   width: 44px;
   height: 44px;
   align-items: center;
@@ -101,7 +89,7 @@
   flex: none;
   height: calc(100vh - var(--header-h));
   overflow-y: auto;
-  border-right: 2px solid var(--text);
+  border-right: 2px solid var(--border);
   padding: 24px 0;
   display: flex;
   flex-direction: column;
@@ -265,7 +253,7 @@
 }
 
 .drawerClose {
-  font-size: 20px;
+  font-size: var(--icon-size);
   line-height: 1;
   width: 44px;
   height: 44px;
@@ -274,29 +262,10 @@
   justify-content: flex-end;
 }
 
-.drawerFoot {
-  display: none;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 800;
-  font-size: 14px;
-  padding: 12px 20px;
-}
-
-.btn:hover {
-  background: var(--accent-600);
-  color: #fff;
-}
-
 /* ── Footer ───────────────────────────── */
 .footer {
   padding: 32px 40px 56px;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
   display: flex;
   flex-wrap: wrap;
   gap: 24px 48px;
@@ -396,7 +365,7 @@
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(28, 30, 36, 0.55);
+  background: var(--scrim);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
@@ -415,16 +384,16 @@
   }
 }
 
-/* ≤900px : 사이드바가 드로어로 바뀌고 헤더가 아이콘만 남는다. */
+/* ≤900px : 사이드바가 드로어로 바뀌고 햄버거가 나온다.
+   헤더 아이콘(.iconBtn)은 이제 폭에 상관없이 보이므로 여기 없다. */
 @media (max-width: 899.98px) {
-  .hamburger,
-  .iconBtn {
+  .hamburger {
     display: flex;
   }
 
   .header {
     padding: 0 16px;
-    gap: 12px;
+    gap: 10px;
   }
 
   .headerLeft {
@@ -433,10 +402,6 @@
 
   .brand {
     font-size: 17px;
-  }
-
-  .utils {
-    display: none;
   }
 
   .sidebar {
@@ -448,7 +413,7 @@
     width: min(300px, 84vw);
     height: 100%;
     background: var(--bg);
-    border-right: 2px solid var(--text);
+    border-right: 2px solid var(--border);
     padding: 0 0 16px;
     gap: 0;
     transform: translateX(-100%);
@@ -465,7 +430,7 @@
     justify-content: space-between;
     height: 56px;
     padding: 0 16px;
-    border-bottom: 2px solid var(--text);
+    border-bottom: 2px solid var(--border);
     flex: none;
   }
 
@@ -498,19 +463,6 @@
 
   .promo a {
     font-size: 15px;
-  }
-
-  .drawerFoot {
-    display: block;
-    margin-top: auto;
-    padding: 16px;
-    border-top: 2px solid var(--text);
-  }
-
-  .drawerFoot .btn {
-    width: 100%;
-    justify-content: center;
-    padding: 13px 16px;
   }
 
   .footer {

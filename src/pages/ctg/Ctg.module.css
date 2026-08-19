@@ -22,7 +22,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .catHero h1 {
@@ -154,7 +154,7 @@
   gap: 6px;
   height: 40px;
   padding: 0 12px;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   font-size: 13px;
   font-weight: 800;
 }
@@ -193,8 +193,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 11px;
   font-weight: 800;
   padding: 3px 7px;
@@ -241,7 +241,7 @@
 }
 
 .more button {
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   font-weight: 800;
   font-size: 14px;
   min-height: 48px;
@@ -250,7 +250,7 @@
 
 .more button:hover:not(:disabled) {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .more button:disabled {
@@ -283,8 +283,8 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 14px;
   padding: 12px 20px;
@@ -292,7 +292,7 @@
 
 .btn:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 /* ── Responsive ─── 기준점은 index.css 상단 주석 참고 ─── */

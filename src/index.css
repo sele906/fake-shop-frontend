@@ -2,6 +2,8 @@
    여기서 @import 하면 CSS 요청이 직렬로 이어져 첫 렌더가 그만큼 늦다. */
 
 :root {
+  color-scheme: light;
+
   /* Accent ramp — #4B70D3 */
   --accent: #4b70d3;
   --accent-100: #eff2fc;
@@ -29,11 +31,172 @@
   --n-900: #2a2d35;
   --rule: #b3b3b3;
 
+  /* 면과 잉크 — 라이트에서 값이 겹쳐 지금까지 토큰 없이 버티던 것들.
+     다크에서 전부 갈라진다. 괄호 안은 코드베이스에서 쓰이는 자리 수.
+
+       --card         #fff 였던 면            (26)
+       --border       var(--text) 였던 테두리 (95)
+       --accent-fill  흰 글자를 얹는 파란 면   (35)
+       --on-accent    accent 면 위 흰 글자    (88)
+       --on-text      --text 면 위 흰 글자    (19)
+       --scrim        모달 · 드로어 뒤 막      (3)
+
+     1px 실선은 이미 --n-300이 59곳을 잡고 있어 따로 토큰을 두지 않는다.
+
+     --accent-fill은 --accent와 값이 같지만 다크에서 갈라진다. --accent는
+     페이지 배경 위 글자라 밝아져야 하고(#7290e8), 면은 그 위에 흰 글자를
+     얹으므로 밝아지면 안 된다. 한 토큰이 두 방향을 못 맡는다.
+     hover 짝은 --accent-600이다 — 이것도 다크에서 안 바뀐다. */
+  --card: #ffffff;
+  --border: #1c1e24;
+  --accent-fill: #4b70d3;
+  --on-accent: #ffffff;
+  --on-text: #ffffff;
+  --scrim: rgb(28 30 36 / 55%);
+
   --font: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo",
     "Malgun Gothic", sans-serif;
 
   --header-h: 68px;
   --sidebar-w: 240px;
+
+  /* 헤더 아이콘 크기. react-icons는 size 프롭이 없으면 1em으로 그려지므로,
+     아이콘을 감싼 버튼에 font-size로 걸면 여기 한 줄로 12개가 같이 움직인다.
+     전에는 JSX에 size={19} ~ size={24}가 흩어져 있어 같은 헤더 안에서도
+     크기가 달랐다. 버튼은 44px이라 24px이면 사방 10px이 남는다.
+     본문 아이콘(장바구니 삭제 · 로그인 입력칸)은 이 값을 쓰지 않는다. */
+  --icon-size: 24px;
+}
+
+/* ── 다크모드 ─────────────────────────────
+   아직 아무도 <html data-theme="dark">를 붙이지 않는다. 토큰만 먼저 심어 둔
+   것이고, 지금 켜면 아직 안 옮긴 #fff 119곳이 그대로 흰 판으로 남는다.
+   페이지별 이관이 끝난 뒤 index.html에 부팅 스크립트를 넣어 켠다.
+
+   OS 설정(prefers-color-scheme)은 CSS가 아니라 그 부팅 스크립트가 읽는다.
+   미디어쿼리와 속성 선택자를 둘 다 두면 팔레트가 두 벌이 되어 34개 토큰이
+   전부 짝 맞추기 대상이 된다 — 이 파일 아래 Breakpoints 주석이 경고하는
+   그 문제다. 갈래는 JS에 한 군데만 둔다.
+
+   ★ 램프를 통째로 반전하면 안 된다.
+   accent 램프는 두 가지 자리에 쓰이고 둘의 방향이 반대다.
+
+     페이지 배경(--bg/--card) 위   → 반전한다. 다크에서 밝아져야 읽힌다
+     accent 면 위                  → 반전하면 안 된다. 면이 두 모드 다 파랗다
+
+   같은 토큰이 두 자리를 겸한다. --accent-900은 Careers·Company·Help·
+   Privacy·Promo·Coupon에서 히어로 배경(진한 남색)인 동시에 연한 틴트 위
+   글자색이고, --accent-100은 틴트 배경인 동시에 그 히어로 위 본문색이다.
+   그래서 아래 블록은 "페이지 배경 위" 자리만 반전하고, "accent 면 위"는
+   .onAccent가 라이트 값으로 되돌린다. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* 100=가장 어둡고 900=가장 밝다. 라이트와 정반대. */
+  --accent: #7290e8;
+  --accent-100: #1e2532;
+  --accent-200: #263043;
+  --accent-300: #4b5e85;
+  --accent-400: #5a6f9c;
+  --accent-500: #6079b4;
+  --accent-700: #a3b8ef;
+  --accent-800: #c6d3f7;
+  --accent-900: #e2e9fd;
+
+  /* 여기 없는 토큰은 일부러 없는 것이다 — 라이트 값을 그대로 물려받는다.
+
+       --accent-fill  면은 그 위에 흰 글자를 얹으므로 밝아지면 안 된다.
+                      #fff 대비 4.61이 유지된다
+       --accent-600   --accent-fill의 hover. 반전시키면 hover가 버튼을 밝게
+                      만들어 흰 글자 대비가 2.94까지 떨어진다 (#7b95d8)
+       --on-accent    양쪽 모드 다 #fff */
+
+  /* 완전한 검정 대신 살짝 푸른 회색. 카드가 배경보다 한 단계 위. */
+  --bg: #1b1e23;
+  --surface: #22262c;
+  --card: #262a31;
+  --text: #e4e7ec;
+  --on-text: #1b1e23;
+
+  /* 라이트에서 --border는 --text와 같은 값(잉크로 그은 선)이지만 다크에서
+     흰 선을 2px씩 그으면 눈이 아프다. 별도 값으로 눌렀다 — 배경 대비 2.97.
+     라이트의 15.27에서 크게 내려온 값이라 실기기에서 한 번 봐야 한다. */
+  --border: #5e6879;
+  --rule: #454c56; /* 라이트 --rule의 배경 대비 1.92를 맞춘 값 */
+  --scrim: rgb(10 12 15 / 66%);
+
+  --n-100: #212429;
+  --n-200: #282c33;
+  --n-300: #343940;
+  --n-400: #4b515b;
+  --n-500: #767d89;
+  --n-600: #98a0ab;
+  --n-700: #b6bdc7;
+  --n-800: #d1d7df;
+  --n-900: #e8ebf0;
+}
+
+/* 상품 사진은 Pexels 사진이라 토큰을 안 탄다. 카드만 어두워지면 사진이
+   혼자 밝게 떠오르므로 살짝 눌러 준다. 라이트에서는 걸지 않는다. */
+:root[data-theme="dark"] img {
+  opacity: 0.92;
+}
+
+/* 어두운 면 안에서는 팔레트를 라이트 값으로 되돌린다.
+
+   accent 면(파랑 · 남색)과 사진 히어로는 두 모드에서 똑같이 어둡다. 그 위에
+   얹히는 것도 똑같아야 하는데, 토큰만 반전시키면 전부 뒤집힌다. 면을 그리는
+   요소에 이 클래스를 얹으면 그 안의 var(--...)가 라이트 값으로 풀린다 —
+   호출부는 한 줄도 고치지 않는다. 자기 자신의 background에도 적용되므로
+   면을 그리는 규칙과 같은 요소에 붙이면 된다.
+
+     .hero { composes: onDark from global; background: var(--accent-900); }
+     <div className={`${styles.hero} onDark`}>          (둘 중 아무거나)
+
+   붙일 곳 — 두 모드에서 똑같이 어두운 면이면서, 안에 토큰을 쓰는 자식이 있는 것
+     · --accent-900 히어로 6개 (Careers · Company · Help · Privacy · Coupon · Promo)
+     · 사진이 깔리는 히어로 (Main.hero) 와 사진 위 스크림 (Detail.dots)
+     · 어두운 중성 판 (Coupon.achievements — background: var(--n-900))
+     · accent 면 중 자식이 토큰을 쓰는 것 (Checkout.dopa 안의 .dbar i)
+   안 붙여도 되는 곳
+     · 잎사귀 면 — 버튼 · 배지 · 태그. --accent-fill + --on-accent로 끝난다
+     · 색만 칠하는 얇은 바(진행률 · 평점 막대). 그건 페이지 배경 위라
+       다크에서 밝아져야 하므로 반전된 --accent가 맞다
+
+   --card · --text를 되돌리는 것은 진한 면 위에 흰 칩을 올리는 자리가 있어서다
+   (Careers.quickLinks · Main.btnGhost:hover). 덕분에 background: #fff를
+   전부 var(--card)로 적을 수 있다 — 흰지 어두운지는 이 클래스가 정한다.
+
+   --bg · --surface · --border · --rule은 일부러 되돌리지 않는다. 넷 다 이 면이
+   아니라 페이지를 가리킨다. 특히 어두운 면에 붙은 --border 10곳은 전부 그
+   면의 바깥 테두리(히어로 아래 선 · Login .aside 오른쪽 선 · 슬라이더 썸)라
+   페이지와 맞닿는다 — 안쪽이 아니라 바깥을 가르는 선이므로 다크 값이 맞다.
+   어두운 면 "안"에서 넷 중 하나라도 쓰는 곳은 지금 한 군데도 없다. */
+.onDark {
+  --accent: #4b70d3;
+  --accent-100: #eff2fc;
+  --accent-200: #dce3f8;
+  --accent-300: #bfccf2;
+  --accent-400: #93a9e6;
+  --accent-500: #6c8add;
+  --accent-600: #3a5cbd;
+  --accent-700: #2b4798;
+  --accent-800: #1e3270;
+  --accent-900: #172548;
+
+  --n-100: #f6f7f9;
+  --n-200: #e8eaee;
+  --n-300: #d4d7de;
+  --n-400: #b6bac4;
+  --n-500: #979ca8;
+  --n-600: #797e8b;
+  --n-700: #5c616d;
+  --n-800: #414550;
+  --n-900: #2a2d35;
+
+  --card: #ffffff;
+  --text: #1c1e24;
+  --on-text: #ffffff;
 }
 
 /* ── Breakpoints ──────────────────────────

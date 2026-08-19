@@ -1,8 +1,8 @@
 /* 절약 영수증. 결제 완료 화면과 공유 링크 화면이 함께 쓴다.
    색상 · 폰트는 index.css의 :root를 그대로 쓴다. */
 .receipt {
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
 }
 
 .receiptHead {
@@ -90,7 +90,7 @@
 
 .badge {
   padding: 7px 10px;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   background: var(--accent-100);
   color: var(--accent-800);
   font-size: 12px;

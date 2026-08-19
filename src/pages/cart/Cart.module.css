@@ -62,6 +62,7 @@
 }
 
 .iconBtn {
+  font-size: var(--icon-size);
   position: relative;
   width: 44px;
   height: 44px;
@@ -109,7 +110,7 @@
   gap: 8px;
   padding: 14px 16px;
   background: var(--accent-100);
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .ship p {
@@ -161,12 +162,12 @@
   display: grid;
   place-content: center;
   border: 2px solid var(--n-500);
-  background: #fff;
+  background: var(--card);
   cursor: pointer;
 }
 
 .check input:checked {
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 
@@ -174,8 +175,8 @@
   content: "";
   width: 11px;
   height: 6px;
-  border-left: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  border-left: 2px solid var(--on-accent);
+  border-bottom: 2px solid var(--on-accent);
   transform: rotate(-45deg) translateY(-1px);
 }
 
@@ -197,7 +198,7 @@
 
 /* ── Seller group + items ─────────────── */
 .group {
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .groupHead {
@@ -317,7 +318,7 @@
   display: flex;
   align-items: center;
   width: max-content;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
 }
 
 .qty button {
@@ -346,8 +347,8 @@
   line-height: 38px;
   text-align: center;
   font-weight: 800;
-  border-left: 2px solid var(--text);
-  border-right: 2px solid var(--text);
+  border-left: 2px solid var(--border);
+  border-right: 2px solid var(--border);
 }
 
 .flag {
@@ -367,7 +368,7 @@
 /* ── Coupon + summary ─────────────────── */
 /* ── Coupons ──────────────────────────── */
 .couponBox {
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background: var(--bg);
 }
 
@@ -377,7 +378,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid var(--text);
+  border-bottom: 1px solid var(--border);
 }
 
 .couponTitle strong {
@@ -415,7 +416,7 @@
 
 .selectAll:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .couponList {
@@ -439,7 +440,7 @@
 }
 
 .couponItem:hover {
-  background: #fff;
+  background: var(--card);
 }
 
 .couponItem input {
@@ -467,7 +468,7 @@
 
 .couponCode {
   display: flex;
-  border-top: 1px solid var(--text);
+  border-top: 1px solid var(--border);
 }
 
 .couponCode input {
@@ -476,7 +477,7 @@
   height: 46px;
   padding: 0 14px;
   border: 0;
-  background: #fff;
+  background: var(--card);
   font-family: inherit;
   font-size: 14px;
 }
@@ -487,7 +488,7 @@
 
 .couponCode button {
   padding: 0 18px;
-  border-left: 1px solid var(--text);
+  border-left: 1px solid var(--border);
   font-weight: 800;
   font-size: 14px;
   white-space: nowrap;
@@ -495,7 +496,7 @@
 
 .couponCode button:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .sum {
@@ -530,7 +531,7 @@
 .sumRow.grand {
   margin-top: 8px;
   padding-top: 14px;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
 }
 
 .sumRow.grand span:first-child {
@@ -563,7 +564,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 28px 16px 40px;
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
 }
 
 .rec h2 {
@@ -642,7 +643,7 @@
   gap: 10px;
   padding: 12px 16px 14px;
   background: var(--bg);
-  border-top: 2px solid var(--text);
+  border-top: 2px solid var(--border);
 }
 
 .checkoutRow {
@@ -666,15 +667,15 @@
   justify-content: center;
   gap: 8px;
   padding: 0 16px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 15px;
 }
 
 .btn:hover {
   background: var(--accent-600);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .btn[disabled] {
@@ -711,16 +712,16 @@
   }
 
   .ship {
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
   }
 
   .selbar {
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     border-top: 0;
   }
 
   .group {
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     border-top: 0;
   }
 
@@ -735,7 +736,7 @@
   }
 
   .side {
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     border-top: 0;
   }
 
@@ -758,7 +759,7 @@
     position: static;
     padding: 20px;
     border: 0;
-    border-top: 2px solid var(--text);
+    border-top: 2px solid var(--border);
   }
 
   .rec {

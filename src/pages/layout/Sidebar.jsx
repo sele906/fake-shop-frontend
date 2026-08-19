@@ -47,7 +47,7 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
           aria-label={t("sidebar.close")}
           onClick={onClose}
         >
-          <BiX size={24} aria-hidden="true" />
+          <BiX aria-hidden="true" />
         </button>
       </div>
 
@@ -134,11 +134,6 @@ export default function Sidebar({ isOpen, onClose, onNavigate }) {
         ))}
       </nav>
 
-      <div className={styles.drawerFoot}>
-        <Link className={styles.btn} to="/login" onClick={onNavigate}>
-          {t("sidebar.login")}
-        </Link>
-      </div>
     </aside>
   );
 }

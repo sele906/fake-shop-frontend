@@ -12,7 +12,7 @@ import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
 import useBottomBar from "../../hooks/useBottomBar";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 import usePrice from "../../lib/usePrice";
 
 import { BiChevronLeft, BiX } from "react-icons/bi";
@@ -214,7 +214,7 @@ export default function Cart() {
           aria-label={t("back")}
           onClick={goBack}
         >
-          <BiChevronLeft size={22} aria-hidden="true" />
+          <BiChevronLeft aria-hidden="true" />
         </button>
 
         <h1>
@@ -225,7 +225,7 @@ export default function Cart() {
           {t("keepShopping")}
         </Link>
 
-        <LanguageToggle />
+        <AccountMenu />
       </header>
 
       <div className={`${styles.wrap} ${styles.cols}`}>

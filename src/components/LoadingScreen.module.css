@@ -38,9 +38,9 @@
 
 .retry {
   padding: 10px 20px;
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
   font-family: var(--font);
   font-size: 14px;
   font-weight: 600;
@@ -48,7 +48,7 @@
 }
 
 .retry:hover {
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 

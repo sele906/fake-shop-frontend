@@ -28,7 +28,7 @@
   display: grid;
   height: 100%;
   place-items: center;
-  color: #fff;
+  color: var(--on-accent);
   font-style: normal;
   font-weight: 800;
   content: "%";
@@ -65,11 +65,13 @@
 
 /* ── Hero ─────────────────────────────── */
 .hero {
+  composes: onDark from global;
+
   position: relative;
   padding: 68px 40px 58px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background-color: var(--accent-900);
-  color: #fff;
+  color: var(--on-accent);
   overflow: hidden;
 }
 
@@ -133,14 +135,14 @@
 .heroActions button {
   min-height: 46px;
   padding: 11px 20px;
-  border: 2px solid #fff;
-  color: #fff;
+  border: 2px solid var(--on-accent);
+  color: var(--on-accent);
   font-size: 14px;
   font-weight: 800;
 }
 
 .heroActions button:first-child {
-  background: #fff;
+  background: var(--card);
   color: var(--text);
 }
 
@@ -154,7 +156,7 @@
 .tabs {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
   background: var(--bg);
 }
 
@@ -177,7 +179,7 @@
 
 .tabs button[aria-pressed="true"] {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
   font-weight: 800;
 }
 
@@ -194,7 +196,7 @@
   justify-content: space-between;
   gap: 24px;
   padding-bottom: 22px;
-  border-bottom: 2px solid var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .sectionHead span {
@@ -236,8 +238,8 @@
   min-width: 0;
   min-height: 390px;
   padding: 22px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
   box-shadow: 5px 5px 0 var(--n-300);
 }
 
@@ -268,8 +270,8 @@
 }
 
 .badges strong {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 .badges span {
@@ -332,13 +334,17 @@
   min-height: 44px;
   padding: 10px 14px;
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
   font-size: 13px;
   font-weight: 800;
 }
 
+/* 기본은 잉크 면(--text) + 흰 글자인데 hover에서 파란 면으로 바뀐다.
+   면이 바뀌면 잉크도 같이 바꿔야 한다 — 다크에서 --on-text는 어두워지므로
+   그대로 두면 파란 면에 어두운 글자가 남는다. */
 .couponCard > button:hover:not(:disabled) {
-  background: var(--accent);
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 .couponCard > button:disabled {
@@ -347,10 +353,99 @@
   cursor: default;
 }
 
+/* ── 쿠폰 카드 · 다크 ──────────────────────
+   카드가 4색 로테이션이라 index.css로 올릴 수 없다. 이 페이지에만 있는 색이다.
+
+   슬레이트(기본 --card)와 블루(--accent-100)는 토큰이 이미 맞는 값을 낸다.
+   #1e2532는 초안과 글자까지 같고, 잉크 대비도 --accent-700 7.80 · --n-600 5.82로
+   충분하다. 손대야 하는 건 라이트 값이 그대로 박혀 있는 앰버 · 민트 둘뿐이다.
+
+   두 면은 따뜻한/차가운 색조라 중성 램프(--n-600은 푸른 회색)를 얹으면
+   면과 잉크의 색온도가 어긋난다. 그래서 잉크도 면마다 따로 잡는다. */
+
+/* 그림자는 면보다 어두워야 한다. --n-300은 다크에서 #343940이라 카드(#262a31)
+   보다 밝아서 그림자가 아니라 글로우로 보인다. */
+:global(html[data-theme="dark"]) .couponCard {
+  box-shadow: 5px 5px 0 #15181d;
+}
+
+:global(html[data-theme="dark"]) .walletList li {
+  box-shadow: 4px 4px 0 #15181d;
+}
+
+/* 앰버 */
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) {
+  background: #2a2419;
+  color: #efe6d4;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) > b {
+  color: #f0c574;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) > small,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) dt {
+  color: #b0a181;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) > p,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) dd {
+  color: #ddd0b6;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) dl,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) .badges span {
+  border-color: #4a412d;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n + 3) .badges span {
+  color: #c6b592;
+}
+
+/* 민트 */
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) {
+  background: #19261f;
+  color: #dcebe2;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) > b {
+  color: #6fca9f;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) > small,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) dt {
+  color: #87a897;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) > p,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) dd {
+  color: #c3d8cb;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) dl,
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) .badges span {
+  border-color: #2d4438;
+}
+
+:global(html[data-theme="dark"]) .couponCard:nth-child(4n) .badges span {
+  color: #9dbcaa;
+}
+
+/* 받기 버튼은 --text 면이라 다크에서 거의 흰 판이 된다. 카드 넷 위에 저마다
+   흰 덩어리가 얹히면 카드 색이 안 보인다. 파란 면으로 바꾼다.
+   hover는 라이트와 방향을 맞춰 --accent-fill(#4b70d3, 흰 글자 대비 4.61)로 간다.
+   초안은 hover에 --accent를 썼는데 다크에서 #7290e8이라 3.87로 떨어진다. */
+:global(html[data-theme="dark"]) .couponCard > button {
+  background: var(--accent-600);
+  color: var(--on-accent);
+}
+
 /* ── Hidden achievements ──────────────── */
 .achievements {
+  composes: onDark from global;
+
   background: var(--n-900);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .achievements .sectionHead {
@@ -406,7 +501,7 @@
 }
 
 .achievementGrid article.unlocked h3 {
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .achievementGrid h3 {
@@ -452,8 +547,8 @@
   flex-direction: column;
   min-width: 0;
   padding: 20px;
-  border: 2px solid var(--text);
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
   box-shadow: 4px 4px 0 var(--n-300);
 }
 
@@ -497,7 +592,23 @@
 .walletList button:hover {
   border-color: #d23b54;
   background: #d23b54;
-  color: #fff;
+  color: var(--on-accent);
+}
+
+/* 삭제 버튼 · 다크.
+   중성 램프(--n-700 · --n-400)로 두면 다크에서도 읽기는 하지만, 지우는
+   버튼인데 카드 안의 다른 글자와 구별이 안 된다. 라이트에서는 hover에만
+   있던 붉은 기를 평상시에도 옅게 깔아 성격을 드러낸다.
+   hover의 흰 글자는 아래 규칙이 아니라 위 :hover가 이미 --on-accent로 잡는다. */
+:global(html[data-theme="dark"]) .walletList button {
+  border-color: #5b3a42;
+  color: #e79aa6;
+}
+
+:global(html[data-theme="dark"]) .walletList button:hover {
+  color: var(--on-accent);
+  border-color: #c14458;
+  background: #c14458;
 }
 
 .walletActions {
@@ -510,8 +621,8 @@
 .walletActions button {
   min-height: 44px;
   padding: 10px 18px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-fill);
+  color: var(--on-accent);
   font-size: 13px;
   font-weight: 800;
 }
@@ -521,14 +632,14 @@
 }
 
 .walletActions button:last-child {
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   background: transparent;
   color: var(--text);
 }
 
 .walletActions button:last-child:hover {
   background: var(--text);
-  color: #fff;
+  color: var(--on-text);
 }
 
 .walletJson {

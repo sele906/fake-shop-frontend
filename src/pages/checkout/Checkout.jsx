@@ -11,7 +11,7 @@ import ReceiptCard from "../../receipt/ReceiptCard";
 import { receiptUrl } from "../../receipt/receiptLink";
 import useGoBack from "../../hooks/useGoBack";
 import useBottomBar from "../../hooks/useBottomBar";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 import usePrice from "../../lib/usePrice";
 
 import { BiChevronLeft } from "react-icons/bi";
@@ -321,14 +321,14 @@ export default function Checkout() {
           aria-label={t("back")}
           onClick={goBack}
         >
-          <BiChevronLeft size={22} aria-hidden="true" />
+          <BiChevronLeft aria-hidden="true" />
         </button>
 
         <h1>{t("title")}</h1>
 
         <span className={styles.wink}>{t("wink")}</span>
 
-        <LanguageToggle />
+        <AccountMenu />
       </header>
 
       <div className={styles.wrap}>

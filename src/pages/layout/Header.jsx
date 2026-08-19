@@ -5,7 +5,7 @@ import styles from "./Layout.module.css";
 import { useCart } from "../../cart/CartProvider";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
 import { MISSION } from "../../coupon/hiddenStorage";
-import LanguageToggle from "../../components/LanguageToggle";
+import AccountMenu from "../../components/AccountMenu";
 
 import { BiCart, BiMenu } from "react-icons/bi";
 
@@ -46,7 +46,7 @@ export default function Header({ isNavOpen, onToggleNav }) {
           aria-controls="sidebar"
           onClick={onToggleNav}
         >
-          <BiMenu size={24} aria-hidden="true" />
+          <BiMenu aria-hidden="true" />
         </button>
 
         <Link className={styles.brand} to="/" onClick={handleBrandClick}>
@@ -54,26 +54,23 @@ export default function Header({ isNavOpen, onToggleNav }) {
         </Link>
       </div>
 
-      {/* .utils는 900px 이하에서 숨겨지므로 토글은 그 밖에 둔다.
-          모바일에서도 언어를 바꿀 수 있어야 한다. */}
-      <LanguageToggle />
+      {/* 계정 → 장바구니 순서다. 장바구니가 결제로 가는 마지막 관문이라
+          쇼핑몰에서는 대개 맨 오른쪽에 둔다.
+
+          예전에는 900px 이상에서 장바구니가 "안 살 것들" 글자 링크(.utils)로,
+          이하에서는 아이콘으로 바뀌었다. 계정이 아이콘으로 들어오면서 같은
+          줄에 글자와 아이콘이 섞여 두 조작이 다른 종류로 보였다. 폭에 상관없이
+          아이콘 둘로 통일했다. */}
+      <AccountMenu />
 
       <Link
         className={styles.iconBtn}
         to="/cart"
         aria-label={t("header.cartAria", { count })}
       >
-        <BiCart size={20} aria-hidden="true" />
+        <BiCart aria-hidden="true" />
         {count > 0 && <span className={styles.badge}>{count}</span>}
       </Link>
-
-      <nav className={styles.utils} aria-label={t("header.userMenu")}>
-        <Link to="/login">{t("header.login")}</Link>
-        <Link to="/cart" className={styles.cart}>
-          {t("header.cart")}
-          {count > 0 && <span className={styles.badge}>{count}</span>}
-        </Link>
-      </nav>
     </header>
   );
 }
