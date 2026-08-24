@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -27,6 +27,16 @@ import { SITE_ORIGIN } from "../lib/shareUrl";
 export default function useDeepLink() {
   const navigate = useNavigate();
 
+  /**
+   * 이펙트는 마운트 때 한 번만 돈다. navigate를 의존성에 넣으면 안 된다 —
+   * react-router의 navigate는 현재 경로를 클로저에 담아서 화면을 옮길 때마다
+   * 정체가 바뀌고, 그러면 이펙트가 다시 돌면서 getLaunchUrl을 또 부른다.
+   * 그 값은 앱을 처음 연 주소라, 방금 옮긴 화면이 첫 화면으로 되돌아간다.
+   */
+  const navigateRef = useRef(navigate);
+
+  navigateRef.current = navigate;
+
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
@@ -46,7 +56,7 @@ export default function useDeepLink() {
          누구나 만들어 보낼 수 있어서, 받는 쪽에서도 한 번 본다. */
       if (target.origin !== SITE_ORIGIN) return;
 
-      navigate(target.pathname + target.search);
+      navigateRef.current(target.pathname + target.search);
     }
 
     /* 꺼져 있다 열린 경우에 한해 같은 주소가 두 경로로 겹칠 수 있다.
@@ -71,5 +81,5 @@ export default function useDeepLink() {
     return () => {
       handle.then((listener) => listener.remove());
     };
-  }, [navigate]);
+  }, []);
 }
