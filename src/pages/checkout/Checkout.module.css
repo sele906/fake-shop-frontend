@@ -769,14 +769,46 @@
   z-index: 80;
   pointer-events: none;
   overflow: hidden;
+  /* 조각이 X축으로 돌 때 납작해지지 않고 두께가 보인다. */
+  perspective: 700px;
 }
 
+/* 조각 하나는 두 겹이다. 바깥이 흔들리며 떨어지고, 안이 뒤집힌다.
+   한 요소의 transform에는 애니메이션을 하나만 걸 수 있어서 — 둘을 걸면
+   나중 것이 앞 것을 통째로 덮는다 — 겹을 나눠야 두 움직임이 합쳐진다.
+   값은 JSX가 인라인 변수로 넘긴다. */
 .confetti i {
   position: absolute;
-  top: -16px;
-  width: 8px;
-  height: 14px;
-  animation: fall linear forwards;
+  top: -6vh;
+  width: var(--w);
+  height: var(--h);
+  /* 첫 프레임에 제자리에서 번쩍이지 않게 숨겨 두고 fall이 켠다. */
+  opacity: 0;
+  animation: fall var(--fall) linear var(--fall-delay) forwards;
+}
+
+.confetti b {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--c);
+  animation: flutter var(--flutter) linear infinite;
+}
+
+/* 모양 셋은 전부 규칙을 갖는다. 기본값에 기대어 한 모양만 클래스를 비우면
+   CSS 모듈 맵에 그 이름이 안 실려 styles.cRect가 undefined가 된다. */
+.cRect b {
+  border-radius: 1px;
+}
+
+/* 셋 다 `.confetti b`와 특정도가 (0,1,1)로 같다. 순서로만 이기므로
+   반드시 아래에 둔다 — 위로 옮기면 조용히 죽는다. */
+.cRound b {
+  border-radius: 50%;
+}
+
+.cRibbon b {
+  border-radius: 3px;
 }
 
 /* ── 배송지 모달 ──────────────────────────
@@ -896,11 +928,54 @@
   .modal {
     animation: none;
   }
+
+  /* 색종이는 멈추는 게 아니라 아예 안 뿌린다. 화면 가득 움직이는 조각
+     120개는 이 설정이 막으려는 것 그 자체라, 정지시켜 두면 화면을 덮은
+     종이만 남는다. 없어도 결제 완료를 읽는 데 지장이 없다. */
+  .confetti {
+    display: none;
+  }
 }
 
+/* 좌우로 되돌아오며 떨어진다. 곧게 내려오면 축하가 아니라 비로 읽힌다.
+   --drift의 부호를 중간에 뒤집는 것이 흔들림을 만든다. */
 @keyframes fall {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+
+  6% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translate3d(var(--drift), 30vh, 0);
+  }
+
+  50% {
+    transform: translate3d(calc(var(--drift) * -0.7), 58vh, 0);
+  }
+
+  75% {
+    transform: translate3d(calc(var(--drift) * 0.85), 86vh, 0);
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(0, 118vh, 0);
+    opacity: 0;
+  }
+}
+
+/* 세 축을 함께 돌려서 종이가 뒤집히게 한다. Z축만 돌리면 제자리에서
+   빙글거리는 바람개비가 된다. */
+@keyframes flutter {
   to {
-    transform: translateY(110vh) rotate(720deg);
+    transform: rotate3d(1, 0.6, 0.25, 360deg);
   }
 }
 

@@ -32,9 +32,34 @@ const MESSAGE_STEPS = [
 /* 영수증 등급이 갈리는 지점. checkout.json의 receiptMsg 키와 같다. */
 const RECEIPT_STEPS = [0, 20, 40, 60, 80, 100];
 
-const CONFETTI_COLORS = ["#4b70d3", "#2b4798", "#93a9e6", "#1c1e24", "#dce3f8"];
-const CONFETTI_COUNT = 70;
-const CONFETTI_MS = 3600;
+/**
+ * 색종이.
+ *
+ * 파랑만 쓰면 브랜드에는 맞지만 축하로는 안 읽힌다. 쿠폰 카드가 이미 쓰는
+ * 앰버 · 민트에 코럴 · 바이올렛을 더해 일곱 색으로 돌린다.
+ *
+ * 전에 있던 `#1c1e24`(거의 검정)와 `#dce3f8`(거의 흰색)은 뺐다. 배경이 한쪽
+ * 모드에서 같은 색이 되어 조각이 통째로 사라진다 — 검정은 다크에서, 옅은
+ * 파랑은 라이트에서. 남긴 일곱은 전부 중간 톤이라 두 모드에서 다 보인다.
+ */
+const CONFETTI_COLORS = [
+  "#4b70d3",
+  "#7290e8",
+  "#f4b942",
+  "#ef6461",
+  "#3ec9a7",
+  "#b06ef2",
+  "#ffd166",
+];
+
+/* 사각형만 쓰면 비처럼 보인다. 사각형을 두 번 넣어 기본으로 두고,
+   동그라미와 긴 리본을 섞는다. 리본은 더 느리게 떨어진다. */
+const CONFETTI_SHAPES = ["cRect", "cRect", "cRound", "cRibbon"];
+
+const CONFETTI_COUNT = 200;
+
+/* 가장 늦은 조각(지연 1.4s + 낙하 4.2s)이 화면을 다 지나간 뒤에 지운다. */
+const CONFETTI_MS = 5800;
 
 const SHARE_RESET_MS = 2400;
 
@@ -45,16 +70,43 @@ function lastPassed(steps, percent) {
   return passed.length > 0 ? passed[passed.length - 1] : steps[0];
 }
 
+function rand(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+/**
+ * 조각마다 값을 흩어서 CSS 변수로 넘긴다. 실제 움직임은 CSS가 만든다.
+ *
+ * 두 덩어리로 나눈다. 앞의 3분의 2는 거의 동시에 터지고 나머지가 뒤따라
+ * 흩날린다. 지연을 고르게 뿌리면 "터지는 순간"이 없어져서, 조각을 아무리
+ * 늘려도 그냥 비가 오래 내리는 것이 된다.
+ */
 function makeConfetti() {
-  return Array.from({ length: CONFETTI_COUNT }, (_, index) => ({
-    id: index,
-    left: `${Math.random() * 100}vw`,
-    background: CONFETTI_COLORS[index % CONFETTI_COLORS.length],
-    animationDuration: `${1.6 + Math.random() * 1.4}s`,
-    animationDelay: `${Math.random() * 0.5}s`,
-    width: `${5 + Math.random() * 6}px`,
-    height: `${10 + Math.random() * 10}px`,
-  }));
+  return Array.from({ length: CONFETTI_COUNT }, (_, index) => {
+    const shape =
+      CONFETTI_SHAPES[Math.floor(Math.random() * CONFETTI_SHAPES.length)];
+    const ribbon = shape === "cRibbon";
+    const burst = index < CONFETTI_COUNT * 0.82;
+
+    return {
+      id: index,
+      shape,
+      style: {
+        /* 가장자리 밖에서 들어오는 것도 있어야 화면이 꽉 찬 느낌이 난다.
+           .confetti가 overflow: hidden이라 잘려도 문제없다. */
+        left: `${rand(-5, 105)}%`,
+        "--c": CONFETTI_COLORS[index % CONFETTI_COLORS.length],
+        "--w": `${ribbon ? rand(5, 8) : rand(8, 14)}px`,
+        "--h": `${ribbon ? rand(24, 40) : rand(11, 18)}px`,
+        /* 좌우로 흔들리는 폭. 부호가 갈려서 서로 다른 쪽으로 쏠린다. */
+        "--drift": `${rand(-140, 140)}px`,
+        "--fall": `${ribbon ? rand(3.2, 4.2) : rand(2.1, 3.4)}s`,
+        "--fall-delay": `${burst ? rand(0, 0.12) : rand(0.15, 0.85)}s`,
+        /* 뒤집히는 주기. 짧을수록 팔랑거린다. */
+        "--flutter": `${rand(0.3, 0.9)}s`,
+      },
+    };
+  });
 }
 
 export default function Checkout() {
@@ -353,17 +405,18 @@ export default function Checkout() {
               <ReceiptCard receipt={receipt} />
 
               <div className={styles.doneCta}>
+
+                <Link className={styles.btn} to="/delivery">
+                  {t("done.delivery")}
+                </Link>
+
                 <button
                   type="button"
-                  className={styles.btn}
+                  className={styles.ghost}
                   onClick={goShopping}
                 >
                   {t("done.again")}
                 </button>
-
-                <Link className={styles.ghost} to="/delivery">
-                  {t("done.delivery")}
-                </Link>
 
                 <button
                   type="button"
@@ -676,8 +729,12 @@ export default function Checkout() {
 
       {confetti.length > 0 && (
         <div className={styles.confetti} aria-hidden="true">
-          {confetti.map(({ id, ...style }) => (
-            <i key={id} style={style} />
+          {/* 조각 하나가 두 겹인 이유는 CSS 쪽 주석 참고 — 떨어지는 것과
+              뒤집히는 것을 한 요소의 transform에 함께 걸 수 없다. */}
+          {confetti.map(({ id, shape, style }) => (
+            <i key={id} className={styles[shape]} style={style}>
+              <b />
+            </i>
           ))}
         </div>
       )}
