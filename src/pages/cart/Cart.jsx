@@ -29,12 +29,16 @@ const SHIP_FEE = 3500;
  *
  * 영어 코드는 공백과 대소문자를 무시한다. 한글은 대소문자가 없어 그대로 비교한다.
  */
-const HIDDEN_CODES = ["진짜안삼", "notbuying"];
+const HIDDEN_CODES = ["진짜안삼", "NOTBUYING"];
+
+function normalizeCode(value) {
+  return value.replace(/\s+/g, "").toLowerCase();
+}
 
 function isHiddenCode(input) {
-  const normalized = input.replace(/\s+/g, "").toLowerCase();
+  const normalized = normalizeCode(input);
 
-  return HIDDEN_CODES.includes(normalized);
+  return HIDDEN_CODES.some((code) => normalizeCode(code) === normalized);
 }
 
 export default function Cart() {

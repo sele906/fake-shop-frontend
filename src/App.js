@@ -3,11 +3,15 @@ import DataProvider from "./data/DataProvider";
 import AppRouter from "./router/AppRouter";
 import AppToaster from "./components/AppToaster";
 import useBackButton from "./hooks/useBackButton";
+import useDeepLink from "./hooks/useDeepLink";
 
 function App() {
   /* 기기 뒤로가기. 화면마다 달지 않고 여기 한 번만 단다 —
      라우터 바깥에서 오는 신호라 어느 화면이 떠 있든 같은 곳이 받는다. */
   useBackButton();
+
+  /* 공유 링크로 열린 경우. 같은 이유로 여기 한 번만 단다. */
+  useDeepLink();
 
   return (
     <>

@@ -15,6 +15,7 @@ import { getCategoryPath } from "../../data/categories";
 import { useCart } from "../../cart/CartProvider";
 import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { copyText } from "../../lib/clipboard";
+import { currentShareUrl } from "../../lib/shareUrl";
 import useGoBack from "../../hooks/useGoBack";
 import useBottomBar from "../../hooks/useBottomBar";
 import AccountMenu from "../../components/AccountMenu";
@@ -215,7 +216,8 @@ export default function Detail() {
 
   /* 모바일 브라우저에는 시스템 공유 시트가 있다. 없으면 주소를 복사한다. */
   async function share() {
-    const url = window.location.href;
+    /* location.href를 그대로 쓰면 앱에서 https://localhost/... 가 나간다. */
+    const url = currentShareUrl();
 
     if (navigator.share) {
       try {

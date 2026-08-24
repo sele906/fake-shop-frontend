@@ -369,7 +369,7 @@
     "name": "Purchase Abandonment Grant",
     "benefit": "13%",
     "description": "A small grant for genuinely deciding not to buy.",
-    "mission": "Enter “REALLYNOTBUYING” in the cart coupon-code field"
+    "mission": "Enter “NOTBUYING” in the cart coupon-code field"
   },
   {
     "id": "hidden-2",

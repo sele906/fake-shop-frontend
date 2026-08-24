@@ -6,6 +6,8 @@
  * 상품 id가 아니라 이름 · 수량 스냅샷을 담기 때문에, products.json을 다시
  * 만들어도 예전에 뿌린 링크가 그대로 살아 있다.
  */
+import { shareUrl } from "../lib/shareUrl";
+
 const VERSION = 1;
 
 /* 주소가 지나치게 길어지지 않게 상품 줄은 여기까지만 싣는다. */
@@ -73,5 +75,5 @@ export function decodeReceipt(encoded) {
 }
 
 export function receiptUrl(receipt) {
-  return `${window.location.origin}/receipt?d=${encodeReceipt(receipt)}`;
+  return shareUrl(`/receipt?d=${encodeReceipt(receipt)}`);
 }
