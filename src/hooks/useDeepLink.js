@@ -63,9 +63,13 @@ export default function useDeepLink() {
        한 번만 무시하므로, 앱을 켜 둔 채 같은 링크를 또 눌러도 동작한다. */
     let launched = null;
 
-    App.getLaunchUrl().then(({ url }) => {
-      launched = url;
-      open(url);
+    /* 링크가 아니라 런처 아이콘으로 켜면 인텐트에 URI가 없고, 그때
+       getLaunchUrl은 빈 객체가 아니라 아무 값 없이 resolve한다
+       (AppPlugin.java의 call.resolve(), 타입도 AppLaunchUrl | undefined).
+       바로 분해하면 평범한 실행마다 터진다. */
+    App.getLaunchUrl().then((launch) => {
+      launched = launch?.url ?? null;
+      open(launched);
     });
 
     const handle = App.addListener("appUrlOpen", ({ url }) => {

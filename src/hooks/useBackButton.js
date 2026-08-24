@@ -29,6 +29,22 @@ export default function useBackButton() {
   const { t } = useTranslation("common");
   const leavingAt = useRef(0);
 
+  /**
+   * 이펙트는 마운트 때 한 번만 돈다. 둘 다 의존성에 넣을 수 없다 —
+   * navigate는 화면을 옮길 때마다, t는 언어를 바꿀 때마다 정체가 바뀌어서
+   * 리스너를 지웠다 다시 다는 일이 화면 이동마다 반복된다.
+   *
+   * 지우는 쪽이 프라미스라 비동기고 다는 쪽은 바로 도는데, 그 사이에
+   * 뒤로가기를 누르면 리스너 둘이 함께 받아 두 칸 물러난다.
+   *
+   * 눌린 순간의 값만 있으면 되므로 ref로 최신 것을 본다. useDeepLink와 같다.
+   */
+  const navigateRef = useRef(navigate);
+  const tRef = useRef(t);
+
+  navigateRef.current = navigate;
+  tRef.current = t;
+
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
@@ -48,7 +64,7 @@ export default function useBackButton() {
          0이면 이 세션에서 여기가 첫 화면이라 돌아갈 곳이 없다.
          useGoBack이 헤더 ← 버튼에서 쓰는 판별과 같다. */
       if (window.history.state?.idx > 0) {
-        navigate(-1);
+        navigateRef.current(-1);
         return;
       }
 
@@ -60,12 +76,12 @@ export default function useBackButton() {
       }
 
       leavingAt.current = now;
-      toast(t("exitConfirm"));
+      toast(tRef.current("exitConfirm"));
     });
 
     /* addListener는 프라미스를 준다. 정리할 때 그 안의 handle을 써야 한다. */
     return () => {
       handle.then((listener) => listener.remove());
     };
-  }, [navigate, t]);
+  }, []);
 }
