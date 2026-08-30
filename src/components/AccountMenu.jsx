@@ -63,22 +63,38 @@ const Theme = registerPlugin("Theme");
  * XML의 windowLightStatusBar도 같은 규칙이다 — "배경이 밝다"는 뜻이라
  * 라이트에서 true다. 둘이 반대가 아니라 같은 방향이다.
  */
-function syncChrome(mode, theme) {
+async function syncChrome(mode, theme) {
   document
     .querySelector('meta[name="theme-color"]')
     ?.setAttribute("content", BAR[theme]);
 
   if (!Capacitor.isNativePlatform()) return;
 
-  /* 네이티브에는 푼 결과가 아니라 고른 모드를 보낸다. "system"은 안드로이드가
-     MODE_NIGHT_FOLLOW_SYSTEM으로 직접 따라가므로, 우리가 풀어서 보내면 OS가
-     바뀌어도 앱이 안 따라간다. */
-  Theme.setNightMode({ mode }).catch(() => {});
+  /*
+   * 먼저 네이티브 테마를 맞춘다.
+   * AppCompatDelegate가 Activity를 다시 구성할 수 있으므로
+   * StatusBar 변경보다 먼저 처리한다.
+   */
+  try {
+    await Theme.setNightMode({ mode });
+  } catch {}
 
-  /* 아이콘 색은 지금 걸린 배경을 봐야 하므로 푼 결과를 쓴다. */
-  StatusBar.setStyle({
-    style: theme === "dark" ? Style.Dark : Style.Light,
-  }).catch(() => {});
+  /*
+   * Android 14 이하 + overlaysWebView:false에서는
+   * 상태바가 독립된 영역이므로 배경색을 직접 맞춘다.
+   *
+   * Android 15+에서는 backgroundColor가 적용되지 않으며,
+   * 기존 ThemePlugin + windowBackground/SystemBars 처리가 담당한다.
+   */
+  try {
+    await StatusBar.setBackgroundColor({
+      color: BAR[theme],
+    });
+
+    await StatusBar.setStyle({
+      style: theme === "dark" ? Style.Dark : Style.Light,
+    });
+  } catch {}
 }
 
 /**
@@ -146,7 +162,7 @@ export default function AccountMenu() {
      넣는 것뿐이라 그대로 둔다. 계정 메뉴가 없는 /receipt에서는 안 돈다. */
   useEffect(() => {
     applyTheme(theme);
-    syncChrome(mode, theme);
+    void syncChrome(mode, theme);
   }, [mode, theme]);
 
   /* "en-US"로 감지됐을 수 있어 앞부분만 본다. i18n.js의 load: "languageOnly"와 짝이다. */

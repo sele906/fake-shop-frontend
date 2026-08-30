@@ -1,5 +1,10 @@
 {
   "appId": "com.ansam.app",
   "appName": "안삼",
-  "webDir": "build"
+  "webDir": "build",
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false
+    }
+  }
 }
