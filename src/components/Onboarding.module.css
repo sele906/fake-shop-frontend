@@ -24,6 +24,18 @@
   flex-direction: column;
   width: 100%;
   max-width: 520px;
+
+  /* 이 화면의 글자 크기는 전부 이 한 줄에서 나온다.
+     본문이 기준(1배)이고 제목은 그 배수다 — .title2 1.75 · .title1 1.15.
+
+     크기를 셋 다 각자 clamp으로 잡으면 폭에 따라 순서가 뒤집힌다. 실제로
+     .title1이 clamp(20px, 6.4vw, 20px)라 안 커지는 바람에 좁은 화면에서
+     .title2와 같아졌다. 배수는 폭과 무관하므로 어느 화면에서도
+     본문 < 제목1 < 제목2가 유지된다 — 계산이 아니라 구조로 보장된다.
+
+     전체를 키우거나 줄이려면 이 줄만 고친다. 배수는 그대로 따라온다.
+     4.6vw는 360px에서 16.6px, 435px부터 상한 20px에 닿는다. */
+  --fs: clamp(16px, 4.6vw, 20px);
 }
 
 /* 세로 배분은 header : art : lead = 1 : 2 : 1, 버튼은 제 크기 그대로.
@@ -41,34 +53,34 @@
   justify-content: center;
 }
 
-/* <br />로 두 줄을 고정한 제목. 좁은 화면에서 한 줄이 더 접혀 세 줄이 되는 것을
-   px 값으로는 못 막으므로(어떤 값을 골라도 그보다 좁은 기기에서 다시 뚫린다)
-   크기를 화면 폭에 비례시킨다.
+/* 제목 두 줄은 역할이 다르다 — 첫 줄이 상황을 놓고(작고 얇게), 둘째 줄이
+   질문을 던진다(크고 굵게). 크기가 둘 다 --fs의 배수라 폭이 바뀌어도
+   둘의 차이가 같은 비율로 남는다.
 
-   계수는 쓸 수 있는 폭 ÷ 가장 긴 줄의 글자 폭에서 나온다. 좌우 20px씩이라
-   쓸 수 있는 폭이 화면 − 40px이고, 한국어 "충동구매는 하고 싶지 않은데,"가
-   약 13.8자 폭이라 6.4vw면 360px 기기까지 한 줄로 선다. 영어는 두 줄 다
-   한국어보다 짧아서 여유가 더 남는다 — 그래서 :lang(en) 보정이 없다.
-
-   balance는 안전망이다. 그래도 넘치면 두 줄을 고르게 나눠 준다. */
+   줄이 접히는 것은 막지 않는다. 한국어 "쇼핑은 자꾸 하고 싶나요?"는 약
+   11.3자 폭이라 360px에서 두 줄이 되는데, 이를 막으려 크기를 낮추면 정작
+   글자를 키운 이유가 사라진다. 대신 balance로 두 줄을 고르게 나눈다.
+   header가 제 몫보다 커지면 그림이 자리를 내주게 돼 있어 버튼은 안 밀린다. */
 .title {
   margin: 0;
-  font-weight: 800;
-  line-height: 1.5;
   letter-spacing: 0.02em;
   text-wrap: balance;
   color: var(--accent-900);
   padding: 20px 0;
 }
 
+/* 굵기는 400 · 600 · 800만 실린다(CLAUDE.md). 500을 적으면 브라우저가 없는
+   굵기를 합성하지 않고 400으로 그리므로, 보이는 대로 400이라 적는다. */
 .title1 {
-  font-size: clamp(20px, 6.4vw, 20px);
-  font-weight: 500;
+  font-size: calc(var(--fs) * 1.15);
+  font-weight: 400;
+  line-height: 1.45;
 }
 
 .title2 {
-  font-size: clamp(20px, 6.4vw, 30px);
+  font-size: calc(var(--fs) * 1.55);
   font-weight: 800;
+  line-height: 1.25;
 }
 
 /* 그림이 가운데 두 몫을 갖는다. 높이를 박아 두면 568px 폰에서 버튼이 화면
@@ -103,10 +115,12 @@
   justify-content: center;
 }
 
+/* 본문이 기준(1배)이다. 제목이 이 값의 1.15배 · 1.75배라 어느 폭에서도
+   본문이 제일 작다. */
 .lead p {
   word-break: keep-all;
   margin: 0 0 6px;
-  font-size: 15px;
+  font-size: var(--fs);
   line-height: 1.6;
   color: var(--n-700);
 }
@@ -134,9 +148,10 @@
   background: var(--text);
   color: var(--on-text);
   font-family: var(--font);
-  font-size: 16px;
+  /* 본문과 같은 크기. 여기만 16px로 두면 나머지가 커진 만큼 버튼이 작아 보인다. */
+  font-size: var(--fs);
   font-weight: 800;
-  margin-top: 15px;
+  margin: 15px 0 30px 0;
 }
 
 .start:hover {
