@@ -15,6 +15,7 @@ import enHelp from "./locales/en/help.json";
 import enLayout from "./locales/en/layout.json";
 import enLogin from "./locales/en/login.json";
 import enMain from "./locales/en/main.json";
+import enOnboarding from "./locales/en/onboarding.json";
 import enPrivacy from "./locales/en/privacy.json";
 import enPromo from "./locales/en/promo.json";
 import enReceipt from "./locales/en/receipt.json";
@@ -32,6 +33,7 @@ import koHelp from "./locales/ko/help.json";
 import koLayout from "./locales/ko/layout.json";
 import koLogin from "./locales/ko/login.json";
 import koMain from "./locales/ko/main.json";
+import koOnboarding from "./locales/ko/onboarding.json";
 import koPrivacy from "./locales/ko/privacy.json";
 import koPromo from "./locales/ko/promo.json";
 import koReceipt from "./locales/ko/receipt.json";
@@ -65,6 +67,7 @@ export const resources = {
     layout: koLayout,
     login: koLogin,
     main: koMain,
+    onboarding: koOnboarding,
     privacy: koPrivacy,
     promo: koPromo,
     receipt: koReceipt,
@@ -83,6 +86,7 @@ export const resources = {
     layout: enLayout,
     login: enLogin,
     main: enMain,
+    onboarding: enOnboarding,
     privacy: enPrivacy,
     promo: enPromo,
     receipt: enReceipt,

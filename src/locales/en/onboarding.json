@@ -1,0 +1,11 @@
+{
+  "title": {
+    "one": "Shop on impulse.",
+    "two": "Spend nothing."
+  },
+  "lead": {
+    "one": "Let the urge out at {{brand}}.",
+    "two": "It's a fake store — browse it, cart it, check out. <b>No card is ever charged.</b>"
+  },
+  "start": "Start not-buying"
+}
