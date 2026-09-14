@@ -58,6 +58,7 @@ function markSeen() {
 export default function Onboarding() {
   const { t } = useTranslation("onboarding");
   const { pathname } = useLocation();
+  const screenRef = useRef(null);
   const startRef = useRef(null);
 
   /* 들고 있는 것은 "닫혔는가"다. 뜰 자격(모바일 · 처음)은 마운트 때 한 번
@@ -101,7 +102,11 @@ export default function Onboarding() {
        안드로이드 뒤로가기가 아래 Escape 처리로 연결된다. */
     document.body.classList.add("modalOpen");
 
-    startRef.current?.focus();
+    /* 첫 초점은 버튼이 아니라 판에 둔다. 코드로 버튼에 초점을 주면 브라우저가
+       키보드 사용자일 수 있다고 보고 :focus-visible 링을 그려서, 터치로 연
+       사람에게도 뜨자마자 버튼 둘레에 테두리가 보였다. 판은 누르는 것이 아니라
+       링이 필요 없고, 스크린리더는 판부터 짚어 제목을 먼저 읽는다. */
+    screenRef.current?.focus();
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
@@ -110,8 +115,12 @@ export default function Onboarding() {
       }
 
       /* 안에 누를 수 있는 것이 버튼 하나뿐이라 가둘 목록도 필요 없다.
-         그냥 두면 초점이 덮인 화면의 링크들로 빠져나간다. */
-      if (event.key === "Tab") event.preventDefault();
+         그냥 두면 초점이 덮인 화면의 링크들로 빠져나간다. 대신 Tab이 버튼으로
+         가게 한다 — 키보드로 옮긴 초점이라 이때는 링이 보인다. */
+      if (event.key === "Tab") {
+        event.preventDefault();
+        startRef.current?.focus();
+      }
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -126,6 +135,8 @@ export default function Onboarding() {
 
   return (
     <div
+      ref={screenRef}
+      tabIndex={-1}
       className={`${styles.screen} ${isLeaving ? styles.leaving : ""}`}
       onAnimationEnd={handleAnimationEnd}
       role="dialog"

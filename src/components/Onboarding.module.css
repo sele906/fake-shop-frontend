@@ -23,6 +23,11 @@
   background: var(--accent-100);
 }
 
+/* 판은 열릴 때 코드로 초점을 받을 뿐 누르는 대상이 아니다. 기본 링을 끈다. */
+.screen:focus {
+  outline: none;
+}
+
 /* "시작"을 누른 뒤. 판 전체가 흐려지고 내용은 살짝 위로 떠오른다 —
    안내가 걷히고 가게가 드러나는 순서로 읽히게.
 
@@ -198,4 +203,20 @@
 
 .start:hover {
   background: var(--accent-fill);
+}
+
+/* 초점 링은 키보드로 왔을 때만. 브라우저 기본 링(주황)을 저장소의 다른
+   컴포넌트와 같은 --accent 링으로 바꾼다.
+
+   :focus를 먼저 끄는 것은 오래된 웹뷰 때문이다. Chromium 86 미만은
+   :focus-visible을 몰라 누르기만 해도 :focus 기본 링을 그린다. 그 웹뷰에서는
+   아래 규칙이 통째로 버려져 키보드 링도 안 보이는데, 이 화면에서 Tab이 갈 곳은
+   이 버튼 하나뿐이라 잃는 것이 적다. */
+.start:focus {
+  outline: none;
+}
+
+.start:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
