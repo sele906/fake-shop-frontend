@@ -762,8 +762,27 @@ AppCompatDelegate.setDefaultNightMode(ThemeStore.toDelegateMode(mode));
 옛 APK가 남아 "안 되는 줄" 알았던 적이 있다. Android Studio에서는 번개 아이콘
 (Apply Changes)이 아니라 **Run 'app'** 이어야 리소스와 플러그인 등록이 들어간다.
 
-터미널 빌드는 JDK 21 이상이 필요하다. 셸의 `java`가 그보다 낮으면
-`invalid source release: 21`이 난다. Android Studio는 번들 JBR을 쓰므로 잘 된다.
+**빌드 JDK는 21이다. 아래로도 위로도 안 된다.**
+
+| JDK | 결과 |
+| --- | --- |
+| 17 (셸 기본 `java`) | `invalid source release: 21` |
+| 25 (Android Studio 번들 `jbr`, 2026-09 기준) | `Unsupported class file major version 69` — Gradle 8.14.3이 25를 모른다 |
+| 21 (`~/.jdks/jbr-21.0.11`) | 된다 |
+
+Android Studio에서 잘 되는 것은 번들 JBR 덕이 아니라 프로젝트 설정의 Gradle
+JDK가 `jbr-21`이기 때문이다(Settings → Build Tools → Gradle → Gradle JDK,
+`android/.idea/gradle.xml`의 `gradleJvm`). `.idea`는 커밋되지 않으므로 새로
+클론하면 다시 골라야 한다. **번들 JBR 경로를 `JAVA_HOME`으로 잡으면 안 된다** —
+Studio를 업데이트할 때마다 버전이 따라 오른다.
+
+터미널에서는 JDK를 지정해서 돌린다.
+
+```
+JAVA_HOME="$USERPROFILE/.jdks/jbr-21.0.11" ./gradlew assembleDebug
+```
+
+Gradle을 올리면 상한도 바뀐다. 그때 이 표를 다시 채운다.
 
 ### 3단 토글 — 모드와 테마를 가른다
 
