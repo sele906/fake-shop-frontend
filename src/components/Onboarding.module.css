@@ -7,7 +7,13 @@
    뒤집히므로 이 파일에 다크 팔레트를 따로 적을 일이 없다. */
 .screen {
   position: fixed;
-  inset: 0;
+  /* inset: 0으로 줄이지 않는다. Chromium 87 미만 웹뷰(안드로이드 11 기본 83)는
+     inset을 몰라서 위치값 없는 fixed가 되고, 문서 흐름상 자리 — 페이지 맨
+     아래 — 로 밀려나 안내가 뜨자마자 사라진 것처럼 보였다. */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   /* 로딩 화면(100)보다 위. 첫 진입에는 데이터를 받는 동안 그 화면이 깔려
      있어서, 그보다 낮으면 안내가 통째로 가린다. */
   z-index: 1100;
@@ -15,6 +21,42 @@
   justify-content: center;
   padding: 28px 20px 24px;
   background: var(--accent-100);
+}
+
+/* "시작"을 누른 뒤. 판 전체가 흐려지고 내용은 살짝 위로 떠오른다 —
+   안내가 걷히고 가게가 드러나는 순서로 읽히게.
+
+   forwards가 없으면 끝난 순간 한 프레임 동안 원래 불투명도로 돌아왔다가
+   언마운트되어 깜빡인다. 사라지는 중에 버튼을 한 번 더 누르지 못하게
+   포인터도 막는다. 언마운트는 Onboarding.jsx가 animationend를 받아서 한다. */
+.leaving {
+  pointer-events: none;
+  animation: onboardingOut 320ms ease-in forwards;
+}
+
+.leaving .inner {
+  animation: onboardingLift 320ms ease-in forwards;
+}
+
+@keyframes onboardingOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes onboardingLift {
+  to {
+    transform: translateY(-16px);
+  }
+}
+
+/* 동작 줄이기를 켠 사람에게는 바로 걷는다. animation: none으로 끄면
+   animationend가 안 와서 화면이 영영 안 닫히므로, 길이만 줄인다. */
+@media (prefers-reduced-motion: reduce) {
+  .leaving,
+  .leaving .inner {
+    animation-duration: 1ms;
+  }
 }
 
 /* 큰 화면(태블릿)에서 글줄이 끝까지 늘어나지 않도록 폭을 묶는다 —

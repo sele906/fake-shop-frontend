@@ -64,6 +64,9 @@ export default function Onboarding() {
      정해지고, 지금 뜰 자리인가는 아래에서 경로로 매번 다시 본다. */
   const [isDismissed, setIsDismissed] = useState(() => !shouldShow());
 
+  /* 누른 뒤 사라지는 애니메이션이 도는 동안. 끝나야 isDismissed로 넘어간다. */
+  const [isLeaving, setIsLeaving] = useState(false);
+
   /**
    * 공유 링크로 열린 영수증은 남의 결제 결과를 보러 온 자리다. 가게에 처음
    * 온 사람에게 하는 설명이 그 위를 먼저 덮으면 링크를 보낸 쪽의 화면이 아니라
@@ -74,11 +77,22 @@ export default function Onboarding() {
   const isOpen = !isDismissed && pathname !== "/receipt";
 
   /* 기록은 닫을 때 남긴다. 뜨는 순간에 남기면 읽기 전에 앱을 닫은 사람에게
-     다시 뜨지 않는다. */
+     다시 뜨지 않는다.
+
+     바로 내리지 않고 사라지는 애니메이션을 먼저 돌린다. 내리는 것은 아래
+     handleAnimationEnd다. 스크롤 잠금 · Escape 처리는 그동안 그대로 두어서,
+     애니메이션 중에 뒤 화면이 먼저 움직이지 않게 한다. */
   const close = useCallback(() => {
     markSeen();
-    setIsDismissed(true);
+    setIsLeaving(true);
   }, []);
+
+  function handleAnimationEnd(event) {
+    /* 자식의 애니메이션도 버블링으로 올라온다. 이 판의 것만 본다. */
+    if (event.target !== event.currentTarget) return;
+
+    setIsDismissed(true);
+  }
 
   useEffect(() => {
     if (!isOpen) return;
@@ -112,7 +126,8 @@ export default function Onboarding() {
 
   return (
     <div
-      className={styles.screen}
+      className={`${styles.screen} ${isLeaving ? styles.leaving : ""}`}
+      onAnimationEnd={handleAnimationEnd}
       role="dialog"
       aria-modal="true"
       aria-labelledby="onboardingTitle"

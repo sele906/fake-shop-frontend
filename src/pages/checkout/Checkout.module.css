@@ -765,7 +765,10 @@
 
 .confetti {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 80;
   pointer-events: none;
   overflow: hidden;
@@ -815,7 +818,10 @@
    모바일은 아래에서 올라오는 시트, 900px 부터 가운데 뜨는 창이다. */
 .modalBackdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 1000;
   display: flex;
   /* 시트는 화면 아래에 붙는다. */

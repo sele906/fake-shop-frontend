@@ -12,4 +12,7 @@
         파일이 깨진다.
     -->
     <color name="appBg">#f4f5f7</color>
+
+    <!-- 앱을 켤 때 로고 뒤 바탕. 페이드가 appBg 위로 풀리므로 차이는 거의 안 보인다. -->
+    <color name="splashBg">#ffffff</color>
 </resources>

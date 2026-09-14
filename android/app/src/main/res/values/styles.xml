@@ -29,8 +29,21 @@
     </style>
 
 
+    <!--
+        앱을 켤 때 로고 화면. MainActivity의 installSplashScreen이 이 테마를 읽고,
+        웹이 뜨면 postSplashScreenTheme로 넘어간다.
+
+        예전 android:background의 drawable/splash는 뺐다. 이 속성은 창이 아니라
+        모든 뷰의 배경에 걸려서, 안드로이드 11 이하에서는 호환 라이브러리가 그리는
+        로고 위에 옛 이미지가 한 벌 더 깔린다.
+
+        바탕은 values-night에서 어두운 값으로 갈린다. 다만 스플래시는 앱 코드가
+        돌기 전에 시스템이 그리므로 앱 토글이 아니라 OS 다크 설정을 따른다.
+    -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">@color/splashBg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
         <item name="android:statusBarColor">@color/appBg</item>
         <item name="android:windowLightStatusBar">@bool/statusBarLight</item>
     </style>

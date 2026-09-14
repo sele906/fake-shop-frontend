@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    스플래시 로고. 런처 아이콘의 쇼핑백과 같은 그림이다.
+
+    런처 전경(ic_launcher_foreground)을 그대로 쓰지 않는다. 그 PNG는 배경이
+    불투명한 흰색이라, 어두운 바탕에서 흰 원이 오려져 드러난다. splash_logo는
+    같은 그림에서 흰 배경만 투명으로 바꾼 것이다(가장자리 반투명 유지).
+    런처 아이콘을 다시 만들면 이것도 함께 다시 뽑아야 한다.
+
+    스플래시는 아이콘 칸의 가운데 2/3만 원으로 오려 보여 준다. 그림을
+    그대로 넣으면 쇼핑백 아래 모서리가 그 원 밖으로 나가 잘린다. 적응형
+    아이콘(mipmap-anydpi-v26/ic_launcher.xml)과 같은 16.7%를 안으로 들여서
+    모서리까지 원 안에 들어오게 한다.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@mipmap/splash_logo"
+    android:inset="16.7%" />

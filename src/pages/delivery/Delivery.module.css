@@ -665,7 +665,10 @@
 /* ── Delivery celebration ─────────────── */
 .confetti {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 100;
   display: grid;
   place-items: center;
@@ -674,7 +677,10 @@
 
 .confettiPieces {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   overflow: hidden;
   /* 조각이 X축으로 돌 때 납작해지지 않고 두께가 보인다. */
   perspective: 700px;
