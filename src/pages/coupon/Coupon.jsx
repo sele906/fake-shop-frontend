@@ -6,6 +6,7 @@ import styles from "./Coupon.module.css";
 import { getVisibleCoupons } from "../../data/coupons";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import useBenefit from "../../coupon/useBenefit";
 
 const TAB_IDS = ["all", "basic", "today", "cart", "category", "suspicious"];
 
@@ -15,6 +16,7 @@ const KNOWN_GROUPS = ["basic", "today", "cart", "category", "suspicious"];
 export default function Coupon() {
   const { t } = useTranslation("coupon");
   const navigate = useNavigate();
+  const benefit = useBenefit();
   const [activeTab, setActiveTab] = useState("all");
   const [savedCoupons, setSavedCoupons] = useSavedCoupons();
   const { hiddenCoupons, unlockedCount, isUnlocked } = useHiddenCoupon();
@@ -167,7 +169,7 @@ export default function Coupon() {
                   <span>{t("catalog.noCondition")}</span>
                 </div>
                 <small>{groupLabel(coupon.group)}</small>
-                <b>{coupon.benefit}</b>
+                <b>{benefit(coupon)}</b>
                 <h3>{coupon.name}</h3>
                 <p>{coupon.description}</p>
                 <dl>
@@ -220,7 +222,7 @@ export default function Coupon() {
                 </span>
                 <h3>{coupon.mission ?? coupon.description}</h3>
                 <p>
-                  {coupon.name} {coupon.benefit}
+                  {coupon.name} {benefit(coupon)}
                 </p>
               </article>
             );
@@ -245,7 +247,7 @@ export default function Coupon() {
               {savedCoupons.map((coupon) => (
                 <li key={coupon.id}>
                   <small>{groupLabel(coupon.group)}</small>
-                  <b>{coupon.benefit}</b>
+                  <b>{benefit(coupon)}</b>
                   <h3>{coupon.name}</h3>
                   <p>{coupon.description}</p>
                   <button

@@ -85,7 +85,7 @@
     }
   },
   "stats": {
-    "spent": { "value": "₩0", "label": "Spent" },
+    "spent": { "value": "$0", "label": "Spent" },
     "shipping": { "value": "0", "label": "Incoming" },
     "coupon": { "value": "Unlimited", "label": "Coupon stacking" },
     "regret": { "value": "Regret", "label": "Blocked" }
@@ -162,7 +162,7 @@
   "payment": {
     "aria": "Payment method",
     "title": "Fake payment",
-    "note": "All cost ₩0",
+    "note": "All cost $0",
     "groupAria": "Choose a payment method",
     "recommended": "Best choice"
   },
@@ -182,7 +182,7 @@
     "notBuyDiscount": "NOBUY discount",
     "notBuyDiscountNote": "(the rest)",
     "shipping": "Shipping",
-    "zero": "₩0",
+    "zero": "$0.00",
     "saved": "Saved today",
     "grandTotal": "Actually charged"
   },
@@ -193,7 +193,7 @@
   },
   "bar": {
     "summary": "{{payName}} · Restraint {{percent}}%",
-    "submit": "Pay ₩0",
+    "submit": "Pay $0",
     "anyway": "I still want to buy it",
     "anywayPressed": "You can't. That's the whole point.",
     "tiny": "No card details. There's nothing to charge."

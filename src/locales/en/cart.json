@@ -70,7 +70,7 @@
     "couponDiscount_other": "Coupons ({{count}})",
     "shipping": "Shipping",
     "free": "Free",
-    "zero": "₩0",
+    "zero": "$0.00",
     "grandTotal": "To pay",
     "wasted": "<b>{{amount}}</b> in coupons left. Zero refuses to go lower.",
     "points": "Earn <b>{{points}}P</b> · Enjoy checkout without the consequences."

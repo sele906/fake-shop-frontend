@@ -58,9 +58,9 @@
     "periodTerm": "Return window",
     "periodValue": "Anytime. You never bought it.",
     "feeTerm": "Return shipping",
-    "feeValue": "₩0. Nothing to send.",
+    "feeValue": "$0. Nothing to send.",
     "refundTerm": "Refund",
-    "refundValue": "₩0. Nothing was charged.",
+    "refundValue": "$0. Nothing was charged.",
     "excludedTerm": "Not returnable",
     "excludedValue": "Anything you actually bought elsewhere"
   }

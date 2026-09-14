@@ -9,6 +9,7 @@ import { DEFAULT_OPTION, MAX_QTY } from "../../cart/cartStorage";
 import { couponDiscount } from "../../coupon/couponStorage";
 import useSavedCoupons from "../../coupon/useSavedCoupons";
 import useHiddenCoupon from "../../coupon/useHiddenCoupon";
+import useBenefit from "../../coupon/useBenefit";
 import { MISSION } from "../../coupon/hiddenStorage";
 import useGoBack from "../../hooks/useGoBack";
 import useBottomBar from "../../hooks/useBottomBar";
@@ -44,6 +45,7 @@ function isHiddenCode(input) {
 export default function Cart() {
   const { t } = useTranslation(["cart", "common"]);
   const price = usePrice();
+  const benefit = useBenefit();
   const goBack = useGoBack();
   const navigate = useNavigate();
 
@@ -524,7 +526,7 @@ export default function Cart() {
                           />
 
                           <span>{item.name}</span>
-                          <strong>{item.benefit}</strong>
+                          <strong>{benefit(item)}</strong>
                         </label>
                       ))}
                     </div>

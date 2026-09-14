@@ -18,7 +18,8 @@
     "views": "Popular-ish"
   },
   "intlLocale": "en-US",
-  "price": "₩{{amount}}",
+  "currency": "USD",
+  "price": "${{amount}}",
   "defaultOption": "One option only",
   "exitConfirm": "Press back again to exit.",
   "hiddenCoupon": {

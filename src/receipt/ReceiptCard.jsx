@@ -65,9 +65,7 @@ export default function ReceiptCard({ receipt }) {
       <div className={styles.badges}>
         <span className={styles.badge}>{t("card.badgeNoPay")}</span>
         <span className={styles.badge}>
-          {t("card.badgeDefended", {
-            amount: total.toLocaleString(t("common:intlLocale")),
-          })}
+          {t("card.badgeDefended", { amount: price.amount(total) })}
         </span>
         <span className={styles.badge}>{grade}</span>
       </div>

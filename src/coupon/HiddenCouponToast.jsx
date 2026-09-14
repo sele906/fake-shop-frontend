@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styles from "./HiddenCouponToast.module.css";
+import useBenefit from "./useBenefit";
 
 /**
  * 숨은 쿠폰을 처음 찾았을 때만 뜨는 알림.
@@ -7,6 +8,7 @@ import styles from "./HiddenCouponToast.module.css";
  */
 export default function HiddenCouponToast({ coupon }) {
   const { t } = useTranslation("common");
+  const benefit = useBenefit();
 
   return (
     <div className={styles.toast}>
@@ -15,7 +17,7 @@ export default function HiddenCouponToast({ coupon }) {
       <strong className={styles.name}>{coupon.name}</strong>
 
       <div className={styles.row}>
-        <b className={styles.benefit}>{coupon.benefit}</b>
+        <b className={styles.benefit}>{benefit(coupon)}</b>
         <span>{t("hiddenCoupon.saved")}</span>
       </div>
     </div>
